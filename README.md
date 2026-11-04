@@ -1,16 +1,18 @@
 # CourseBot — Hệ thống đăng ký học phần
 
-## Chạy bản xem trước
+## Tài khoản đăng nhập kiểm thử (Web Cloud / Neon Database)
 
-Từ thư mục dự án, chạy `.\run-preview.ps1` (nếu chưa đặt biến môi trường `DB_PASSWORD`, script sẽ hỏi mật khẩu PostgreSQL của bạn). Ứng dụng tự tạo database PostgreSQL riêng `coursebot_preview` và khởi tạo lại ba tài khoản cùng hồ sơ mẫu khi khởi động:
+Hệ thống sử dụng cơ sở dữ liệu học vụ thực tế chuẩn hóa (gồm 90 sinh viên, 21 giảng viên, 73 học phần và 52 lớp học phần). Mật khẩu mặc định thống nhất: **`AcademicDemo2026!`**
 
-| Vai trò | Tên đăng nhập | Mật khẩu |
-| --- | --- | --- |
-| Sinh viên | `preview_student` | `SVPreview2026!` |
-| Giảng viên | `preview_lecturer` | `GVPreview2026!` |
-| Ban Đào tạo | `preview_training` | `TrainingPreview2026!` |
+| Vai trò | Tên đăng nhập | Mật khẩu | Mục đích kiểm thử / Demo |
+| --- | --- | --- | --- |
+| **Ban Đào tạo** | `academic_training` | `AcademicDemo2026!` | Mở đợt ĐK kỳ 2026-2027-1, xếp lớp kiểm tra trùng phòng/GV theo tuần, duyệt 22 đơn `PENDING` & hủy môn hộ sinh viên quá hạn 7 ngày. |
+| **Sinh viên (K24)** | `24it001@sv.demo.edu.vn` | `AcademicDemo2026!` | Mã SV `24IT001`: Xem Bảng điểm GPA + xuất CSV, theo dõi đơn `PENDING` môn `INF301.2627.1.01`, hỏi Chatbot Học vụ AI. |
+| **Sinh viên (K25)** | `25it001@sv.demo.edu.vn` | `AcademicDemo2026!` | Mã SV `25IT001`: Kiểm chứng chặn Trùng lịch tuần (`HIS101` vs `LAW101`), chặn Tiên quyết (`SWE301`), Học trước (`PED102`), Song hành (`ENL103` + `ENL101`). |
+| **Giảng viên** | `tuannm@demo.edu.vn` | `AcademicDemo2026!` | Mã GV `GV001`: Xem lịch giảng dạy theo kỳ, lọc/tìm kiếm danh sách sinh viên lớp phụ trách & xuất file CSV. |
+| **Quản trị viên** | `admin` | `AcademicDemo2026!` | Quản trị tài khoản, bật/tắt ma trận phân quyền động RBAC (`role_permissions`) & tra cứu nhật ký kiểm toán (`audit_logs`). |
 
-Mở `http://localhost:8081/login.html`. Không bật `APP_PREVIEW_ACCOUNTS_ENABLED` khi chạy với cơ sở dữ liệu thật.
+*(Toàn bộ 90 sinh viên và 21 giảng viên trong hệ thống đều đăng nhập bằng email tương ứng trong danh sách, ví dụ `24it002@sv.demo.edu.vn`, `hattt@demo.edu.vn`... với mật khẩu `AcademicDemo2026!`).*
 
 CourseBot là ứng dụng web đăng ký học phần viết bằng Java 21, Spring Boot, Spring Security, Spring Data JPA và **PostgreSQL**. Giao diện được chia theo vai trò sinh viên, giảng viên, Ban Đào tạo và quản trị viên. Dữ liệu nghiệp vụ được lưu trong PostgreSQL; cấu hình mặc định kết nối tới `jdbc:postgresql://localhost:5432/coursebot` (tự động tạo database nếu chưa tồn tại).
 
