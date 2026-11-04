@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Không gian làm việc · EduPortal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/workspace.css">
+  <link rel="stylesheet" href="/assets/css/workspace-extra.css">
+  <script type="module" src="/assets/js/features/workspace/workspace.js"></script>
+</head>
+<body>
+  <div class="workspace-shell">
+    <aside class="workspace-sidebar">
+      <a class="workspace-brand" href="/"><span class="brand-mark">E</span><span><b>EduPortal</b><small>HỆ THỐNG HỌC VỤ</small></span></a>
+      <div class="workspace-identity"><span class="identity-avatar" id="identityAvatar">CB</span><span><strong id="identityName">Đang tải tài khoản</strong><small id="identityRole">—</small></span></div>
+      <nav id="workspaceNav" class="workspace-nav" aria-label="Điều hướng workspace"></nav>
+      <a class="logout-button" id="changePasswordLink" href="/change-password.html">Đổi mật khẩu</a>
+      <button id="logoutButton" class="logout-button" type="button">Đăng xuất</button>
+    </aside>
+    <main class="workspace-main">
+      <header class="workspace-topbar"><div><span class="crumb">EduPortal</span><span class="crumb-separator">/</span><strong id="pageBreadcrumb">Tổng quan</strong></div><div class="workspace-top-actions" id="workspaceTopActions"><div class="workspace-semester" id="semesterLabel">—</div></div></header>
+      <section class="workspace-content">
+        <div class="page-title-row"><div><p class="page-eyebrow" id="pageEyebrow">KHÔNG GIAN LÀM VIỆC</p><h1 id="pageTitle">Tổng quan</h1><p id="pageDescription" class="page-description"></p></div><div id="pageActions"></div></div>
+        <div id="workspaceView" aria-live="polite"><div class="workspace-loading">Đang tải dữ liệu…</div></div>
+      </section>
+    </main>
+  </div>
+  <dialog id="workspaceDialog" class="workspace-dialog"><form method="dialog" id="workspaceForm"><div class="workspace-dialog-head"><div><small id="dialogEyebrow">THÔNG TIN</small><h2 id="dialogTitle">Chi tiết</h2></div><button class="dialog-close" value="cancel" aria-label="Đóng">×</button></div><div id="dialogFields" class="dialog-fields"></div><div id="dialogMessage" class="dialog-message" role="alert"></div><div class="dialog-actions"><button class="secondary-button" value="cancel">Đóng</button><button class="primary-button" id="dialogSave" type="button">Lưu thay đổi</button></div></form></dialog>
+  <dialog id="curriculumCoursesDialog" class="workspace-dialog"><div class="workspace-dialog-head"><div><small>KHUNG CHƯƠNG TRÌNH</small><h2 id="curriculumCoursesTitle">Các môn học</h2></div><button id="closeCurriculumCourses" class="dialog-close" type="button" aria-label="Đóng">×</button></div><div id="curriculumCoursesBody"></div><form id="curriculumCourseForm" class="curriculum-entry-form"><input name="courseCode" placeholder="Mã môn học" required><input name="suggestedSemester" placeholder="Học kỳ đề xuất" maxlength="40" required><label><input name="requiredCourse" type="checkbox" checked> Bắt buộc</label><input name="orderIndex" type="number" min="0" value="0" aria-label="Thứ tự"><button class="primary-button" type="submit">Thêm môn</button></form></dialog>
+  <div id="workspaceToast" class="workspace-toast" role="status" aria-live="polite"></div>
+</body>
+</html>

@@ -1,0 +1,7 @@
+/target/
+/data/
+/out/
+*.log
+.env
+.env.*
+!.env.example
