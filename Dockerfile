@@ -1,12 +1,10 @@
 # Stage 1: Build with Maven & Java 21
-FROM eclipse-temurin:21-jdk AS builder
+FROM maven:3.9.9-eclipse-temurin-21-alpine AS builder
 WORKDIR /app
 
-COPY pom.xml mvnw ./
-COPY .mvn .mvn
-RUN chmod +x mvnw
-COPY src src
-RUN ./mvnw clean package -DskipTests
+COPY pom.xml ./
+COPY src ./src
+RUN mvn clean package -DskipTests
 
 # Stage 2: Minimal runtime image
 FROM eclipse-temurin:21-jre-alpine
