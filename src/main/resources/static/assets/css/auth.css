@@ -219,49 +219,37 @@ body:not(.login-body) {
   min-height: 100vh;
   margin: 0;
   padding: 0;
-  background: #fafbfe;
+  background: 
+    radial-gradient(circle at 14% 20%, rgba(139, 92, 246, 0.45) 0%, transparent 45%),
+    radial-gradient(circle at 86% 80%, rgba(167, 139, 250, 0.3) 0%, transparent 50%),
+    radial-gradient(ellipse 70% 70% at 50% 50%, rgba(124, 77, 255, 0.22) 0%, transparent 60%),
+    linear-gradient(110deg, #130f2e 0%, #1d1340 22%, #2f195c 42%, #4d288a 62%, #7553c0 78%, #c5b4f2 92%, #ede7fa 100%);
+  background-attachment: fixed;
+  background-size: cover;
 }
 
 .login-layout {
   display: grid;
   grid-template-columns: minmax(440px, 1.12fr) minmax(440px, 1fr);
   min-height: 100vh;
+  position: relative;
 }
 
 /* Cột trái: Hero Showcase */
 .login-hero-panel {
-  background: linear-gradient(155deg, #151132 0%, #25164d 45%, #3c1e75 100%);
+  background: transparent;
   color: #ffffff;
   padding: 48px 56px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   position: relative;
-  overflow: hidden;
+  z-index: 2;
 }
 
-.login-hero-panel::before {
-  content: '';
-  position: absolute;
-  top: -100px;
-  left: -80px;
-  width: 440px;
-  height: 440px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(124, 77, 255, 0.28) 0%, transparent 70%);
-  pointer-events: none;
-}
-
+.login-hero-panel::before,
 .login-hero-panel::after {
-  content: '';
-  position: absolute;
-  bottom: -90px;
-  right: -90px;
-  width: 460px;
-  height: 460px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(52, 211, 153, 0.16) 0%, transparent 70%);
-  pointer-events: none;
+  display: none;
 }
 
 .hero-top {
@@ -330,8 +318,11 @@ body:not(.login-body) {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 14px;
   margin-bottom: 28px;
+  min-width: 260px;
+  min-height: 220px;
 }
 
 .hero-book-glow {
@@ -346,7 +337,10 @@ body:not(.login-body) {
 .hero-book-img {
   width: 140px;
   height: 140px;
+  min-width: 140px;
+  min-height: 140px;
   object-fit: contain;
+  display: block;
   z-index: 1;
   filter: drop-shadow(0 12px 24px rgba(104, 79, 208, 0.45));
 }
@@ -456,17 +450,20 @@ body:not(.login-body) {
   align-items: center;
   justify-content: center;
   padding: 48px 36px;
-  background: #fafbfe;
+  background: transparent;
   position: relative;
+  z-index: 2;
 }
 
 .login-card {
   width: min(480px, 100%);
   padding: 40px 38px;
-  background: #ffffff;
-  border: 1px solid #e9ecf4;
-  border-radius: 24px;
-  box-shadow: 0 20px 50px rgba(30, 41, 74, 0.06);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 26px;
+  box-shadow: 0 25px 65px rgba(26, 16, 62, 0.16), 0 0 0 1px rgba(124, 95, 250, 0.08);
 }
 
 .mobile-brand-row {
