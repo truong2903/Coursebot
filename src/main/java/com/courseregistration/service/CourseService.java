@@ -105,15 +105,16 @@ public class CourseService {
     public Semester currentSemester() {
         var manual = semesterRepository.findFirstByRegistrationAlwaysOpenTrueAndStatusOrderByCodeDesc(Semester.Status.ACTIVE);
         if (manual.isPresent()) return manual.get();
+        var today = java.time.LocalDate.now();
+        var openSemester = semesterRepository.findFirstByRegistrationOpenAtLessThanEqualAndRegistrationCloseAtGreaterThanEqual(today, today);
+        if (openSemester.isPresent()) return openSemester.get();
         var now = java.time.LocalDateTime.now();
         var activePeriod = registrationPeriods.findFirstByStartsAtLessThanEqualAndEndsAtGreaterThanEqualAndStatusIn(
                 now, now, java.util.List.of(RegistrationPeriod.Status.SCHEDULED, RegistrationPeriod.Status.OPEN));
         if (activePeriod.isPresent()) return activePeriod.get().getSemester();
         var activeSemester = semesterRepository.findFirstByStatusOrderByStartsAtDesc(Semester.Status.ACTIVE);
         if (activeSemester.isPresent()) return activeSemester.get();
-        var today = java.time.LocalDate.now();
-        return semesterRepository.findFirstByRegistrationOpenAtLessThanEqualAndRegistrationCloseAtGreaterThanEqual(today, today)
-                .or(() -> semesterRepository.findAllByOrderByStartsAtDesc().stream().findFirst())
+        return semesterRepository.findAllByOrderByStartsAtDesc().stream().findFirst()
                 .orElseThrow(() -> new IllegalStateException("Chưa có học kỳ nào được khai báo."));
     }
 
@@ -121,12 +122,13 @@ public class CourseService {
     public boolean registrationOpen(Semester semester) {
         if (semester.getStatus() == Semester.Status.ARCHIVED || semester.getStatus() == Semester.Status.COMPLETED) return false;
         if (semester.isRegistrationAlwaysOpen()) return true;
+        var today = java.time.LocalDate.now();
+        if (semester.getRegistrationOpenAt() != null && semester.getRegistrationCloseAt() != null) {
+            return !today.isBefore(semester.getRegistrationOpenAt()) && !today.isAfter(semester.getRegistrationCloseAt());
+        }
         var period = registrationPeriods.findBySemester_Code(semester.getCode());
         if (period.isPresent()) return period.get().getEffectiveStatus() == RegistrationPeriod.Status.OPEN;
-        return semester.getRegistrationOpenAt() != null
-                && semester.getRegistrationCloseAt() != null
-                && !java.time.LocalDate.now().isBefore(semester.getRegistrationOpenAt())
-                && !java.time.LocalDate.now().isAfter(semester.getRegistrationCloseAt());
+        return false;
     }
 
     @Transactional(readOnly = true)

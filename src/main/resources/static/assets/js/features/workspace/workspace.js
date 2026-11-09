@@ -29,11 +29,11 @@ function menuFor(role) {
   const entries = role === 'LECTURER' ? [
     ['OVERVIEW','TỔNG QUAN'],['overview','Lịch giảng dạy'],['roster','Danh sách sinh viên'],['curricula','Khung chương trình']
   ] : role === 'TRAINING_OFFICE' ? [
-    ['OVERVIEW','ĐIỀU PHỐI HỌC VỤ'],['overview','Tổng quan'],['enrollments','Duyệt & Hủy đăng ký'],['registrations','Đợt đăng ký'],['sections','Lớp học phần'],['courses','Môn học'],['curricula','Khung chương trình'],['prerequisites','Tiên quyết'],['semesters','Học kỳ'],['reports','Báo cáo']
+    ['OVERVIEW','ĐIỀU PHỐI HỌC VỤ'],['overview','Tổng quan'],['enrollments','Duyệt & Hủy đăng ký'],['semesters','Học kỳ & Đợt đăng ký'],['sections','Lớp học phần'],['courses','Môn học'],['curricula','Khung chương trình'],['prerequisites','Tiên quyết'],['reports','Báo cáo']
   ] : [
     ['OVERVIEW','QUẢN TRỊ'],['overview','Tổng quan'],['accounts','Tài khoản'],['permissions','Phân quyền'],['logs','Nhật ký hệ thống'],['reports','Báo cáo']
   ];
-  const needed={accounts:'ACCOUNTS_MANAGE',permissions:'PERMISSIONS_MANAGE',logs:'AUDIT_VIEW',reports:'REPORTS_VIEW',enrollments:'TRAINING_READ',registrations:'TRAINING_READ',sections:'TRAINING_READ',courses:'TRAINING_READ',curricula:'TRAINING_READ',prerequisites:'TRAINING_READ',semesters:'TRAINING_READ'};
+  const needed={accounts:'ACCOUNTS_MANAGE',permissions:'PERMISSIONS_MANAGE',logs:'AUDIT_VIEW',reports:'REPORTS_VIEW',enrollments:'TRAINING_READ',sections:'TRAINING_READ',courses:'TRAINING_READ',curricula:'TRAINING_READ',prerequisites:'TRAINING_READ',semesters:'TRAINING_READ'};
   nav.innerHTML = entries.filter(([key])=>key==='OVERVIEW'||key==='overview'||!needed[key]||account.permissions?.includes(needed[key])).map(([key,label]) => key === 'OVERVIEW'
     ? `<span class="nav-group">${esc(label)}</span>`
     : `<button type="button" data-page="${esc(key)}" class="${key === currentPage ? 'active' : ''}"><span class="ws-nav-icon" aria-hidden="true">${iconFor(key)}</span><span class="ws-nav-text">${esc(label)}</span></button>`).join('');

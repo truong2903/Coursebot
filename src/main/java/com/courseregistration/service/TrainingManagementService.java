@@ -84,8 +84,10 @@ public class TrainingManagementService {
         String code=r.code().trim();if(semesters.existsByCodeIgnoreCase(code))throw new IllegalArgumentException("Mã học kỳ đã tồn tại.");validateSemesterDates(r,Boolean.TRUE.equals(r.registrationAlwaysOpen()));
         ensureSemesterNoOverlap(r.startsAt(),r.endsAt(),null);
         Semester s=new Semester(code,r.name().trim(),r.startsAt(),r.registrationOpenAt(),r.registrationCloseAt());
-        s.update(r.name().trim(),r.startsAt(),r.endsAt(),r.registrationOpenAt(),r.registrationCloseAt(),r.status());semesters.save(s);
+        s.update(r.name().trim(),r.startsAt(),r.endsAt(),r.registrationOpenAt(),r.registrationCloseAt(),r.status());
         s.setRegistrationAlwaysOpen(Boolean.TRUE.equals(r.registrationAlwaysOpen()));
+        semesters.save(s);
+        syncRegistrationPeriodForSemester(s);
         audit.record("SEMESTER_CREATED",code,"Tạo học kỳ");return SemesterManagementDto.from(s);
     }
     @Transactional
@@ -96,6 +98,8 @@ public class TrainingManagementService {
         validateSemesterDates(r,manual);ensureSemesterNoOverlap(r.startsAt(),r.endsAt(),id);
         s.update(r.name().trim(),r.startsAt(),r.endsAt(),r.registrationOpenAt(),r.registrationCloseAt(),r.status());
         s.setRegistrationAlwaysOpen(manual);
+        semesters.save(s);
+        syncRegistrationPeriodForSemester(s);
         audit.record("SEMESTER_UPDATED",s.getCode(),"Cập nhật học kỳ");return SemesterManagementDto.from(s);
     }
     @Transactional
@@ -176,6 +180,30 @@ public class TrainingManagementService {
     public void cancelPeriod(Long id){RegistrationPeriod p=periods.findById(id).orElseThrow(()->new IllegalArgumentException("Không tìm thấy đợt đăng ký."));if(p.getEffectiveStatus()==RegistrationPeriod.Status.OPEN)throw new IllegalArgumentException("Hãy đóng đợt đăng ký đang mở trước khi hủy.");p.update(p.getSemester(),p.getStartsAt(),p.getEndsAt(),RegistrationPeriod.Status.CANCELLED);audit.record("REGISTRATION_PERIOD_CANCELLED",p.getSemester().getCode(),"Hủy đợt đăng ký");}
     private void validatePeriod(RegistrationPeriodRequest r,Long ignored){if(!r.startsAt().isBefore(r.endsAt()))throw new IllegalArgumentException("Thời điểm bắt đầu phải trước thời điểm kết thúc.");if(r.status()==RegistrationPeriod.Status.OPEN&&(LocalDateTime.now().isBefore(r.startsAt())||LocalDateTime.now().isAfter(r.endsAt())))throw new IllegalArgumentException("Chỉ có thể mở đợt đăng ký trong khoảng thời gian đã cấu hình.");}
     private void syncSemesterDates(Semester s,LocalDateTime start,LocalDateTime end){s.setDates(s.getStartsAt(),start.toLocalDate(),end.toLocalDate());s.setRegistrationAlwaysOpen(false);}
+    private void syncRegistrationPeriodForSemester(Semester s) {
+        if (s.getRegistrationOpenAt() == null || s.getRegistrationCloseAt() == null) return;
+        LocalDateTime start = s.getRegistrationOpenAt().atStartOfDay();
+        LocalDateTime end = s.getRegistrationCloseAt().atTime(23, 59, 59);
+        LocalDateTime now = LocalDateTime.now();
+        RegistrationPeriod.Status status;
+        if (s.isRegistrationAlwaysOpen()) {
+            status = RegistrationPeriod.Status.OPEN;
+        } else if (now.isBefore(start)) {
+            status = RegistrationPeriod.Status.SCHEDULED;
+        } else if (now.isAfter(end)) {
+            status = RegistrationPeriod.Status.CLOSED;
+        } else {
+            status = RegistrationPeriod.Status.OPEN;
+        }
+        var opt = periods.findBySemester_Code(s.getCode());
+        if (opt.isPresent()) {
+            RegistrationPeriod p = opt.get();
+            p.update(s, start, end, status);
+            periods.save(p);
+        } else {
+            periods.save(new RegistrationPeriod(s, start, end, status));
+        }
+    }
 
     @Transactional(readOnly=true)
     public List<CurriculumDto> listCurricula(){return curricula.findAll().stream().sorted(Comparator.comparing(Curriculum::getCode)).map(CurriculumDto::from).toList();}

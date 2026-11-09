@@ -13,7 +13,7 @@ export const resourceDefinitions = {
     {name:'prerequisite',label:'Mô tả tiên quyết'},{name:'description',label:'Mô tả',type:'textarea',wide:true},{name:'syllabusUrl',label:'Liên kết đề cương',type:'url',wide:true},
     {name:'active',label:'Trạng thái sử dụng',type:'select',options:[['true','Đang sử dụng'],['false','Ngừng sử dụng']]}
   ],columns:[['code','Mã môn'],['name','Tên môn học'],['department','Khoa / đơn vị'],['credits','Tín chỉ'],['prerequisite','Tiên quyết'],['active','Đang sử dụng']]},
-  semesters: { title:'Quản lý học kỳ', description:'Thiết lập lịch học, thời gian đăng ký và trạng thái học kỳ.', endpoint:'/api/training/semesters', fields:[
+  semesters: { title:'Quản lý học kỳ & đợt đăng ký', description:'Thiết lập lịch học, thời gian mở/đóng đăng ký và trạng thái học kỳ.', endpoint:'/api/training/semesters', fields:[
     {name:'code',label:'Mã học kỳ',required:true},{name:'name',label:'Tên học kỳ',required:true,wide:true},
     {name:'startsAt',label:'Ngày bắt đầu học kỳ',type:'date'},
     {name:'endsAt',label:'Ngày kết thúc học kỳ',type:'date'},
