@@ -3,27 +3,194 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Đăng nhập · EduPortal</title>
+  <title>Đăng nhập · EduPortal Cổng Đăng Ký Học Phần</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/auth.css">
   <script type="module" src="/assets/js/features/auth/login.js"></script>
 </head>
-<body>
-  <main class="auth-card">
-    <a class="brand" href="/"><span class="brand-mark">E</span><span><strong>EduPortal</strong><small>CỔNG ĐĂNG KÝ HỌC PHẦN</small></span></a>
-    <h1>Đăng nhập</h1>
-    <p class="lead">Đăng nhập bằng tài khoản được nhà trường cấp để tiếp tục.</p>
-    <form id="loginForm" novalidate>
-      <div class="field"><label for="username">Tên đăng nhập</label><input id="username" name="username" autocomplete="username" required autofocus></div>
-      <div class="field"><label for="password">Mật khẩu</label><input id="password" name="password" type="password" autocomplete="current-password" required></div>
-      <div class="password-visibility"><label for="showPassword"><input id="showPassword" type="checkbox" aria-controls="password">Hiện mật khẩu</label></div>
-      <div class="auth-options"><a href="/forgot-password.html">Quên mật khẩu?</a></div>
-      <button class="auth-button" type="submit">Đăng nhập</button>
-      <p id="authMessage" class="auth-message" role="alert" aria-live="polite"></p>
-    </form>
-    <p class="auth-links">Cần hỗ trợ? Liên hệ Phòng Đào tạo hoặc quản trị hệ thống.</p>
-  </main>
+<body class="login-body">
+  <div class="login-layout">
+    <!-- Cột trái: Hero Showcase với Animated Book loading.gif -->
+    <aside class="login-hero-panel">
+      <div class="hero-top">
+        <a class="hero-brand" href="/">
+          <span class="hero-brand-mark">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+            </svg>
+          </span>
+          <div class="hero-brand-text">
+            <strong>Edu<span>Portal</span></strong>
+            <small>CỔNG ĐĂNG KÝ HỌC PHẦN</small>
+          </div>
+        </a>
+      </div>
+
+      <div class="hero-center">
+        <!-- Glassmorphism Card chứa Book loading.gif -->
+        <div class="hero-book-card">
+          <div class="hero-book-glow"></div>
+          <img src="/assets/img/book-loading.gif" alt="Học phần EduPortal" class="hero-book-img">
+          <div class="hero-status-pill">
+            <span class="pulse-dot"></span>
+            <span>Học kỳ 2026-2027-1 Đang Mở Đăng Ký</span>
+          </div>
+        </div>
+
+        <div class="hero-copy">
+          <h2>Không gian Học tập &<br><span class="gradient-text">Đăng ký Học phần Trực tuyến</span></h2>
+          <p>Hệ thống tự động rà soát điều kiện tiên quyết, cảnh báo trùng lịch học và đồng hành cùng trợ lý học vụ AI thông minh.</p>
+        </div>
+
+        <div class="hero-badges">
+          <div class="hero-badge-item">
+            <span class="badge-icon">⚡</span>
+            <div>
+              <strong>Xác thực tức thì</strong>
+              <small>Đăng ký môn học thời gian thực</small>
+            </div>
+          </div>
+          <div class="hero-badge-item">
+            <span class="badge-icon">🛡️</span>
+            <div>
+              <strong>Kiểm tra điều kiện</strong>
+              <small>Tiên quyết, song hành & trùng tiết</small>
+            </div>
+          </div>
+          <div class="hero-badge-item">
+            <span class="badge-icon">🤖</span>
+            <div>
+              <strong>Trợ lý AI Học vụ</strong>
+              <small>Tư vấn lộ trình & giải đáp chính sách</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-footer">
+        <span>© 2026 EduPortal. Hệ thống quản lý đào tạo tín chỉ chuẩn hóa.</span>
+      </div>
+    </aside>
+
+    <!-- Cột phải: Form Đăng nhập -->
+    <main class="login-form-panel">
+      <div class="auth-card login-card">
+        <!-- Animated Book badge hiển thị trên mobile -->
+        <div class="mobile-brand-row">
+          <div class="mobile-book-wrap">
+            <img src="/assets/img/book-loading.gif" alt="EduPortal" class="mobile-book-img">
+          </div>
+          <div class="mobile-brand-title">
+            <strong>Edu<span>Portal</span></strong>
+            <small>CỔNG ĐĂNG KÝ HỌC PHẦN</small>
+          </div>
+        </div>
+
+        <div class="card-header">
+          <span class="portal-tag">HỌC VỤ & ĐÀO TẠO</span>
+          <h1>Đăng nhập</h1>
+          <p class="lead">Nhập tài khoản được nhà trường cung cấp để tiếp tục.</p>
+        </div>
+
+        <!-- Thanh chọn nhanh tài khoản mẫu để test / demo -->
+        <div class="quick-demo-section">
+          <div class="quick-demo-label">
+            <span>✨ Tài khoản kiểm thử nhanh (bấm để nạp):</span>
+          </div>
+          <div class="demo-chips">
+            <button type="button" class="demo-chip" data-user="24it001@sv.demo.edu.vn" data-pass="AcademicDemo2026!" title="Sinh viên K24 (Xem bảng điểm GPA, ĐK môn)">
+              <span class="chip-emoji">🎓</span> SV K24
+            </button>
+            <button type="button" class="demo-chip" data-user="25it001@sv.demo.edu.vn" data-pass="AcademicDemo2026!" title="Sinh viên K25 (Kiểm tra trùng lịch, tiên quyết)">
+              <span class="chip-emoji">🎒</span> SV K25
+            </button>
+            <button type="button" class="demo-chip" data-user="tuannm@demo.edu.vn" data-pass="AcademicDemo2026!" title="Giảng viên (Xem lịch giảng dạy, lớp học phần)">
+              <span class="chip-emoji">👨‍🏫</span> Giảng viên
+            </button>
+            <button type="button" class="demo-chip" data-user="academic_training" data-pass="AcademicDemo2026!" title="Ban Đào tạo (Mở đợt, duyệt đơn, xếp lớp)">
+              <span class="chip-emoji">🏛️</span> Đào tạo
+            </button>
+            <button type="button" class="demo-chip" data-user="admin" data-pass="AcademicDemo2026!" title="Quản trị viên hệ thống">
+              <span class="chip-emoji">⚙️</span> Admin
+            </button>
+          </div>
+        </div>
+
+        <form id="loginForm" novalidate>
+          <div class="field">
+            <label for="username">Tên đăng nhập hoặc Email</label>
+            <div class="input-wrap">
+              <span class="input-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+              </span>
+              <input id="username" name="username" autocomplete="username" placeholder="Ví dụ: 24it001@sv.demo.edu.vn" required autofocus>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="field-label-row">
+              <label for="password">Mật khẩu</label>
+              <a class="forgot-link" href="/forgot-password.html">Quên mật khẩu?</a>
+            </div>
+            <div class="input-wrap">
+              <span class="input-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+              </span>
+              <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Nhập mật khẩu của bạn" required>
+              <button type="button" id="togglePasswordBtn" class="toggle-password-btn" aria-label="Hiện hoặc ẩn mật khẩu" title="Hiện/ẩn mật khẩu">
+                <svg class="eye-open" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+                <svg class="eye-closed" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                  <line x1="1" y1="1" x2="23" y2="23"/>
+                </svg>
+              </button>
+            </div>
+            <!-- Checkbox ẩn để tương thích hoàn toàn với script cũ nếu cần -->
+            <input id="showPassword" type="checkbox" style="display:none">
+          </div>
+
+          <button class="auth-button" type="submit">
+            <span class="btn-text">Đăng nhập vào hệ thống</span>
+            <span class="btn-spinner" style="display:none">
+              <img src="/assets/img/book-loading.gif" alt="Đang xử lý" class="btn-spinner-gif">
+              <span>Đang xác thực…</span>
+            </span>
+          </button>
+
+          <p id="authMessage" class="auth-message" role="alert" aria-live="polite"></p>
+        </form>
+
+        <div class="auth-support-foot">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="16" x2="12" y2="12"/>
+            <line x1="12" y1="8" x2="12.01" y2="8"/>
+          </svg>
+          <span>Cần hỗ trợ? Liên hệ <a href="/forgot-password.html">Khôi phục mật khẩu</a> hoặc Phòng Đào tạo.</span>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Loading Overlay với Book loading.gif khi đăng nhập thành công -->
+  <div id="loginLoadingOverlay" class="login-loading-overlay" aria-hidden="true">
+    <div class="loading-overlay-card">
+      <img src="/assets/img/book-loading.gif" alt="Đang tải dữ liệu..." class="overlay-book-gif">
+      <h3>Xác thực thành công!</h3>
+      <p>Đang chuẩn bị không gian học tập của bạn…</p>
+    </div>
+  </div>
 </body>
 </html>
