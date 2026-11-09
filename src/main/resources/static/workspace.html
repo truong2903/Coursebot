@@ -7,14 +7,26 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/workspace.css?v=20261109c">
-  <link rel="stylesheet" href="/assets/css/workspace-extra.css?v=20261109c">
-  <script type="module" src="/assets/js/features/workspace/workspace.js?v=20261109c"></script>
+  <link rel="stylesheet" href="/assets/css/workspace.css?v=20261109d">
+  <link rel="stylesheet" href="/assets/css/workspace-extra.css?v=20261109d">
+  <script type="module" src="/assets/js/features/workspace/workspace.js?v=20261109d"></script>
 </head>
 <body>
   <div class="workspace-shell">
     <aside class="workspace-sidebar">
-      <a class="workspace-brand" href="/"><span class="brand-mark">🎓</span><span><b>EduPortal</b><small>HỆ THỐNG HỌC VỤ</small></span></a>
+      <a class="workspace-brand" href="/" aria-label="EduPortal trang chủ">
+        <span class="brand-mark">
+          <svg viewBox="0 0 32 32" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5.5 9.5 16 5l10.5 4.5L16 14 5.5 9.5Z"/>
+            <path d="M9 11.2v7.1c3.8 3.1 10.2 3.1 14 0v-7.1M26.5 10v8"/>
+            <circle cx="26.5" cy="20.5" r="1.5" fill="#ffffff"/>
+          </svg>
+        </span>
+        <span class="brand-copy">
+          <strong>Edu<span>Portal</span></strong>
+          <small id="workspaceBrandSubtitle">HỆ THỐNG HỌC VỤ</small>
+        </span>
+      </a>
       <nav id="workspaceNav" class="workspace-nav" aria-label="Điều hướng workspace"></nav>
       <div class="sidebar-bottom">
         <button class="profile-row" id="sidebarProfileButton" type="button" aria-label="Tùy chọn tài khoản" title="Bấm để xem tùy chọn tài khoản">

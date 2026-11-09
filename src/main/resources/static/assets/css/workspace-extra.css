@@ -257,8 +257,69 @@
 }
 
 /* ==========================================================================
-   STUDENT-ALIGNED USER PROFILE & TOPBAR DROPDOWN (LECTURER / WORKSPACE)
+   STUDENT-ALIGNED USER PROFILE, BRAND HEADER & TOPBAR DROPDOWN (WORKSPACE)
    ========================================================================== */
+
+.workspace-brand {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 4px 6px 18px !important;
+  border-bottom: 1px solid var(--line) !important;
+  text-decoration: none !important;
+  color: var(--ink) !important;
+  transition: all 0.18s ease !important;
+}
+
+.workspace-brand:hover .brand-mark {
+  transform: translateY(-1px) scale(1.04);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35);
+}
+
+.workspace-brand .brand-mark {
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 12px !important;
+  background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%) !important;
+  display: grid !important;
+  place-items: center !important;
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.28) !important;
+  flex-shrink: 0 !important;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+.workspace-brand .brand-mark svg {
+  width: 22px !important;
+  height: 22px !important;
+  display: block !important;
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.workspace-brand .brand-copy strong {
+  display: block !important;
+  font: 800 19px 'Plus Jakarta Sans', sans-serif !important;
+  letter-spacing: -0.5px !important;
+  color: #1e293b !important;
+  line-height: 1.15 !important;
+}
+
+.workspace-brand .brand-copy strong span {
+  color: #2563eb !important;
+}
+
+.workspace-brand .brand-copy small {
+  display: block !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 1.2px !important;
+  color: #94a3b8 !important;
+  margin-top: 3px !important;
+  text-transform: uppercase !important;
+}
 
 .workspace-sidebar {
   display: flex !important;
