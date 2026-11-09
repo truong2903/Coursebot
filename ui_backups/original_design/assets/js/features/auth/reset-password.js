@@ -1,0 +1,6 @@
+import { apiGet, apiPost } from '../../core/api.js';
+const form=document.querySelector('#resetForm'),button=form.querySelector('button'),message=document.querySelector('#authMessage');
+function notify(text,kind){message.textContent=text;message.className=`auth-message show ${kind}`;}
+try{await apiGet('/api/auth/csrf');}catch{}
+form.elements.email.value=sessionStorage.getItem('passwordResetEmail')||'';
+form.addEventListener('submit',async event=>{event.preventDefault();const email=form.elements.email.value.trim(),token=form.elements.token.value.trim(),password=form.elements.password.value,confirm=form.elements.confirmPassword.value;if(!email)return notify('Nhập email đã yêu cầu mã OTP.','error');if(!/^\d{6}$/.test(token))return notify('Mã OTP phải gồm 6 chữ số.','error');if(password.length<10)return notify('Mật khẩu cần có ít nhất 10 ký tự.','error');if(password!==confirm)return notify('Hai mật khẩu chưa trùng khớp.','error');button.disabled=true;button.textContent='Đang cập nhật…';try{const result=await apiPost('/api/auth/reset-password',{email,token,newPassword:password});notify(result.message,'success');sessionStorage.removeItem('passwordResetEmail');form.reset();button.textContent='Hoàn tất';}catch(error){notify(error.message,'error');button.disabled=false;button.textContent='Lưu mật khẩu mới';}});
