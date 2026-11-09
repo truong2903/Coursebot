@@ -302,9 +302,11 @@ async function openPage(key) {
   else await loadResource(key);
 }
 
-async function loadTrainingEnrollments(page = 1) {
+async function loadTrainingEnrollments(page = 1, showLoading = true) {
   setPageHeader('Duyệt & Hủy đăng ký học phần', 'Xử lý các bản ghi đăng ký chờ xác nhận (PENDING) và hỗ trợ hủy học phần hộ sinh viên khi đã quá hạn 7 ngày đầu học kỳ.');
-  view.innerHTML = '<div class="workspace-loading">Đang tải danh sách đăng ký học phần…</div>';
+  if (showLoading) {
+    view.innerHTML = '<div class="workspace-loading">Đang tải danh sách đăng ký học phần…</div>';
+  }
   try {
     const [semesters, allRows] = await Promise.all([
       enrollmentSemesters.length ? Promise.resolve(enrollmentSemesters) : apiGet('/api/training/semesters'),
@@ -312,13 +314,18 @@ async function loadTrainingEnrollments(page = 1) {
     ]);
     enrollmentSemesters = semesters;
     records = allRows;
-    renderTrainingEnrollments(page);
+    renderTrainingEnrollments(page, !showLoading);
   } catch (error) {
-    view.innerHTML = `<section class="workspace-panel empty-state">${esc(error.message)}</section>`;
+    if (showLoading) {
+      view.innerHTML = `<section class="workspace-panel empty-state">${esc(error.message)}</section>`;
+    } else {
+      showToast(error.message);
+    }
   }
 }
 
-function renderTrainingEnrollments(page = 1) {
+function renderTrainingEnrollments(page = 1, preserveScroll = false) {
+  const scrollPos = preserveScroll ? window.scrollY : 0;
   const { semester, status, q } = enrollmentFilterState;
   const keyword = (q || '').trim().toLocaleLowerCase('vi');
   const pendingTotal = records.filter(r => r.status === 'PENDING').length;
@@ -406,51 +413,114 @@ function renderTrainingEnrollments(page = 1) {
       <p class="table-summary">${number(filtered.length)} bản ghi</p>
     </section>`;
 
-  $('#enrollmentSemesterFilter').addEventListener('change', e => { enrollmentFilterState.semester = e.target.value; renderTrainingEnrollments(1); });
-  $('#enrollmentStatusFilter').addEventListener('change', e => { enrollmentFilterState.status = e.target.value; renderTrainingEnrollments(1); });
+  if (preserveScroll && scrollPos > 0) {
+    window.scrollTo({ top: scrollPos, behavior: 'instant' });
+  }
+
+  $('#enrollmentSemesterFilter').addEventListener('change', e => { enrollmentFilterState.semester = e.target.value; renderTrainingEnrollments(1, true); });
+  $('#enrollmentStatusFilter').addEventListener('change', e => { enrollmentFilterState.status = e.target.value; renderTrainingEnrollments(1, true); });
   $('#enrollmentQueryInput').addEventListener('input', e => {
     const val = e.target.value;
     enrollmentFilterState.q = val;
-    renderTrainingEnrollments(1);
+    renderTrainingEnrollments(1, true);
     const input = $('#enrollmentQueryInput');
     input.focus();
     input.setSelectionRange(val.length, val.length);
   });
-  $('#enrollPrev')?.addEventListener('click', () => renderTrainingEnrollments(page - 1));
-  $('#enrollNext')?.addEventListener('click', () => renderTrainingEnrollments(page + 1));
+  $('#enrollPrev')?.addEventListener('click', () => renderTrainingEnrollments(page - 1, true));
+  $('#enrollNext')?.addEventListener('click', () => renderTrainingEnrollments(page + 1, true));
   $('#exportEnrollmentsCsv').addEventListener('click', () => exportCsv('quan-ly-dang-ky', [
     ['studentCode', 'Mã SV'], ['studentName', 'Họ tên'], ['semesterCode', 'Học kỳ'],
     ['courseCode', 'Mã môn'], ['courseName', 'Tên môn'], ['sectionCode', 'Mã lớp'],
     ['credits', 'Tín chỉ'], ['status', 'Trạng thái'], ['enrolledAt', 'Thời gian']
   ], filtered));
 
-  view.querySelectorAll('[data-approve-id]').forEach(btn => btn.addEventListener('click', async () => {
+  view.querySelectorAll('[data-approve-id]').forEach(btn => btn.addEventListener('click', async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     if (!window.confirm('Xác nhận duyệt bản ghi đăng ký chờ xác nhận này vào danh sách lớp chính thức?')) return;
+    const enrollId = Number(btn.dataset.approveId);
+    const actionsWrap = btn.closest('.row-actions');
+    const oldHtml = actionsWrap ? actionsWrap.innerHTML : '';
+    if (actionsWrap) {
+      actionsWrap.innerHTML = '<span class="status-pill warning" style="opacity:0.85">Đang duyệt…</span>';
+    }
     try {
       const res = await apiPost(`/api/training/enrollments/${encodeURIComponent(btn.dataset.approveId)}/approve`, {});
       showToast(res.message || 'Đã duyệt đăng ký.');
-      await loadTrainingEnrollments(page);
-    } catch (error) { showToast(error.message); }
+      const rec = records.find(r => r.id === enrollId);
+      if (rec) {
+        rec.status = 'ENROLLED';
+        rec.enrolledCount = (rec.enrolledCount || 0) + 1;
+      }
+      renderTrainingEnrollments(page, true);
+      apiGet('/api/training/enrollments').then(allRows => {
+        records = allRows;
+        renderTrainingEnrollments(page, true);
+      }).catch(() => {});
+    } catch (error) {
+      if (actionsWrap) actionsWrap.innerHTML = oldHtml;
+      showToast(error.message);
+    }
   }));
 
-  view.querySelectorAll('[data-reject-id]').forEach(btn => btn.addEventListener('click', async () => {
+  view.querySelectorAll('[data-reject-id]').forEach(btn => btn.addEventListener('click', async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     const reason = window.prompt(`Nhập lý do từ chối đăng ký (${btn.dataset.label}) — có thể để trống:`, '');
     if (reason === null) return;
+    const enrollId = Number(btn.dataset.rejectId);
+    const actionsWrap = btn.closest('.row-actions');
+    const oldHtml = actionsWrap ? actionsWrap.innerHTML : '';
+    if (actionsWrap) {
+      actionsWrap.innerHTML = '<span class="status-pill warning" style="opacity:0.85">Đang từ chối…</span>';
+    }
     try {
       const res = await apiPost(`/api/training/enrollments/${encodeURIComponent(btn.dataset.rejectId)}/reject`, { reason });
       showToast(res.message || 'Đã từ chối đăng ký.');
-      await loadTrainingEnrollments(page);
-    } catch (error) { showToast(error.message); }
+      const rec = records.find(r => r.id === enrollId);
+      if (rec) {
+        rec.status = 'CANCELLED';
+      }
+      renderTrainingEnrollments(page, true);
+      apiGet('/api/training/enrollments').then(allRows => {
+        records = allRows;
+        renderTrainingEnrollments(page, true);
+      }).catch(() => {});
+    } catch (error) {
+      if (actionsWrap) actionsWrap.innerHTML = oldHtml;
+      showToast(error.message);
+    }
   }));
 
-  view.querySelectorAll('[data-admindrop-id]').forEach(btn => btn.addEventListener('click', async () => {
+  view.querySelectorAll('[data-admindrop-id]').forEach(btn => btn.addEventListener('click', async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     const reason = window.prompt(`Xác nhận hủy học phần hộ sinh viên (${btn.dataset.label}). Nhập ghi chú / lý do duyệt hủy (có thể để trống):`, '');
     if (reason === null) return;
+    const enrollId = Number(btn.dataset.admindropId);
+    const actionsWrap = btn.closest('.row-actions');
+    const oldHtml = actionsWrap ? actionsWrap.innerHTML : '';
+    if (actionsWrap) {
+      actionsWrap.innerHTML = '<span class="status-pill warning" style="opacity:0.85">Đang hủy…</span>';
+    }
     try {
       const res = await apiPost(`/api/training/enrollments/${encodeURIComponent(btn.dataset.admindropId)}/admin-drop`, { reason });
       showToast(res.message || 'Đã hủy học phần cho sinh viên.');
-      await loadTrainingEnrollments(page);
-    } catch (error) { showToast(error.message); }
+      const rec = records.find(r => r.id === enrollId);
+      if (rec) {
+        rec.status = 'CANCELLED';
+        if (rec.enrolledCount > 0) rec.enrolledCount--;
+      }
+      renderTrainingEnrollments(page, true);
+      apiGet('/api/training/enrollments').then(allRows => {
+        records = allRows;
+        renderTrainingEnrollments(page, true);
+      }).catch(() => {});
+    } catch (error) {
+      if (actionsWrap) actionsWrap.innerHTML = oldHtml;
+      showToast(error.message);
+    }
   }));
 }
 async function loadRoster() {
