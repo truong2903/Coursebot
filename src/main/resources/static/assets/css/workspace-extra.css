@@ -268,12 +268,13 @@
   border-bottom: 1px solid var(--line) !important;
   text-decoration: none !important;
   color: var(--ink) !important;
-  transition: all 0.18s ease !important;
+  user-select: none !important;
+  cursor: default !important;
 }
 
-.workspace-brand:hover .brand-mark {
-  transform: translateY(-1px) scale(1.04);
-  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35);
+.workspace-brand,
+.workspace-brand * {
+  cursor: default !important;
 }
 
 .workspace-brand .brand-mark {

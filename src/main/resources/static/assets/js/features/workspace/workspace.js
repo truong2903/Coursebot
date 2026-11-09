@@ -625,6 +625,7 @@ try {
     if ($('#topAvatar')) $('#topAvatar').textContent = initials;
 
     $('#semesterLabel').textContent = account.semester || 'Không có học kỳ';
+    $('.workspace-brand')?.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); });
     menuFor(account.role);
     await openPage('overview');
   }
