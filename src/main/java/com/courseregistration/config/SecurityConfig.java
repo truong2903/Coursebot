@@ -27,7 +27,8 @@ public class SecurityConfig {
                     .csrfTokenRequestHandler(csrfHandler))
             .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
             .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/", "/index.html", "/login.html", "/forgot-password.html", "/reset-password.html", "/assets/**", "/favicon.ico",
+                    .requestMatchers("/", "/index.html", "/login.html", "/forgot-password.html", "/reset-password.html",
+                            "/404", "/404.html", "/error", "/error/**", "/assets/**", "/favicon.ico",
                             "/api/auth/login", "/api/auth/csrf", "/api/auth/forgot-password", "/api/auth/reset-password").permitAll()
                     .anyRequest().authenticated())
             .exceptionHandling(ex -> ex
