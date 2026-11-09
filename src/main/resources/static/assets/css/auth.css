@@ -311,10 +311,10 @@ body:not(.login-body) {
   align-items: flex-start;
 }
 
-/* Academic Showcase chứa Book loading.gif (không nền, ảnh phóng to) */
+/* Academic Showcase chứa Book loading.gif (Hiển thị sắc nét chuẩn 1:1 pixel, khử mờ) */
 .hero-book-card {
   position: relative;
-  padding: 0 0 18px 0;
+  padding: 0 0 16px 0;
   background: transparent;
   border: none;
   backdrop-filter: none;
@@ -324,8 +324,15 @@ body:not(.login-body) {
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  gap: 16px;
-  margin-bottom: 24px;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.hero-book-wrap {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .hero-book-glow {
@@ -333,19 +340,28 @@ body:not(.login-body) {
 }
 
 .hero-book-img {
-  width: 200px;
-  height: 200px;
-  min-width: 200px;
-  min-height: 200px;
+  width: 150px;
+  height: 150px;
+  min-width: 150px;
+  min-height: 150px;
   object-fit: contain;
   display: block;
   z-index: 1;
-  filter: drop-shadow(0 14px 28px rgba(37, 99, 235, 0.16));
-  transition: transform .25s ease;
+  filter: none !important;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
-.hero-book-img:hover {
-  transform: scale(1.04);
+.hero-book-shadow {
+  width: 125px;
+  height: 14px;
+  background: radial-gradient(ellipse at center, rgba(37, 99, 235, 0.16) 0%, rgba(37, 99, 235, 0.04) 55%, transparent 70%);
+  border-radius: 50%;
+  margin-top: -8px;
+  z-index: 0;
 }
 
 .hero-status-pill {
