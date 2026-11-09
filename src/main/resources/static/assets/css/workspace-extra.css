@@ -22,3 +22,236 @@
 .btn-approve:hover{background:#d7f4e4}
 .overdue-tag{display:inline-block;margin-top:4px;padding:2px 7px;border-radius:999px;background:#fff3e6;color:#9a4d0c;font-size:11px;font-weight:700}
 @media(max-width:860px){.enrollment-filters{grid-template-columns:1fr 1fr}.pending-banner{flex-direction:column;align-items:flex-start}}
+
+/* ==========================================================================
+   ANIMATED SVG NAV ICONS & MICRO-INTERACTIONS FOR WORKSPACE
+   (Lecturer, Academic Affairs / Training Office, Admin)
+   ========================================================================== */
+
+.ws-nav-icon {
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #7b879e;
+  transition: transform .22s cubic-bezier(0.34, 1.56, 0.64, 1), color .18s ease;
+}
+
+.workspace-nav button:hover .ws-nav-icon,
+.logout-button:hover .ws-nav-icon {
+  color: var(--ink);
+  transform: scale(1.12);
+}
+
+.workspace-nav button.active .ws-nav-icon {
+  color: #5547c0;
+  transform: scale(1.08);
+}
+
+.ws-anim-svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+  overflow: visible;
+}
+
+/* 1. Overview (Bento shift) */
+.workspace-nav button:hover .ws-icon-overview .b-box.b1,
+.workspace-nav button.active .ws-icon-overview .b-box.b1 {
+  animation: wsBentoShift 1.2s infinite ease-in-out alternate;
+}
+.workspace-nav button:hover .ws-icon-overview .b-box.b3,
+.workspace-nav button.active .ws-icon-overview .b-box.b3 {
+  animation: wsBentoShift 1.2s infinite ease-in-out alternate 0.3s;
+}
+@keyframes wsBentoShift {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-1.5px); opacity: 0.7; }
+}
+
+/* 2. Roster (Students head bob) */
+.workspace-nav button:hover .ws-icon-roster .user-lead-head,
+.workspace-nav button.active .ws-icon-roster .user-lead-head {
+  animation: wsHeadBob 0.8s infinite alternate ease-in-out;
+}
+.workspace-nav button:hover .ws-icon-roster .user-sub-head,
+.workspace-nav button.active .ws-icon-roster .user-sub-head {
+  animation: wsHeadBob 0.8s infinite alternate ease-in-out 0.25s;
+}
+@keyframes wsHeadBob {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-2px); }
+}
+
+/* 3. Enrollments (Approval checkmark pop) */
+.workspace-nav button:hover .ws-icon-enrollments .check-tick,
+.workspace-nav button.active .ws-icon-enrollments .check-tick {
+  animation: wsCheckPop 0.8s infinite alternate ease-in-out;
+}
+@keyframes wsCheckPop {
+  0% { transform: scale(0.9); transform-origin: 12px 14px; opacity: 0.6; }
+  100% { transform: scale(1.15); transform-origin: 12px 14px; opacity: 1; }
+}
+
+/* 4. Registrations (Calendar pin bounce & clock tick) */
+.workspace-nav button:hover .ws-icon-registrations .reg-hand,
+.workspace-nav button.active .ws-icon-registrations .reg-hand {
+  transform-origin: 12px 15px;
+  animation: wsClockTick 1.4s infinite cubic-bezier(0.4, 0, 0.2, 1);
+}
+.workspace-nav button:hover .ws-icon-registrations .reg-pin,
+.workspace-nav button.active .ws-icon-registrations .reg-pin {
+  animation: wsPinBounce 0.7s infinite alternate ease-in-out;
+}
+@keyframes wsClockTick {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+@keyframes wsPinBounce {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-2px); }
+}
+
+/* 5. Sections (Classroom board slide) */
+.workspace-nav button:hover .ws-icon-sections .sec-line.s1,
+.workspace-nav button.active .ws-icon-sections .sec-line.s1 {
+  animation: wsLineSlide 1s infinite alternate ease-in-out;
+}
+.workspace-nav button:hover .ws-icon-sections .sec-line.s2,
+.workspace-nav button.active .ws-icon-sections .sec-line.s2 {
+  animation: wsLineSlide 1s infinite alternate ease-in-out 0.3s;
+}
+@keyframes wsLineSlide {
+  0% { transform: translateX(0); opacity: 0.6; }
+  100% { transform: translateX(2.5px); opacity: 1; }
+}
+
+/* 6. Courses (Academic book bookmark dip) */
+.workspace-nav button:hover .ws-icon-courses .book-mark,
+.workspace-nav button.active .ws-icon-courses .book-mark {
+  animation: wsBookDip 0.9s infinite ease-in-out alternate;
+}
+@keyframes wsBookDip {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(2.5px); }
+}
+
+/* 7. Curricula (Roadmap node pulse) */
+.workspace-nav button:hover .ws-icon-curricula .c-node.c1, .workspace-nav button.active .ws-icon-curricula .c-node.c1 { animation: wsNodePulse 1.2s infinite alternate; }
+.workspace-nav button:hover .ws-icon-curricula .c-node.c2, .workspace-nav button.active .ws-icon-curricula .c-node.c2 { animation: wsNodePulse 1.2s infinite alternate 0.4s; }
+.workspace-nav button:hover .ws-icon-curricula .c-node.c3, .workspace-nav button.active .ws-icon-curricula .c-node.c3 { animation: wsNodePulse 1.2s infinite alternate 0.8s; }
+@keyframes wsNodePulse {
+  0% { transform: scale(0.85); transform-origin: center; opacity: 0.6; }
+  100% { transform: scale(1.25); transform-origin: center; opacity: 1; }
+}
+
+/* 8. Prerequisites (Arrow flow) */
+.workspace-nav button:hover .ws-icon-prerequisites .arrow-tip,
+.workspace-nav button.active .ws-icon-prerequisites .arrow-tip,
+.workspace-nav button:hover .ws-icon-prerequisites .arrow-chain,
+.workspace-nav button.active .ws-icon-prerequisites .arrow-chain {
+  animation: wsArrowFlow 0.8s infinite alternate ease-in-out;
+}
+@keyframes wsArrowFlow {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(2.5px, -2.5px); }
+}
+
+/* 9. Semesters (Milestone badge twirl) */
+.workspace-nav button:hover .ws-icon-semesters .sem-badge,
+.workspace-nav button.active .ws-icon-semesters .sem-badge {
+  transform-origin: 12px 17px;
+  animation: wsBadgeTwirl 2s infinite ease-in-out;
+}
+@keyframes wsBadgeTwirl {
+  0% { transform: scale(0.9) rotate(0deg); }
+  50% { transform: scale(1.15) rotate(15deg); }
+  100% { transform: scale(0.9) rotate(0deg); }
+}
+
+/* 10. Reports (Rising bar growth) */
+.workspace-nav button:hover .ws-icon-reports .rep-bar.b1,
+.workspace-nav button.active .ws-icon-reports .rep-bar.b1 {
+  transform-origin: 6px 20px;
+  animation: wsBarGrow 0.9s infinite alternate ease-in-out;
+}
+.workspace-nav button:hover .ws-icon-reports .rep-bar.b2,
+.workspace-nav button.active .ws-icon-reports .rep-bar.b2 {
+  transform-origin: 12px 20px;
+  animation: wsBarGrow 0.9s infinite alternate ease-in-out 0.2s;
+}
+.workspace-nav button:hover .ws-icon-reports .rep-bar.b3,
+.workspace-nav button.active .ws-icon-reports .rep-bar.b3 {
+  transform-origin: 18px 20px;
+  animation: wsBarGrow 0.9s infinite alternate ease-in-out 0.4s;
+}
+@keyframes wsBarGrow {
+  0% { transform: scaleY(0.65); }
+  100% { transform: scaleY(1.18); }
+}
+
+/* 11. Accounts (User head bob & verified check) */
+.workspace-nav button:hover .ws-icon-accounts .acc-head,
+.workspace-nav button.active .ws-icon-accounts .acc-head {
+  animation: wsHeadBob 0.8s infinite alternate ease-in-out;
+}
+.workspace-nav button:hover .ws-icon-accounts .acc-badge,
+.workspace-nav button.active .ws-icon-accounts .acc-badge {
+  animation: wsCheckPop 0.8s infinite alternate ease-in-out 0.2s;
+}
+
+/* 12. Permissions (Key turn) */
+.workspace-nav button:hover .ws-icon-permissions,
+.workspace-nav button.active .ws-icon-permissions {
+  transform-origin: 7.5px 15.5px;
+  animation: wsKeyTurn 1.1s infinite alternate ease-in-out;
+}
+@keyframes wsKeyTurn {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(28deg); }
+}
+
+/* 13. Logs (Terminal prompt nudge & cursor blink) */
+.workspace-nav button:hover .ws-icon-logs .term-cursor,
+.workspace-nav button.active .ws-icon-logs .term-cursor {
+  animation: wsCursorBlink 0.8s infinite step-start;
+}
+.workspace-nav button:hover .ws-icon-logs .term-prompt,
+.workspace-nav button.active .ws-icon-logs .term-prompt {
+  animation: wsPromptNudge 0.8s infinite alternate ease-in-out;
+}
+@keyframes wsCursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+@keyframes wsPromptNudge {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(2px); }
+}
+
+/* Bottom links (Change password & Logout) */
+.logout-button {
+  display: flex !important;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px !important;
+  font-weight: 500;
+  text-decoration: none;
+}
+.logout-button:hover .pass-shackle {
+  animation: wsShackle 0.8s infinite alternate ease-in-out;
+}
+@keyframes wsShackle {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-2px); }
+}
+.logout-button:hover .logout-arrow,
+.logout-button:hover .logout-line {
+  animation: wsLogoutNudge 0.8s infinite alternate ease-in-out;
+}
+@keyframes wsLogoutNudge {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(3px); }
+}
