@@ -265,6 +265,8 @@ body:not(.login-body) {
   gap: 13px;
   text-decoration: none;
   color: var(--ink);
+  cursor: default;
+  user-select: none;
 }
 
 .hero-brand-mark {
