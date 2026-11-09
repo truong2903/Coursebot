@@ -1,0 +1,29 @@
+{
+  "name": "code-project",
+  "version": "1.0.0",
+  "description": "Hệ thống sử dụng cơ sở dữ liệu học vụ thực tế chuẩn hóa (gồm 90 sinh viên, 21 giảng viên, 73 học phần và 52 lớp học phần). Mật khẩu mặc định thống nhất: **`AcademicDemo2026!`**",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/truong2903/Coursebot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/truong2903/Coursebot/issues"
+  },
+  "homepage": "https://github.com/truong2903/Coursebot#readme",
+  "dependencies": {
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-useanimations": "^3.1.1"
+  }
+}
