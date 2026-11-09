@@ -495,18 +495,67 @@ nav.addEventListener('click',event=>{const button=event.target.closest('[data-pa
 $('#dialogSave').addEventListener('click',saveRecord);
 $('#closeCurriculumCourses').addEventListener('click',()=>$('#curriculumCoursesDialog').close());
 $('#curriculumCourseForm').addEventListener('submit',async event=>{event.preventDefault();const data=Object.fromEntries(new FormData(event.currentTarget).entries());data.requiredCourse=event.currentTarget.elements.requiredCourse.checked;data.orderIndex=Number(data.orderIndex||0);try{await apiPost(`/api/training/curricula/${encodeURIComponent(selectedCurriculumCode)}/courses`,data);event.currentTarget.reset();event.currentTarget.elements.requiredCourse.checked=true;event.currentTarget.elements.orderIndex.value='0';await reloadCurriculumCourses();showToast('Đã thêm môn vào khung chương trình.');}catch(error){showToast(error.message);}});
-$('#logoutButton').addEventListener('click',async()=>{try{await apiPost('/api/auth/logout',{});}catch{}location.replace('/login.html');});
-try {
-  account=await apiGet('/api/auth/me');
-  if(account.role==='STUDENT')location.replace('/');
-  else {
-    if(account.role==='LECTURER'||account.role==='TRAINING_OFFICE') {
-      const logoutButton=$('#logoutButton');
-      logoutButton.className='top-logout-button';
-      $('#workspaceTopActions').append(logoutButton);
-    }
-    $('#identityName').textContent=account.displayName;$('#identityRole').textContent=roleNames[account.role]||account.role;
-    $('#identityAvatar').textContent=account.displayName.split(/\s+/).slice(-2).map(word=>word[0]).join('').toLocaleUpperCase('vi');
-    $('#semesterLabel').textContent=account.semester||'Không có học kỳ';menuFor(account.role);await openPage('overview');
+// Account dropdown menu setup (matching Student Portal)
+const accountMenu = $('#accountMenu');
+const accountMenuToggle = $('#accountMenuToggle');
+const accountMenuPanel = $('#accountMenuPanel');
+function setAccountMenu(open) {
+  if (!accountMenuPanel) return;
+  accountMenuPanel.hidden = !open;
+  accountMenuToggle?.setAttribute('aria-expanded', String(open));
+}
+accountMenuToggle?.addEventListener('click', () => setAccountMenu(accountMenuPanel.hidden));
+accountMenuToggle?.addEventListener('keydown', event => {
+  if (event.key === 'ArrowDown') {
+    event.preventDefault();
+    setAccountMenu(true);
+    accountMenuPanel?.querySelector('a')?.focus();
   }
-} catch(error) { view.innerHTML=`<div class="workspace-loading">${esc(error.message)}</div>`; }
+});
+document.addEventListener('pointerdown', event => {
+  if (accountMenu && !accountMenu.contains(event.target)) setAccountMenu(false);
+});
+document.addEventListener('focusin', event => {
+  if (accountMenu && !accountMenu.contains(event.target)) setAccountMenu(false);
+});
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && accountMenuPanel && !accountMenuPanel.hidden) {
+    setAccountMenu(false);
+    accountMenuToggle?.focus();
+  }
+});
+$('#sidebarProfileButton')?.addEventListener('click', () => {
+  if (accountMenuPanel) {
+    setAccountMenu(accountMenuPanel.hidden);
+    if (!accountMenuPanel.hidden) accountMenuPanel.querySelector('a')?.focus();
+  }
+});
+
+$('#logoutButton')?.addEventListener('click', async () => {
+  try { await apiPost('/api/auth/logout', {}); } catch {}
+  location.replace('/login.html');
+});
+
+try {
+  account = await apiGet('/api/auth/me');
+  if (account.role === 'STUDENT') location.replace('/');
+  else {
+    const displayName = account.displayName || account.username || 'Người dùng';
+    const initials = displayName.split(/\s+/).slice(-2).map(word => word[0]).join('').toLocaleUpperCase('vi');
+    const roleLabel = roleNames[account.role] || account.role;
+
+    // Sidebar bottom profile card
+    if ($('#identityName')) $('#identityName').textContent = displayName;
+    if ($('#identityRole')) $('#identityRole').textContent = roleLabel;
+    if ($('#identityAvatar')) $('#identityAvatar').textContent = initials;
+
+    // Topbar user dropdown
+    if ($('#topName')) $('#topName').textContent = displayName;
+    if ($('#topRole')) $('#topRole').textContent = roleLabel;
+    if ($('#topAvatar')) $('#topAvatar').textContent = initials;
+
+    $('#semesterLabel').textContent = account.semester || 'Không có học kỳ';
+    menuFor(account.role);
+    await openPage('overview');
+  }
+} catch(error) { view.innerHTML = `<div class="workspace-loading">${esc(error.message)}</div>`; }
