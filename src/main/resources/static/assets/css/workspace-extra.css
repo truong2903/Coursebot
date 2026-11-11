@@ -45,9 +45,36 @@
   transform: scale(1.12);
 }
 
+.workspace-nav button {
+  position: relative !important;
+  transition: all 0.16s ease !important;
+}
+
+.workspace-nav button.active {
+  background: #eff6ff !important;
+  color: #2563eb !important;
+  font-weight: 700 !important;
+}
+
+.workspace-nav button.active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  background: #2563eb;
+  border-radius: 0 4px 4px 0;
+}
+
 .workspace-nav button.active .ws-nav-icon {
-  color: #5547c0;
+  color: #2563eb !important;
   transform: scale(1.08);
+}
+
+.workspace-nav button.active .ws-nav-text {
+  color: #2563eb !important;
+  font-weight: 700 !important;
 }
 
 .ws-anim-svg {

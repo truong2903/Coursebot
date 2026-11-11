@@ -416,4 +416,102 @@ $('#transcriptDialog').addEventListener('click', event => { if (event.target ===
 $('#closeCurriculumDialog').addEventListener('click',()=>$('#curriculumDialog').close());
 $('#curriculumDialog').addEventListener('click',event=>{if(event.target===$('#curriculumDialog'))$('#curriculumDialog').close();});
 document.addEventListener('keydown', event => { if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); $('#searchInput').focus(); } });
+
+// Sidebar navigation active state synchronization
+const navItems = Array.from(document.querySelectorAll('.main-nav .nav-item'));
+const sectionNavs = [
+  { id: 'overview', el: $('#overview'), link: document.querySelector('.main-nav a[href="#overview"]') },
+  { id: 'courses', el: $('#courses'), link: document.querySelector('.main-nav a[href="#courses"]') },
+  { id: 'schedule', el: $('#schedule'), link: document.querySelector('.main-nav a[href="#schedule"]') },
+  { id: 'assistant', el: $('#assistant'), link: document.querySelector('.main-nav a[href="#assistant"]') }
+];
+
+function setActiveNav(targetEl) {
+  if (!targetEl) return;
+  navItems.forEach(item => item.classList.remove('active'));
+  targetEl.classList.add('active');
+}
+
+// 1. Click on section links: smoothly scroll and set active immediately
+sectionNavs.forEach(({ link, el }) => {
+  if (!link) return;
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    setActiveNav(link);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const href = link.getAttribute('href');
+      if (href) history.replaceState(null, '', href);
+    }
+  });
+});
+
+// 2. Click on modal dialog buttons: set active state
+const modalNavButtons = [
+  { btn: $('#historyOpen'), dialog: $('#historyDialog') },
+  { btn: $('#transcriptOpen'), dialog: $('#transcriptDialog') },
+  { btn: $('#curriculumOpen'), dialog: $('#curriculumDialog') }
+];
+
+modalNavButtons.forEach(({ btn, dialog }) => {
+  if (!btn) return;
+  btn.addEventListener('click', () => {
+    setActiveNav(btn);
+  });
+  if (dialog) {
+    dialog.addEventListener('close', () => {
+      syncNavOnScroll();
+    });
+  }
+});
+
+// Also when opening schedule from registered list button
+$('#viewSchedule')?.addEventListener('click', () => {
+  const schedLink = document.querySelector('.main-nav a[href="#schedule"]');
+  if (schedLink) setActiveNav(schedLink);
+});
+
+// 3. Scrollspy: auto-update active nav as user scrolls through sections
+function syncNavOnScroll() {
+  const isAnyModalOpen = [
+    $('#scheduleDialog'),
+    $('#historyDialog'),
+    $('#transcriptDialog'),
+    $('#curriculumDialog'),
+    $('#courseDialog')
+  ].some(d => d && d.open);
+  if (isAnyModalOpen) return;
+
+  const scrollY = window.scrollY || window.pageYOffset;
+  const triggerOffset = scrollY + 180;
+
+  let current = sectionNavs[0];
+  for (const item of sectionNavs) {
+    if (item.el) {
+      const top = item.el.getBoundingClientRect().top + scrollY;
+      if (top <= triggerOffset) {
+        current = item;
+      }
+    }
+  }
+  if (current && current.link) {
+    setActiveNav(current.link);
+  }
+}
+
+let scrollRaf;
+window.addEventListener('scroll', () => {
+  if (scrollRaf) cancelAnimationFrame(scrollRaf);
+  scrollRaf = requestAnimationFrame(syncNavOnScroll);
+}, { passive: true });
+
+// Initial sync on page load
+if (location.hash) {
+  const match = document.querySelector(`.main-nav a[href="${location.hash}"]`);
+  if (match) setActiveNav(match);
+  else syncNavOnScroll();
+} else {
+  syncNavOnScroll();
+}
+
 loadDashboard().catch(error => { showToast(error.message); list.innerHTML = '<div class="empty-state"><strong>Không kết nối được máy chủ</strong><p>Hãy chạy ứng dụng Java rồi tải lại trang.</p></div>'; });

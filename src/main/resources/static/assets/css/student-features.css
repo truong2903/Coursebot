@@ -29,10 +29,26 @@ button.nav-item {
   color: var(--ink);
 }
 
-.main-nav .nav-item.active {
-  background: var(--primary-light);
-  color: var(--primary);
-  font-weight: 700;
+.main-nav .nav-item.active,
+.main-nav button.nav-item.active,
+.main-nav .nav-button.active {
+  background: var(--primary-light) !important;
+  color: var(--primary) !important;
+  font-weight: 700 !important;
+}
+
+.main-nav .nav-item.active > span:not(.nav-icon),
+.main-nav button.nav-item.active > span:not(.nav-icon),
+.main-nav .nav-button.active > span:not(.nav-icon) {
+  color: var(--primary) !important;
+  font-weight: 700 !important;
+}
+
+.main-nav .nav-item.active .nav-icon,
+.main-nav button.nav-item.active .nav-icon,
+.main-nav .nav-button.active .nav-icon {
+  color: var(--primary) !important;
+  transform: scale(1.08);
 }
 
 /* Chatbot Toolbar & Sources */
