@@ -575,3 +575,125 @@ button.nav-item {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+
+/* ==========================================================================
+   CURRICULUM PICKER CARD (Khung chương trình - chọn chương trình / khóa)
+   ========================================================================== */
+.curriculum-picker-card {
+  margin: 4px 0 20px;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: linear-gradient(135deg, #f8fbff 0%, #ffffff 60%);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.curriculum-picker-label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.curriculum-select-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.curriculum-select-wrap select {
+  width: 100%;
+  height: 46px;
+  padding: 0 44px 0 46px;
+  border: 1.5px solid var(--line);
+  border-radius: 11px;
+  background: #ffffff;
+  color: var(--ink);
+  font-family: var(--font, 'DM Sans', sans-serif);
+  font-size: 14.5px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  transition: border-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.curriculum-select-wrap select:hover {
+  border-color: var(--primary-border);
+}
+
+.curriculum-select-wrap select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.14);
+}
+
+.curriculum-select-icon {
+  position: absolute;
+  left: 9px;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  background: var(--primary-light);
+  color: var(--primary);
+  pointer-events: none;
+}
+
+.curriculum-select-icon svg { width: 17px; height: 17px; }
+
+.curriculum-select-chevron {
+  position: absolute;
+  right: 14px;
+  color: var(--muted);
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  transition: transform 0.18s ease, color 0.18s ease;
+}
+
+.curriculum-select-chevron svg { width: 18px; height: 18px; }
+
+.curriculum-select-wrap:focus-within .curriculum-select-chevron {
+  color: var(--primary);
+  transform: rotate(180deg);
+}
+
+.curriculum-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.curriculum-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--ink-secondary);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.curriculum-chip b {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.curriculum-chip.is-accent {
+  border-color: var(--primary-border);
+  background: var(--primary-light);
+  color: var(--primary);
+}
+
+.curriculum-chip.is-accent b { color: #3b82f6; }
