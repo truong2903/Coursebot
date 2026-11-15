@@ -236,7 +236,49 @@ async function showEnrollmentHistory() {
   try {
     enrollmentHistory = await apiGet('/api/enrollments/history');
     const semesters = [...new Map(enrollmentHistory.map(item => [item.semesterCode, item.semesterName])).entries()];
-    body.innerHTML = `<div class="history-filters"><label>Học kỳ<select id="historySemesterFilter"><option value="">Tất cả học kỳ</option>${semesters.map(([code,name])=>`<option value="${escapeHtml(code)}">${escapeHtml(name)}</option>`).join('')}</select></label><label>Trạng thái<select id="historyStatusFilter"><option value="">Tất cả trạng thái</option><option value="ENROLLED">Đang đăng ký</option><option value="PENDING">Chờ xác nhận</option><option value="CANCELLED">Đã hủy</option></select></label></div><div class="history-table-wrap"><table class="history-table"><thead><tr><th>Môn học</th><th>Lớp</th><th>Lịch học</th><th>Trạng thái</th><th>Thời gian</th></tr></thead><tbody id="historyRows"></tbody></table></div>`;
+    body.innerHTML = `
+      <div class="dialog-filter-card">
+        <div class="dialog-filter-grid cols-2">
+          <div class="dialog-filter-field">
+            <label class="dialog-filter-label" for="historySemesterFilter">Học kỳ</label>
+            <div class="dialog-control-wrap">
+              <span class="dialog-control-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+              </span>
+              <select id="historySemesterFilter">
+                <option value="">Tất cả học kỳ</option>
+                ${semesters.map(([code,name])=>`<option value="${escapeHtml(code)}">${escapeHtml(name)}</option>`).join('')}
+              </select>
+              <span class="dialog-control-chevron" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+              </span>
+            </div>
+          </div>
+          <div class="dialog-filter-field">
+            <label class="dialog-filter-label" for="historyStatusFilter">Trạng thái đăng ký</label>
+            <div class="dialog-control-wrap">
+              <span class="dialog-control-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2H2v10l9.29 9.29c.94.94 2.48.94 3.42 0l6.58-6.58c.94-.94.94-2.48 0-3.42L12 2Z"/><circle cx="7" cy="7" r=".5" fill="currentColor"/></svg>
+              </span>
+              <select id="historyStatusFilter">
+                <option value="">Tất cả trạng thái</option>
+                <option value="ENROLLED">Đang đăng ký</option>
+                <option value="PENDING">Chờ xác nhận</option>
+                <option value="CANCELLED">Đã hủy</option>
+              </select>
+              <span class="dialog-control-chevron" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="history-table-wrap">
+        <table class="history-table">
+          <thead><tr><th>Môn học</th><th>Lớp</th><th>Lịch học</th><th>Trạng thái</th><th>Thời gian</th></tr></thead>
+          <tbody id="historyRows"></tbody>
+        </table>
+      </div>`;
     $('#historySemesterFilter').addEventListener('change', renderEnrollmentHistory);
     $('#historyStatusFilter').addEventListener('change', renderEnrollmentHistory);
     renderEnrollmentHistory();
@@ -286,10 +328,49 @@ async function showTranscript() {
         <article class="transcript-stat"><span>Tổng lượt học</span><strong>${transcriptData.totalRecords}</strong><small>Bao gồm cả học lại</small></article>
         <article class="transcript-stat"><span>Điểm TB hệ 10</span><strong>${avgLabel}</strong><small>Tham khảo theo tín chỉ</small></article>
       </div>
-      <div class="history-filters">
-        <label>Học kỳ<select id="transcriptSemesterFilter"><option value="">Tất cả học kỳ</option>${semesters.map(([code, name]) => `<option value="${escapeHtml(code)}">${escapeHtml(name)}</option>`).join('')}</select></label>
-        <label>Kết quả<select id="transcriptOutcomeFilter"><option value="">Tất cả</option><option value="PASSED">Đạt</option><option value="FAILED">Chưa đạt</option></select></label>
-        <label>Tìm môn<input type="search" id="transcriptSearchInput" placeholder="Mã hoặc tên môn học…" autocomplete="off"></label>
+      <div class="dialog-filter-card">
+        <div class="dialog-filter-grid cols-3">
+          <div class="dialog-filter-field">
+            <label class="dialog-filter-label" for="transcriptSemesterFilter">Học kỳ</label>
+            <div class="dialog-control-wrap">
+              <span class="dialog-control-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+              </span>
+              <select id="transcriptSemesterFilter">
+                <option value="">Tất cả học kỳ</option>
+                ${semesters.map(([code, name]) => `<option value="${escapeHtml(code)}">${escapeHtml(name)}</option>`).join('')}
+              </select>
+              <span class="dialog-control-chevron" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+              </span>
+            </div>
+          </div>
+          <div class="dialog-filter-field">
+            <label class="dialog-filter-label" for="transcriptOutcomeFilter">Kết quả</label>
+            <div class="dialog-control-wrap">
+              <span class="dialog-control-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+              </span>
+              <select id="transcriptOutcomeFilter">
+                <option value="">Tất cả kết quả</option>
+                <option value="PASSED">Đạt</option>
+                <option value="FAILED">Chưa đạt</option>
+              </select>
+              <span class="dialog-control-chevron" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+              </span>
+            </div>
+          </div>
+          <div class="dialog-filter-field">
+            <label class="dialog-filter-label" for="transcriptSearchInput">Tìm môn</label>
+            <div class="dialog-control-wrap">
+              <span class="dialog-control-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              </span>
+              <input type="search" id="transcriptSearchInput" placeholder="Mã hoặc tên môn học…" autocomplete="off">
+            </div>
+          </div>
+        </div>
       </div>
       <div class="history-table-wrap">
         <table class="history-table">

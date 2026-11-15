@@ -700,12 +700,9 @@ button.nav-item {
 
 
 /* ==========================================================================
-   DIALOG FILTER BAR (Lịch sử đăng ký, Kết quả học tập, Thời khóa biểu)
+   DIALOG FILTER CARDS (Lịch sử đăng ký & Kết quả học tập)
    ========================================================================== */
-.history-filters {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-  gap: 12px 14px;
+.dialog-filter-card {
   margin: 4px 0 16px;
   padding: 14px 16px;
   border: 1px solid var(--line);
@@ -714,11 +711,34 @@ button.nav-item {
   box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
 }
 
-.history-filters label {
+.dialog-filter-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.dialog-filter-grid.cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.dialog-filter-grid.cols-3 {
+  grid-template-columns: 1.15fr 1fr 1.35fr;
+}
+
+@media (max-width: 768px) {
+  .dialog-filter-grid.cols-2,
+  .dialog-filter-grid.cols-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dialog-filter-field {
   display: flex;
   flex-direction: column;
-  gap: 7px;
-  min-width: 0;
+}
+
+.dialog-filter-label {
+  display: block;
+  margin-bottom: 6px;
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -726,69 +746,91 @@ button.nav-item {
   color: var(--muted);
 }
 
-.history-filters select,
-.history-filters input,
-.schedule-controls select {
+.dialog-control-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.dialog-control-wrap select,
+.dialog-control-wrap input[type="search"],
+.dialog-control-wrap input[type="text"] {
   width: 100%;
   height: 42px;
-  padding: 0 40px 0 13px;
+  padding: 0 40px 0 42px;
   border: 1.5px solid var(--line);
   border-radius: 10px;
-  background-color: #ffffff;
+  background: #ffffff;
   color: var(--ink);
   font-family: var(--font, 'DM Sans', sans-serif);
   font-size: 14px;
   font-weight: 600;
-  letter-spacing: normal;
-  text-transform: none;
   text-overflow: ellipsis;
   transition: border-color 0.16s ease, box-shadow 0.16s ease;
 }
 
-.history-filters select,
-.schedule-controls select {
+.dialog-control-wrap select {
   cursor: pointer;
   appearance: none;
   -webkit-appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 13px center;
-  background-size: 17px 17px;
 }
 
-.history-filters input[type="search"] {
-  padding: 0 13px 0 40px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: left 13px center;
-  background-size: 17px 17px;
+.dialog-control-wrap input[type="search"] {
+  padding-right: 14px;
 }
 
-.history-filters input::placeholder {
-  color: var(--muted-light);
-  font-weight: 500;
+.dialog-control-wrap input::placeholder {
+  color: var(--muted-light, #94a3b8);
+  font-weight: 400;
 }
 
-.history-filters select:hover,
-.history-filters input:hover,
-.schedule-controls select:hover {
+.dialog-control-wrap select:hover,
+.dialog-control-wrap input:hover {
   border-color: var(--primary-border);
 }
 
-.history-filters select:focus,
-.history-filters input:focus,
-.schedule-controls select:focus {
+.dialog-control-wrap select:focus,
+.dialog-control-wrap input:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.14);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
 }
 
-.history-filters select:focus,
-.schedule-controls select:focus {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+.dialog-control-icon {
+  position: absolute;
+  left: 8px;
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  display: grid;
+  place-items: center;
+  background: var(--primary-light);
+  color: var(--primary);
+  pointer-events: none;
+  flex-shrink: 0;
 }
 
-.schedule-controls select {
-  width: auto;
-  min-width: 220px;
+.dialog-control-icon svg {
+  width: 15px;
+  height: 15px;
+}
+
+.dialog-control-chevron {
+  position: absolute;
+  right: 12px;
+  color: var(--muted);
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  transition: transform 0.18s ease, color 0.18s ease;
+}
+
+.dialog-control-chevron svg {
+  width: 16px;
+  height: 16px;
+}
+
+.dialog-control-wrap:focus-within .dialog-control-chevron {
+  color: var(--primary);
+  transform: rotate(180deg);
 }
