@@ -1,0 +1,134 @@
+@startuml uc-tong-quat-he-thong
+title Biểu đồ Use Case Tổng quát - Hệ thống Đăng ký Học phần Ứng dụng Chatbot AI (CourseBot)
+
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam actorStyle awesome
+skinparam roundcorner 10
+skinparam usecase {
+    BackgroundColor #F8FAFC
+    BorderColor #2563EB
+    ArrowColor #334155
+}
+skinparam package {
+    BackgroundColor #FFFFFF
+    BorderColor #94A3B8
+    FontStyle bold
+}
+
+' =========================
+' Tác nhân chính (Trái)
+' =========================
+actor "Người dùng\n<<Abstract>>" as User
+actor "Sinh viên\n(STUDENT)" as Student
+actor "Giảng viên\n(LECTURER)" as Lecturer
+actor "Ban Đào tạo\n(TRAINING_OFFICE)" as TrainingOffice
+actor "Quản trị viên\n(ADMIN)" as Admin
+
+User <|-- Student
+User <|-- Lecturer
+User <|-- TrainingOffice
+User <|-- Admin
+
+' =========================
+' Tác nhân phụ (Phải)
+' =========================
+actor "Dịch vụ Chatbot AI\n<<External System>>" as ChatbotAI
+actor "Dịch vụ Email (SMTP)\n<<External System>>" as EmailSMTP
+
+' =========================
+' Biên hệ thống
+' =========================
+rectangle "Hệ thống Đăng ký Học phần Ứng dụng Chatbot AI (CourseBot)" {
+
+    package "Xác thực & Tài khoản cá nhân" {
+        usecase "UC12 - Đăng nhập" as UC12
+        usecase "UC23 - Đăng xuất" as UC23
+        usecase "UC11 - Đổi mật khẩu" as UC11
+        usecase "UC13 - Quên mật khẩu\n(OTP qua Email)" as UC13
+    }
+
+    package "Đăng ký Học phần & Học vụ Sinh viên" {
+        usecase "UC01 - Đăng ký học phần" as UC01
+        usecase "UC02 - Hủy đăng ký học phần" as UC02
+        usecase "UC03 - Xem thông tin\nđăng ký học phần" as UC03
+        usecase "UC04 - Xem thời khóa biểu\ncá nhân" as UC04
+        usecase "UC05 - Tìm kiếm và lọc\nlớp học phần" as UC05
+        usecase "UC25 - Xem kết quả học tập\nvà bảng điểm tích lũy" as UC25
+        usecase "UC10 - Hỏi đáp Chatbot AI" as UC10
+    }
+
+    package "Tra cứu Học thuật Chung" {
+        usecase "UC06 - Xem thông tin\nlớp học phần" as UC06
+        usecase "UC07 - Tra cứu\nkhung chương trình" as UC07
+    }
+
+    package "Nghiệp vụ Giảng viên" {
+        usecase "UC08 - Xem lịch giảng dạy\ncá nhân" as UC08
+        usecase "UC09 - Tra cứu danh sách\nsinh viên lớp học phần" as UC09
+    }
+
+    package "Điều hành Ban Đào tạo" {
+        usecase "UC24 - Quản lý học kỳ" as UC24
+        usecase "UC18 - Quản lý đợt\nđăng ký học phần" as UC18
+        usecase "UC22 - Quản lý môn học" as UC22
+        usecase "UC20 - Quản lý điều kiện môn học\n(Tiên quyết / Học trước / Song hành)" as UC20
+        usecase "UC19 - Quản lý\nkhung chương trình" as UC19
+        usecase "UC21 - Quản lý lớp học phần" as UC21
+        usecase "UC26 - Duyệt đăng ký chờ (PENDING)\nvà hủy học phần ngoại lệ" as UC26
+        usecase "UC17 - Xem báo cáo, thống kê" as UC17
+    }
+
+    package "Quản trị Hệ thống" {
+        usecase "UC16 - Quản lý tài khoản" as UC16
+        usecase "UC15 - Quản lý phân quyền" as UC15
+        usecase "UC14 - Quản lý nhật ký hệ thống\n(Audit Log)" as UC14
+    }
+}
+
+' =========================
+' Liên kết Tác nhân - Use Case
+' =========================
+
+' Người dùng chung
+User -- UC12
+User -- UC23
+User -- UC11
+User -- UC13
+UC13 -- EmailSMTP
+
+' Sinh viên
+Student -- UC01
+Student -- UC02
+Student -- UC03
+Student -- UC04
+Student -- UC05
+Student -- UC25
+Student -- UC10
+Student -- UC06
+Student -- UC07
+UC10 -- ChatbotAI
+
+' Giảng viên
+Lecturer -- UC06
+Lecturer -- UC07
+Lecturer -- UC08
+Lecturer -- UC09
+
+' Ban Đào tạo
+TrainingOffice -- UC24
+TrainingOffice -- UC18
+TrainingOffice -- UC22
+TrainingOffice -- UC20
+TrainingOffice -- UC19
+TrainingOffice -- UC21
+TrainingOffice -- UC26
+TrainingOffice -- UC17
+
+' Quản trị viên
+Admin -- UC16
+Admin -- UC15
+Admin -- UC14
+
+@enduml
