@@ -1,0 +1,280 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2572" height="1070" viewBox="0 0 2572 1070">
+<defs>
+  <filter id="cardShadow" x="-4%" y="-4%" width="108%" height="112%">
+    <feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-color="#0F172A" flood-opacity="0.07"/>
+  </filter>
+</defs>
+<rect width="2572" height="1070" fill="#FFFFFF"/>
+<text x="1286.0" y="44.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="19" font-weight="700" letter-spacing="0.3" fill="#0F172A">BIỂU ĐỒ LỚP THIẾT KẾ CỤM CHATBOT AI (ADAPTER PATTERN) &amp; XÁC THỰC / QUẢN TRỊ</text>
+<g><path d="M 36.0 98.0 L 36.0 76.0 Q 36.0 72.0 40.0 72.0 L 394.1 72.0 Q 398.1 72.0 398.1 76.0 L 398.1 98.0 Z" fill="#DBEAFE" stroke="#3B82F6" stroke-width="1.35"/><rect x="36.0" y="98.0" width="1438.0" height="894.0" rx="4" ry="4" fill="#F0F7FF" stroke="#3B82F6" stroke-width="1.35"/><text x="48.0" y="89.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.8" font-weight="700" fill="#0F172A">Phân hệ Chatbot AI &amp; Mẫu Adapter Pattern (service.chat)</text></g>
+<g><path d="M 1514.0 98.0 L 1514.0 76.0 Q 1514.0 72.0 1518.0 72.0 L 1819.8 72.0 Q 1823.8 72.0 1823.8 76.0 L 1823.8 98.0 Z" fill="#F9E4DC" stroke="#C27868" stroke-width="1.35"/><rect x="1514.0" y="98.0" width="1022.0" height="894.0" rx="4" ry="4" fill="#FDF6F3" stroke="#C27868" stroke-width="1.35"/><text x="1526.0" y="89.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.8" font-weight="700" fill="#0F172A">Phân hệ Bảo mật, OTP Email &amp; Quản trị Hệ thống</text></g>
+<line x1="1536.0" y1="622.0" x2="2514.0" y2="622.0" stroke="#E2B8AE" stroke-width="1.0" stroke-dasharray="5,4"/><rect x="1877.0" y="613.0" width="296.0" height="18.0" rx="3" fill="#FDF6F3"/><text x="2025.0" y="625.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.0" font-weight="600" fill="#9A5B4D">Nhóm Quản trị Tài khoản, Phân quyền &amp; Kiểm toán</text>
+<path d="M 300.00 252.00 L 300.00 358.00" fill="none" stroke="#334155" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="295.2,348.0 300.0,358.0 304.8,348.0" fill="none" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 300.00 562.00 L 300.00 720.00" fill="none" stroke="#334155" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="295.2,710.0 300.0,720.0 304.8,710.0" fill="none" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<g><rect x="228.2" y="632.2" width="143.6" height="17.5" rx="3.5" ry="3.5" fill="#FFFFFF" fill-opacity="0.96" stroke="#CBD5E1" stroke-width="0.7"/><text x="300.0" y="644.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.1" font-weight="600" fill="#0F172A">1. Truy vấn CSDL xác thực</text></g>
+<path d="M 540.00 396.00 L 630.00 396.00 Q 636.00 396.00 636.00 390.00 L 636.00 229.00 Q 636.00 223.00 642.00 223.00 L 904.00 223.00" fill="none" stroke="#334155" stroke-width="1.4" stroke-dasharray="6,4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="894.0,227.8 904.0,223.0 894.0,218.2" fill="none" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<g><rect x="720.5" y="214.2" width="99.1" height="17.5" rx="3.5" ry="3.5" fill="#FFFFFF" fill-opacity="0.96" stroke="#CBD5E1" stroke-width="0.7"/><text x="770.0" y="226.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.1" font-weight="600" fill="#0F172A">đóng gói ngữ cảnh</text></g>
+<path d="M 540.00 460.00 L 884.00 460.00" fill="none" stroke="#334155" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="874.0,464.8 884.0,460.0 874.0,455.2" fill="none" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<g><rect x="634.0" y="451.2" width="155.9" height="17.5" rx="3.5" ry="3.5" fill="#FFFFFF" fill-opacity="0.96" stroke="#CBD5E1" stroke-width="0.7"/><text x="712.0" y="463.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.1" font-weight="600" fill="#0F172A">2. Diễn giải ngôn ngữ tự nhiên</text></g>
+<path d="M 1088.00 395.00 L 1088.00 326.00" fill="none" stroke="#334155" stroke-width="1.4" stroke-dasharray="6,4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="1092.8,336.0 1088.0,326.0 1083.2,336.0" fill="none" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1088.00 626.00 L 1088.00 537.00" fill="none" stroke="#334155" stroke-width="1.4" stroke-dasharray="6,4" stroke-linecap="round" stroke-linejoin="round"/>
+<polygon points="1088.0,525.0 1094.5,537.0 1081.5,537.0" fill="#FFFFFF" stroke="#334155" stroke-width="1.45" stroke-linejoin="round"/>
+<path d="M 900.00 626.00 L 1276.00 626.00" fill="none" stroke="#334155" stroke-width="1.4" stroke-dasharray="6,4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 900.00 720.00 L 900.00 626.00" fill="none" stroke="#334155" stroke-width="1.4" stroke-dasharray="6,4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1276.00 720.00 L 1276.00 626.00" fill="none" stroke="#334155" stroke-width="1.4" stroke-dasharray="6,4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 2025.00 324.00 L 2025.00 344.00 Q 2025.00 350.00 2019.00 350.00 L 1801.00 350.00 Q 1795.00 350.00 1795.00 356.00 L 1795.00 376.00" fill="none" stroke="#334155" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="1790.2,366.0 1795.0,376.0 1799.8,366.0" fill="none" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 2025.00 324.00 L 2025.00 344.00 Q 2025.00 350.00 2031.00 350.00 L 2213.00 350.00 Q 2219.00 350.00 2219.00 356.00 L 2219.00 376.00" fill="none" stroke="#334155" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="2214.2,366.0 2219.0,376.0 2223.8,366.0" fill="none" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1702.00 726.00 L 1702.00 772.00" fill="none" stroke="#334155" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="1697.2,762.0 1702.0,772.0 1706.8,762.0" fill="none" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 2065.00 726.00 L 2065.00 772.00" fill="none" stroke="#334155" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="2060.2,762.0 2065.0,772.0 2069.8,762.0" fill="none" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1702.00 824.00 L 1702.00 844.00 Q 1702.00 850.00 1708.00 850.00 L 1854.00 850.00 Q 1860.00 850.00 1860.00 856.00 L 1860.00 876.00" fill="none" stroke="#334155" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="1855.2,866.0 1860.0,876.0 1864.8,866.0" fill="none" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 2065.00 824.00 L 2065.00 876.00" fill="none" stroke="#334155" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="2060.2,866.0 2065.0,876.0 2069.8,866.0" fill="none" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 2388.00 726.00 L 2388.00 844.00 Q 2388.00 850.00 2382.00 850.00 L 2256.00 850.00 Q 2250.00 850.00 2250.00 856.00 L 2250.00 876.00" fill="none" stroke="#334155" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="2245.2,866.0 2250.0,876.0 2254.8,866.0" fill="none" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<g id="class-ChatbotController">
+<rect x="60.0" y="120.0" width="480.0" height="132.0" rx="5" ry="5" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.35" filter="url(#cardShadow)"/>
+<clipPath id="clip-ChatbotController"><rect x="60.0" y="120.0" width="480.0" height="132.0" rx="5" ry="5"/></clipPath>
+<rect x="60.0" y="120.0" width="480.0" height="46.0" fill="#EFF6FF" clip-path="url(#clip-ChatbotController)"/>
+<circle cx="81.0" cy="143.0" r="10.5" fill="#2563EB"/>
+<text x="81.0" y="147.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">C</text>
+<text x="309.0" y="137.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.0" font-style="italic" fill="#475569">«controller»</text>
+<text x="309.0" y="155.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="12.6" font-weight="700" fill="#0F172A">ChatbotController</text>
+<line x1="60.0" y1="166.0" x2="540.0" y2="166.0" stroke="#2563EB" stroke-width="1.05"/>
+<text x="71.0" y="186.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">chatbotService : ChatbotService</tspan></text>
+<line x1="60.0" y1="200.0" x2="540.0" y2="200.0" stroke="#CBD5E1" stroke-width="1.0"/>
+<text x="71.0" y="220.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">status() : Map&lt;String, Object&gt;</tspan></text>
+<text x="71.0" y="238.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">chat(req : ChatRequest, session : HttpSession) : ChatResponse</tspan></text>
+</g>
+<g id="class-AiChatExchange">
+<rect x="904.0" y="120.0" width="368.0" height="206.0" rx="5" ry="5" fill="#FFFFFF" stroke="#0284C7" stroke-width="1.35" filter="url(#cardShadow)"/>
+<clipPath id="clip-AiChatExchange"><rect x="904.0" y="120.0" width="368.0" height="206.0" rx="5" ry="5"/></clipPath>
+<rect x="904.0" y="120.0" width="368.0" height="46.0" fill="#E0F2FE" clip-path="url(#clip-AiChatExchange)"/>
+<circle cx="925.0" cy="143.0" r="10.5" fill="#0284C7"/>
+<text x="925.0" y="147.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">R</text>
+<text x="1097.0" y="137.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.0" font-style="italic" fill="#475569">«record»</text>
+<text x="1097.0" y="155.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="12.6" font-weight="700" fill="#0F172A">AiChatExchange</text>
+<line x1="904.0" y1="166.0" x2="1272.0" y2="166.0" stroke="#0284C7" stroke-width="1.05"/>
+<text x="915.0" y="186.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">userMessage : String</tspan></text>
+<text x="915.0" y="204.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">history : List&lt;ChatHistoryMessage&gt;</tspan></text>
+<text x="915.0" y="222.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">verifiedReply : String</tspan></text>
+<text x="915.0" y="240.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">sources : List&lt;String&gt;</tspan></text>
+<text x="915.0" y="258.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">studentCode : String</tspan></text>
+<text x="915.0" y="276.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">studentName : String</tspan></text>
+<text x="915.0" y="294.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">program : String</tspan></text>
+<text x="915.0" y="312.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">cohort : String</tspan></text>
+</g>
+<g id="class-ChatbotService">
+<rect x="60.0" y="358.0" width="480.0" height="204.0" rx="5" ry="5" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.35" filter="url(#cardShadow)"/>
+<clipPath id="clip-ChatbotService"><rect x="60.0" y="358.0" width="480.0" height="204.0" rx="5" ry="5"/></clipPath>
+<rect x="60.0" y="358.0" width="480.0" height="46.0" fill="#EFF6FF" clip-path="url(#clip-ChatbotService)"/>
+<circle cx="81.0" cy="381.0" r="10.5" fill="#2563EB"/>
+<text x="81.0" y="385.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">C</text>
+<text x="309.0" y="375.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.0" font-style="italic" fill="#475569">«service»</text>
+<text x="309.0" y="393.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="12.6" font-weight="700" fill="#0F172A">ChatbotService</text>
+<line x1="60.0" y1="404.0" x2="540.0" y2="404.0" stroke="#2563EB" stroke-width="1.05"/>
+<text x="71.0" y="424.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">academic : AcademicChatService</tspan></text>
+<text x="71.0" y="442.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">auth : AuthService</tspan></text>
+<text x="71.0" y="460.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">adapter : AiProviderAdapter</tspan></text>
+<line x1="60.0" y1="474.0" x2="540.0" y2="474.0" stroke="#CBD5E1" stroke-width="1.0"/>
+<text x="71.0" y="494.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">aiConfigured() : boolean</tspan></text>
+<text x="71.0" y="512.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">providerName() : String</tspan></text>
+<text x="71.0" y="530.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">respond(request : ChatRequest) : ChatResponse</tspan></text>
+<text x="71.0" y="548.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" text-decoration="underline"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">buildAdapter(builder, provider, url, key, model, timeout) : AiProviderAdapter</tspan></text>
+</g>
+<g id="class-AiProviderAdapter">
+<rect x="884.0" y="395.0" width="408.0" height="130.0" rx="5" ry="5" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.35" filter="url(#cardShadow)"/>
+<clipPath id="clip-AiProviderAdapter"><rect x="884.0" y="395.0" width="408.0" height="130.0" rx="5" ry="5"/></clipPath>
+<rect x="884.0" y="395.0" width="408.0" height="46.0" fill="#EDE9FE" clip-path="url(#clip-AiProviderAdapter)"/>
+<circle cx="905.0" cy="418.0" r="10.5" fill="#7C3AED"/>
+<text x="905.0" y="422.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">I</text>
+<text x="1097.0" y="412.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.0" font-style="italic" fill="#475569">«interface»</text>
+<text x="1097.0" y="430.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="12.6" font-weight="700" fill="#0F172A">AiProviderAdapter</text>
+<line x1="884.0" y1="441.0" x2="1292.0" y2="441.0" stroke="#7C3AED" stroke-width="1.05"/>
+<line x1="884.0" y1="455.0" x2="1292.0" y2="455.0" stroke="#CBD5E1" stroke-width="1.0"/>
+<text x="895.0" y="475.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">providerName() : String</tspan></text>
+<text x="895.0" y="493.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">isConfigured() : boolean</tspan></text>
+<text x="895.0" y="511.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">generateExplanation(exchange : AiChatExchange) : String</tspan></text>
+</g>
+<g id="class-AcademicChatService">
+<rect x="60.0" y="720.0" width="480.0" height="186.0" rx="5" ry="5" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.35" filter="url(#cardShadow)"/>
+<clipPath id="clip-AcademicChatService"><rect x="60.0" y="720.0" width="480.0" height="186.0" rx="5" ry="5"/></clipPath>
+<rect x="60.0" y="720.0" width="480.0" height="46.0" fill="#EFF6FF" clip-path="url(#clip-AcademicChatService)"/>
+<circle cx="81.0" cy="743.0" r="10.5" fill="#2563EB"/>
+<text x="81.0" y="747.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">C</text>
+<text x="309.0" y="737.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.0" font-style="italic" fill="#475569">«service»</text>
+<text x="309.0" y="755.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="12.6" font-weight="700" fill="#0F172A">AcademicChatService</text>
+<line x1="60.0" y1="766.0" x2="540.0" y2="766.0" stroke="#2563EB" stroke-width="1.05"/>
+<text x="71.0" y="786.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">conditionEvaluator : CourseConditionEvaluator</tspan></text>
+<text x="71.0" y="804.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">enrollmentRepo : EnrollmentRepository</tspan></text>
+<text x="71.0" y="822.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">resultRepo : AcademicResultRepository</tspan></text>
+<text x="71.0" y="840.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">sectionRepo : CourseSectionRepository</tspan></text>
+<text x="71.0" y="858.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">curriculumCourseRepo : CurriculumCourseRepository</tspan></text>
+<line x1="60.0" y1="872.0" x2="540.0" y2="872.0" stroke="#CBD5E1" stroke-width="1.0"/>
+<text x="71.0" y="892.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">answer(request : ChatRequest) : Answer</tspan></text>
+</g>
+<g id="class-OpenAiCompatibleAiAdapter">
+<rect x="726.0" y="720.0" width="348.0" height="222.0" rx="5" ry="5" fill="#FFFFFF" stroke="#059669" stroke-width="1.35" filter="url(#cardShadow)"/>
+<clipPath id="clip-OpenAiCompatibleAiAdapter"><rect x="726.0" y="720.0" width="348.0" height="222.0" rx="5" ry="5"/></clipPath>
+<rect x="726.0" y="720.0" width="348.0" height="46.0" fill="#ECFDF5" clip-path="url(#clip-OpenAiCompatibleAiAdapter)"/>
+<circle cx="747.0" cy="743.0" r="10.5" fill="#059669"/>
+<text x="747.0" y="747.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">C</text>
+<text x="909.0" y="737.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.0" font-style="italic" fill="#475569">«adapter»</text>
+<text x="909.0" y="755.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="12.6" font-weight="700" fill="#0F172A">OpenAiCompatibleAiAdapter</text>
+<line x1="726.0" y1="766.0" x2="1074.0" y2="766.0" stroke="#059669" stroke-width="1.05"/>
+<text x="737.0" y="786.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">client : RestClient</tspan></text>
+<text x="737.0" y="804.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">providerLabel : String</tspan></text>
+<text x="737.0" y="822.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">apiUrl : String</tspan></text>
+<text x="737.0" y="840.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">apiKey : String</tspan></text>
+<text x="737.0" y="858.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">model : String</tspan></text>
+<line x1="726.0" y1="872.0" x2="1074.0" y2="872.0" stroke="#CBD5E1" stroke-width="1.0"/>
+<text x="737.0" y="892.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">providerName() : String</tspan></text>
+<text x="737.0" y="910.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">isConfigured() : boolean</tspan></text>
+<text x="737.0" y="928.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">generateExplanation(exchange : AiChatExchange) : String</tspan></text>
+</g>
+<g id="class-TeammateWebhookAiAdapter">
+<rect x="1102.0" y="720.0" width="348.0" height="186.0" rx="5" ry="5" fill="#FFFFFF" stroke="#059669" stroke-width="1.35" filter="url(#cardShadow)"/>
+<clipPath id="clip-TeammateWebhookAiAdapter"><rect x="1102.0" y="720.0" width="348.0" height="186.0" rx="5" ry="5"/></clipPath>
+<rect x="1102.0" y="720.0" width="348.0" height="46.0" fill="#ECFDF5" clip-path="url(#clip-TeammateWebhookAiAdapter)"/>
+<circle cx="1123.0" cy="743.0" r="10.5" fill="#059669"/>
+<text x="1123.0" y="747.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">C</text>
+<text x="1285.0" y="737.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.0" font-style="italic" fill="#475569">«adapter»</text>
+<text x="1285.0" y="755.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="12.6" font-weight="700" fill="#0F172A">TeammateWebhookAiAdapter</text>
+<line x1="1102.0" y1="766.0" x2="1450.0" y2="766.0" stroke="#059669" stroke-width="1.05"/>
+<text x="1113.0" y="786.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">client : RestClient</tspan></text>
+<text x="1113.0" y="804.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">webhookUrl : String</tspan></text>
+<text x="1113.0" y="822.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">optionalToken : String</tspan></text>
+<line x1="1102.0" y1="836.0" x2="1450.0" y2="836.0" stroke="#CBD5E1" stroke-width="1.0"/>
+<text x="1113.0" y="856.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">providerName() : String</tspan></text>
+<text x="1113.0" y="874.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">isConfigured() : boolean</tspan></text>
+<text x="1113.0" y="892.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">generateExplanation(exchange : AiChatExchange) : String</tspan></text>
+</g>
+<g id="class-AuthController">
+<rect x="1797.0" y="120.0" width="456.0" height="204.0" rx="5" ry="5" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.35" filter="url(#cardShadow)"/>
+<clipPath id="clip-AuthController"><rect x="1797.0" y="120.0" width="456.0" height="204.0" rx="5" ry="5"/></clipPath>
+<rect x="1797.0" y="120.0" width="456.0" height="46.0" fill="#EFF6FF" clip-path="url(#clip-AuthController)"/>
+<circle cx="1818.0" cy="143.0" r="10.5" fill="#2563EB"/>
+<text x="1818.0" y="147.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">C</text>
+<text x="2034.0" y="137.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.0" font-style="italic" fill="#475569">«controller»</text>
+<text x="2034.0" y="155.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="12.6" font-weight="700" fill="#0F172A">AuthController</text>
+<line x1="1797.0" y1="166.0" x2="2253.0" y2="166.0" stroke="#2563EB" stroke-width="1.05"/>
+<text x="1808.0" y="186.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">authService : AuthService</tspan></text>
+<text x="1808.0" y="204.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">resetService : PasswordResetService</tspan></text>
+<line x1="1797.0" y1="218.0" x2="2253.0" y2="218.0" stroke="#CBD5E1" stroke-width="1.0"/>
+<text x="1808.0" y="238.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">login(req : LoginRequest, session) : AccountSessionDto</tspan></text>
+<text x="1808.0" y="256.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">logout(session) : ActionResponse</tspan></text>
+<text x="1808.0" y="274.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">changePassword(req : ChangePasswordRequest) : ActionResponse</tspan></text>
+<text x="1808.0" y="292.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">forgotPassword(req : ForgotPasswordRequest) : ActionResponse</tspan></text>
+<text x="1808.0" y="310.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">resetPassword(req : ResetPasswordRequest) : ActionResponse</tspan></text>
+</g>
+<g id="class-AuthService">
+<rect x="1623.0" y="376.0" width="344.0" height="222.0" rx="5" ry="5" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.35" filter="url(#cardShadow)"/>
+<clipPath id="clip-AuthService"><rect x="1623.0" y="376.0" width="344.0" height="222.0" rx="5" ry="5"/></clipPath>
+<rect x="1623.0" y="376.0" width="344.0" height="46.0" fill="#EFF6FF" clip-path="url(#clip-AuthService)"/>
+<circle cx="1644.0" cy="399.0" r="10.5" fill="#2563EB"/>
+<text x="1644.0" y="403.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">C</text>
+<text x="1804.0" y="393.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.0" font-style="italic" fill="#475569">«service»</text>
+<text x="1804.0" y="411.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="12.6" font-weight="700" fill="#0F172A">AuthService</text>
+<line x1="1623.0" y1="422.0" x2="1967.0" y2="422.0" stroke="#2563EB" stroke-width="1.05"/>
+<text x="1634.0" y="442.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">accountRepo : UserAccountRepository</tspan></text>
+<text x="1634.0" y="460.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">studentRepo : StudentRepository</tspan></text>
+<text x="1634.0" y="478.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">lecturerRepo : LecturerRepository</tspan></text>
+<text x="1634.0" y="496.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">passwordEncoder : PasswordEncoder</tspan></text>
+<line x1="1623.0" y1="510.0" x2="1967.0" y2="510.0" stroke="#CBD5E1" stroke-width="1.0"/>
+<text x="1634.0" y="530.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">currentAccount() : UserAccount</tspan></text>
+<text x="1634.0" y="548.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">currentStudent() : Student</tspan></text>
+<text x="1634.0" y="566.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">currentLecturer() : Lecturer</tspan></text>
+<text x="1634.0" y="584.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">changePassword(oldPass, newPass) : void</tspan></text>
+</g>
+<g id="class-PasswordResetService">
+<rect x="2011.0" y="376.0" width="416.0" height="204.0" rx="5" ry="5" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.35" filter="url(#cardShadow)"/>
+<clipPath id="clip-PasswordResetService"><rect x="2011.0" y="376.0" width="416.0" height="204.0" rx="5" ry="5"/></clipPath>
+<rect x="2011.0" y="376.0" width="416.0" height="46.0" fill="#EFF6FF" clip-path="url(#clip-PasswordResetService)"/>
+<circle cx="2032.0" cy="399.0" r="10.5" fill="#2563EB"/>
+<text x="2032.0" y="403.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">C</text>
+<text x="2228.0" y="393.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.0" font-style="italic" fill="#475569">«service»</text>
+<text x="2228.0" y="411.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="12.6" font-weight="700" fill="#0F172A">PasswordResetService</text>
+<line x1="2011.0" y1="422.0" x2="2427.0" y2="422.0" stroke="#2563EB" stroke-width="1.05"/>
+<text x="2022.0" y="442.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">accounts : UserAccountRepository</tspan></text>
+<text x="2022.0" y="460.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">tokens : PasswordResetTokenRepository</tspan></text>
+<text x="2022.0" y="478.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">encoder : PasswordEncoder</tspan></text>
+<text x="2022.0" y="496.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">mailSender : ObjectProvider&lt;JavaMailSender&gt;</tspan></text>
+<line x1="2011.0" y1="510.0" x2="2427.0" y2="510.0" stroke="#CBD5E1" stroke-width="1.0"/>
+<text x="2022.0" y="530.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">requestReset(email : String) : void</tspan></text>
+<text x="2022.0" y="548.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">reset(email : String, rawToken : String, newPass : String) : void</tspan></text>
+<text x="2022.0" y="566.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" text-decoration="underline"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">resolveSenderAddress(from, smtpUser) : String</tspan></text>
+</g>
+<g id="class-AccountManagementController">
+<rect x="1538.0" y="646.0" width="328.0" height="80.0" rx="5" ry="5" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.35" filter="url(#cardShadow)"/>
+<clipPath id="clip-AccountManagementController"><rect x="1538.0" y="646.0" width="328.0" height="80.0" rx="5" ry="5"/></clipPath>
+<rect x="1538.0" y="646.0" width="328.0" height="46.0" fill="#EFF6FF" clip-path="url(#clip-AccountManagementController)"/>
+<circle cx="1559.0" cy="669.0" r="10.5" fill="#2563EB"/>
+<text x="1559.0" y="673.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">C</text>
+<text x="1711.0" y="663.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.0" font-style="italic" fill="#475569">«controller»</text>
+<text x="1711.0" y="681.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="12.6" font-weight="700" fill="#0F172A">AccountManagementController</text>
+<line x1="1538.0" y1="692.0" x2="1866.0" y2="692.0" stroke="#2563EB" stroke-width="1.05"/>
+<text x="1549.0" y="712.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">accountService : AccountManagementService</tspan></text>
+</g>
+<g id="class-RolePermissionController">
+<rect x="1894.0" y="646.0" width="342.0" height="80.0" rx="5" ry="5" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.35" filter="url(#cardShadow)"/>
+<clipPath id="clip-RolePermissionController"><rect x="1894.0" y="646.0" width="342.0" height="80.0" rx="5" ry="5"/></clipPath>
+<rect x="1894.0" y="646.0" width="342.0" height="46.0" fill="#EFF6FF" clip-path="url(#clip-RolePermissionController)"/>
+<circle cx="1915.0" cy="669.0" r="10.5" fill="#2563EB"/>
+<text x="1915.0" y="673.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">C</text>
+<text x="2074.0" y="663.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.0" font-style="italic" fill="#475569">«controller»</text>
+<text x="2074.0" y="681.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="12.6" font-weight="700" fill="#0F172A">RolePermissionController</text>
+<line x1="1894.0" y1="692.0" x2="2236.0" y2="692.0" stroke="#2563EB" stroke-width="1.05"/>
+<text x="1905.0" y="712.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">rolePermissionService : RolePermissionService</tspan></text>
+</g>
+<g id="class-AuditLogController">
+<rect x="2264.0" y="646.0" width="248.0" height="80.0" rx="5" ry="5" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.35" filter="url(#cardShadow)"/>
+<clipPath id="clip-AuditLogController"><rect x="2264.0" y="646.0" width="248.0" height="80.0" rx="5" ry="5"/></clipPath>
+<rect x="2264.0" y="646.0" width="248.0" height="46.0" fill="#EFF6FF" clip-path="url(#clip-AuditLogController)"/>
+<circle cx="2285.0" cy="669.0" r="10.5" fill="#2563EB"/>
+<text x="2285.0" y="673.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">C</text>
+<text x="2397.0" y="663.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.0" font-style="italic" fill="#475569">«controller»</text>
+<text x="2397.0" y="681.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="12.6" font-weight="700" fill="#0F172A">AuditLogController</text>
+<line x1="2264.0" y1="692.0" x2="2512.0" y2="692.0" stroke="#2563EB" stroke-width="1.05"/>
+<text x="2275.0" y="712.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">auditService : AuditService</tspan></text>
+</g>
+<g id="class-AccountManagementService">
+<rect x="1538.0" y="772.0" width="328.0" height="52.0" rx="5" ry="5" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.35" filter="url(#cardShadow)"/>
+<clipPath id="clip-AccountManagementService"><rect x="1538.0" y="772.0" width="328.0" height="52.0" rx="5" ry="5"/></clipPath>
+<rect x="1538.0" y="772.0" width="328.0" height="52.0" fill="#EFF6FF" clip-path="url(#clip-AccountManagementService)"/>
+<circle cx="1559.0" cy="798.0" r="10.5" fill="#2563EB"/>
+<text x="1559.0" y="802.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">C</text>
+<text x="1711.0" y="791.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.0" font-style="italic" fill="#475569">«service»</text>
+<text x="1711.0" y="810.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="12.6" font-weight="700" fill="#0F172A">AccountManagementService</text>
+</g>
+<g id="class-RolePermissionService">
+<rect x="1894.0" y="772.0" width="342.0" height="52.0" rx="5" ry="5" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.35" filter="url(#cardShadow)"/>
+<clipPath id="clip-RolePermissionService"><rect x="1894.0" y="772.0" width="342.0" height="52.0" rx="5" ry="5"/></clipPath>
+<rect x="1894.0" y="772.0" width="342.0" height="52.0" fill="#EFF6FF" clip-path="url(#clip-RolePermissionService)"/>
+<circle cx="1915.0" cy="798.0" r="10.5" fill="#2563EB"/>
+<text x="1915.0" y="802.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">C</text>
+<text x="2074.0" y="791.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.0" font-style="italic" fill="#475569">«service»</text>
+<text x="2074.0" y="810.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="12.6" font-weight="700" fill="#0F172A">RolePermissionService</text>
+</g>
+<g id="class-AuditService">
+<rect x="1800.0" y="876.0" width="510.0" height="94.0" rx="5" ry="5" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.35" filter="url(#cardShadow)"/>
+<clipPath id="clip-AuditService"><rect x="1800.0" y="876.0" width="510.0" height="94.0" rx="5" ry="5"/></clipPath>
+<rect x="1800.0" y="876.0" width="510.0" height="46.0" fill="#EFF6FF" clip-path="url(#clip-AuditService)"/>
+<circle cx="1821.0" cy="899.0" r="10.5" fill="#2563EB"/>
+<text x="1821.0" y="903.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">C</text>
+<text x="2064.0" y="893.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.0" font-style="italic" fill="#475569">«service»</text>
+<text x="2064.0" y="911.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="12.6" font-weight="700" fill="#0F172A">AuditService</text>
+<line x1="1800.0" y1="922.0" x2="2310.0" y2="922.0" stroke="#2563EB" stroke-width="1.05"/>
+<line x1="1800.0" y1="936.0" x2="2310.0" y2="936.0" stroke="#CBD5E1" stroke-width="1.0"/>
+<text x="1811.0" y="956.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">record(action : String, target : String, details : String) : void</tspan></text>
+</g>
+<g id="legend"><rect x="36.0" y="1010.0" width="2500.0" height="40.0" rx="5" ry="5" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.1"/><text x="52.0" y="1034.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.0" font-weight="700" fill="#0F172A">Chú thích UML 2.5:</text><circle cx="188.0" cy="1030.0" r="9" fill="#2563EB"/><text x="188.0" y="1034.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10" font-weight="700" fill="#FFF">C</text><text x="204.0" y="1034.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.8" fill="#334155">Controller / Service / Adapter</text><circle cx="392.0" cy="1030.0" r="9" fill="#7C3AED"/><text x="392.0" y="1034.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10" font-weight="700" fill="#FFF">I</text><text x="408.0" y="1034.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.8" fill="#334155">Interface (AiProviderAdapter)</text><circle cx="594.0" cy="1030.0" r="9" fill="#0284C7"/><text x="594.0" y="1034.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10" font-weight="700" fill="#FFF">R</text><text x="610.0" y="1034.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.8" fill="#334155">Record (AiChatExchange)</text><line x1="774.0" y1="1030.0" x2="822.0" y2="1030.0" stroke="#334155" stroke-width="1.4"/><polyline points="814.0,1025.5 822.0,1030.0 814.0,1034.5" fill="none" stroke="#334155" stroke-width="1.4"/><text x="832.0" y="1034.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.8" fill="#334155">Kết hợp / Gọi (Association)</text><line x1="1022.0" y1="1030.0" x2="1070.0" y2="1030.0" stroke="#334155" stroke-width="1.4" stroke-dasharray="6,4"/><polyline points="1062.0,1025.5 1070.0,1030.0 1062.0,1034.5" fill="none" stroke="#334155" stroke-width="1.4"/><text x="1080.0" y="1034.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.8" fill="#334155">Phụ thuộc (Dependency - -►)</text><line x1="1288.0" y1="1030.0" x2="1332.0" y2="1030.0" stroke="#334155" stroke-width="1.4" stroke-dasharray="6,4"/><polygon points="1344.0,1030.0 1332.0,1024.5 1332.0,1035.5" fill="#FFF" stroke="#334155" stroke-width="1.35"/><text x="1354.0" y="1034.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.8" fill="#334155">Hiện thực hóa Adapter (Realization - -▷)</text><text x="1616.0" y="1034.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.8" fill="#334155"><tspan fill="#16A34A" font-weight="700">+</tspan> public   <tspan fill="#DC2626" font-weight="700">-</tspan> private   <tspan text-decoration="underline">gạch chân</tspan> = static</text></g>
+</svg>

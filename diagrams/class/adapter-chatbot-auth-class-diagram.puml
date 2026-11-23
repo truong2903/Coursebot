@@ -1,0 +1,199 @@
+@startuml adapter-chatbot-auth-class-diagram
+title BIỂU ĐỒ LỚP THIẾT KẾ CỤM CHATBOT AI (ADAPTER PATTERN) & XÁC THỰC / QUẢN TRỊ
+
+top to bottom direction
+skinparam linetype ortho
+skinparam shadowing false
+skinparam roundcorner 8
+skinparam nodesep 50
+skinparam ranksep 60
+skinparam padding 6
+skinparam packageStyle rectangle
+skinparam classAttributeIconSize 0
+
+skinparam class {
+    BackgroundColor #FFFFFF
+    HeaderBackgroundColor #EFF6FF
+    BorderColor #2563EB
+    FontColor #0F172A
+    FontName "Segoe UI"
+    FontSize 12
+    AttributeFontName "Segoe UI"
+    AttributeFontSize 11
+    StereotypeFontSize 10
+    ArrowColor #334155
+    ArrowThickness 1.3
+}
+
+skinparam interface {
+    BackgroundColor #FFFFFF
+    HeaderBackgroundColor #EDE9FE
+    BorderColor #7C3AED
+}
+
+' =========================================================
+' PACKAGE 1: Phân hệ Chatbot AI & Mẫu Adapter Pattern
+' =========================================================
+package "Phân hệ Chatbot AI & Mẫu Adapter Pattern (service.chat)" as PkgChat #F0F7FF {
+
+    class ChatbotController <<controller>> {
+        - chatbotService : ChatbotService
+        --
+        + status() : Map<String, Object>
+        + chat(req : ChatRequest, session : HttpSession) : ChatResponse
+    }
+
+    class AiChatExchange <<record>> {
+        + userMessage : String
+        + history : List<ChatHistoryMessage>
+        + verifiedReply : String
+        + sources : List<String>
+        + studentCode : String
+        + studentName : String
+        + program : String
+        + cohort : String
+    }
+
+    class ChatbotService <<service>> {
+        - academic : AcademicChatService
+        - auth : AuthService
+        - adapter : AiProviderAdapter
+        --
+        + aiConfigured() : boolean
+        + providerName() : String
+        + respond(request : ChatRequest) : ChatResponse
+        {static} + buildAdapter(builder, provider, url, key, model, timeout) : AiProviderAdapter
+    }
+
+    interface AiProviderAdapter <<interface>> {
+        + providerName() : String
+        + isConfigured() : boolean
+        + generateExplanation(exchange : AiChatExchange) : String
+    }
+
+    class AcademicChatService <<service>> {
+        - conditionEvaluator : CourseConditionEvaluator
+        - enrollmentRepo : EnrollmentRepository
+        - resultRepo : AcademicResultRepository
+        - sectionRepo : CourseSectionRepository
+        - curriculumCourseRepo : CurriculumCourseRepository
+        --
+        + answer(request : ChatRequest) : Answer
+    }
+
+    class OpenAiCompatibleAiAdapter <<adapter>> {
+        - client : RestClient
+        - providerLabel : String
+        - apiUrl : String
+        - apiKey : String
+        - model : String
+        --
+        + providerName() : String
+        + isConfigured() : boolean
+        + generateExplanation(exchange : AiChatExchange) : String
+    }
+
+    class TeammateWebhookAiAdapter <<adapter>> {
+        - client : RestClient
+        - webhookUrl : String
+        - optionalToken : String
+        --
+        + providerName() : String
+        + isConfigured() : boolean
+        + generateExplanation(exchange : AiChatExchange) : String
+    }
+
+    ChatbotController -[hidden]right-> AiChatExchange
+    ChatbotService -[hidden]right-> AiProviderAdapter
+    AcademicChatService -[hidden]right-> OpenAiCompatibleAiAdapter
+    OpenAiCompatibleAiAdapter -[hidden]right-> TeammateWebhookAiAdapter
+
+    ChatbotController --> ChatbotService
+    ChatbotService --> AcademicChatService : 1. Truy vấn CSDL xác thực
+    ChatbotService ..> AiChatExchange : đóng gói ngữ cảnh
+    ChatbotService --> AiProviderAdapter : 2. Diễn giải ngôn ngữ tự nhiên
+    AiProviderAdapter ..> AiChatExchange
+    AiProviderAdapter <|.. OpenAiCompatibleAiAdapter
+    AiProviderAdapter <|.. TeammateWebhookAiAdapter
+}
+
+' =========================================================
+' PACKAGE 2: Phân hệ Bảo mật, OTP Email & Quản trị Hệ thống
+' =========================================================
+package "Phân hệ Bảo mật, OTP Email & Quản trị Hệ thống" as PkgAuthAdmin #FDF6F3 {
+
+    class AuthController <<controller>> {
+        - authService : AuthService
+        - resetService : PasswordResetService
+        --
+        + login(req : LoginRequest, session) : AccountSessionDto
+        + logout(session) : ActionResponse
+        + changePassword(req : ChangePasswordRequest) : ActionResponse
+        + forgotPassword(req : ForgotPasswordRequest) : ActionResponse
+        + resetPassword(req : ResetPasswordRequest) : ActionResponse
+    }
+
+    class AuthService <<service>> {
+        - accountRepo : UserAccountRepository
+        - studentRepo : StudentRepository
+        - lecturerRepo : LecturerRepository
+        - passwordEncoder : PasswordEncoder
+        --
+        + currentAccount() : UserAccount
+        + currentStudent() : Student
+        + currentLecturer() : Lecturer
+        + changePassword(oldPass, newPass) : void
+    }
+
+    class PasswordResetService <<service>> {
+        - accounts : UserAccountRepository
+        - tokens : PasswordResetTokenRepository
+        - encoder : PasswordEncoder
+        - mailSender : ObjectProvider<JavaMailSender>
+        --
+        + requestReset(email : String) : void
+        + reset(email : String, rawToken : String, newPass : String) : void
+        {static} + resolveSenderAddress(from, smtpUser) : String
+    }
+
+    class AccountManagementController <<controller>> {
+        - accountService : AccountManagementService
+    }
+
+    class RolePermissionController <<controller>> {
+        - rolePermissionService : RolePermissionService
+    }
+
+    class AuditLogController <<controller>> {
+        - auditService : AuditService
+    }
+
+    class AccountManagementService <<service>> {
+    }
+
+    class RolePermissionService <<service>> {
+    }
+
+    class AuditService <<service>> {
+        + record(action : String, target : String, details : String) : void
+    }
+
+    AuthService -[hidden]right-> PasswordResetService
+    AccountManagementController -[hidden]right-> RolePermissionController
+    RolePermissionController -[hidden]right-> AuditLogController
+    AccountManagementService -[hidden]right-> RolePermissionService
+    AuthService -[hidden]down-> AccountManagementController
+    PasswordResetService -[hidden]down-> RolePermissionController
+
+    AuthController --> AuthService
+    AuthController --> PasswordResetService
+    AccountManagementController --> AccountManagementService
+    RolePermissionController --> RolePermissionService
+    AccountManagementService --> AuditService
+    RolePermissionService --> AuditService
+    AuditLogController --> AuditService
+}
+
+PkgChat -[hidden]right-> PkgAuthAdmin
+
+@enduml
