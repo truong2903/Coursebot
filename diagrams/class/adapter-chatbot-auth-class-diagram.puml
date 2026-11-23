@@ -194,6 +194,6 @@ package "Phân hệ Bảo mật, OTP Email & Quản trị Hệ thống" as PkgAu
     AuditLogController --> AuditService
 }
 
-PkgChat -[hidden]right-> PkgAuthAdmin
+PkgChat -[hidden]down-> PkgAuthAdmin
 
 @enduml
