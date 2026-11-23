@@ -1,0 +1,261 @@
+@startuml strategy-enrollment-class-diagram
+title BIỂU ĐỒ LỚP THIẾT KẾ CỤM ĐĂNG KÝ HỌC PHẦN & MẪU STRATEGY PATTERN (EnrollmentRule)
+
+top to bottom direction
+skinparam linetype ortho
+skinparam shadowing false
+skinparam roundcorner 8
+skinparam nodesep 45
+skinparam ranksep 60
+skinparam padding 6
+skinparam packageStyle rectangle
+skinparam classAttributeIconSize 0
+
+skinparam class {
+    BackgroundColor #FFFFFF
+    HeaderBackgroundColor #EFF6FF
+    BorderColor #2563EB
+    FontColor #0F172A
+    FontName "Segoe UI"
+    FontSize 12
+    AttributeFontName "Segoe UI"
+    AttributeFontSize 11
+    StereotypeFontSize 10
+    ArrowColor #334155
+    ArrowThickness 1.3
+}
+
+skinparam interface {
+    BackgroundColor #FFFFFF
+    HeaderBackgroundColor #EDE9FE
+    BorderColor #7C3AED
+}
+
+' =========================================================
+' PACKAGE 1: Controller Layer
+' =========================================================
+package "Controller Layer (com.courseregistration.controller)" as PkgCtrl #F8FAFC {
+
+    class TrainingManagementController <<controller>> {
+        - trainingService : TrainingManagementService
+        --
+        + listEnrollments(semester, status, q) : List<EnrollmentAdminDto>
+        + approveEnrollment(id : Long, req : EnrollmentActionRequest) : ActionResponse
+        + rejectEnrollment(id : Long, req : EnrollmentActionRequest) : ActionResponse
+        + adminDropEnrollment(id : Long, req : EnrollmentActionRequest) : ActionResponse
+    }
+
+    class StudentAcademicController <<controller>> {
+        - academicService : StudentAcademicService
+        --
+        + curriculum(program, cohort) : StudentCurriculumDto
+        + transcript() : StudentTranscriptDto
+    }
+
+    class EnrollmentController <<controller>> {
+        - enrollmentService : EnrollmentService
+        --
+        + registered() : List<CourseSectionDto>
+        + history() : List<EnrollmentHistoryDto>
+        + enroll(req : EnrollmentRequest) : ActionResponse
+        + drop(sectionId : String) : ActionResponse
+    }
+
+    together {
+        class TrainingManagementController
+        class StudentAcademicController
+        class EnrollmentController
+    }
+    TrainingManagementController -[hidden]right-> StudentAcademicController
+    StudentAcademicController -[hidden]right-> EnrollmentController
+}
+
+' =========================================================
+' PACKAGE 2: Service Layer
+' =========================================================
+package "Service Layer (com.courseregistration.service)" as PkgService #F0F7FF {
+
+    class TrainingManagementService <<service>> {
+        + listEnrollments(semester, status, query) : List<EnrollmentAdminDto>
+        + approvePendingEnrollment(id : Long, reason : String) : String
+        + rejectPendingEnrollment(id : Long, reason : String) : String
+        + adminDropEnrollment(id : Long, reason : String) : String
+        - promoteNextWaitlistEligible(section : CourseSection) : Optional<String>
+    }
+
+    class StudentAcademicService <<service>> {
+        + currentStudentCurriculum(program, cohort) : StudentCurriculumDto
+        + currentStudentTranscript() : StudentTranscriptDto
+    }
+
+    class EnrollmentService <<service>> {
+        - maxCredits : int = 20
+        - dropWindowDays : int = 7
+        - rules : List<EnrollmentRule>
+        - conditionEvaluator : CourseConditionEvaluator
+        --
+        + enroll(sectionId : String) : String
+        + drop(sectionId : String) : String
+        + registeredSections() : List<CourseSectionDto>
+        + history() : List<EnrollmentHistoryDto>
+        - canPromote(student : Student, section : CourseSection) : boolean
+    }
+
+    together {
+        class TrainingManagementService
+        class StudentAcademicService
+        class EnrollmentService
+    }
+    TrainingManagementService -[hidden]right-> StudentAcademicService
+    StudentAcademicService -[hidden]right-> EnrollmentService
+}
+
+' =========================================================
+' PACKAGE 4: Strategy Pattern (service.policy)
+' =========================================================
+package "Strategy Pattern — Bộ Quy tắc Nghiệp vụ Đăng ký (service.policy)" as PkgPolicy #F0FDF4 {
+
+    interface EnrollmentRule <<interface>> {
+        + checkViolation(ctx : EnrollmentValidationContext) : Optional<String>
+        + validate(ctx : EnrollmentValidationContext) : void
+    }
+
+    class EnrollmentValidationContext <<record>> {
+        + student : Student
+        + targetSection : CourseSection
+        + currentSemesterSections : List<CourseSection>
+        + alreadyEnrolledTarget : boolean
+        + enforceRegistrationWindow : boolean
+        --
+        + currentCreditsInSemester() : int
+    }
+
+    class SectionAvailabilityRule <<strategy @Order(10)>> {
+        - courseService : CourseService
+        --
+        + checkViolation(ctx : EnrollmentValidationContext) : Optional<String>
+    }
+
+    class DuplicateEnrollmentRule <<strategy @Order(20)>> {
+        + checkViolation(ctx : EnrollmentValidationContext) : Optional<String>
+    }
+
+    class CreditLimitRule <<strategy @Order(30)>> {
+        - maxCredits : int
+        --
+        + checkViolation(ctx : EnrollmentValidationContext) : Optional<String>
+    }
+
+    class PrerequisiteRule <<strategy @Order(40)>> {
+        + checkViolation(ctx : EnrollmentValidationContext) : Optional<String>
+    }
+
+    class CourseConditionRule <<strategy @Order(45)>> {
+        - evaluator : CourseConditionEvaluator
+        --
+        + checkViolation(ctx : EnrollmentValidationContext) : Optional<String>
+    }
+
+    class ScheduleConflictRule <<strategy @Order(50)>> {
+        + checkViolation(ctx : EnrollmentValidationContext) : Optional<String>
+    }
+
+    class CourseConditionEvaluator <<component>> {
+        - conditionRepo : CourseConditionRepository
+        - resultRepo : AcademicResultRepository
+        --
+        + checkEnrollmentViolation(student, target, activeSections) : Optional<String>
+        + checkCorequisiteDropViolation(student, dropping, activeSections) : Optional<String>
+        + missingConditionsSummary(student, target, activeSections) : List<String>
+    }
+
+    together {
+        interface EnrollmentRule
+        class EnrollmentValidationContext
+    }
+    together {
+        class SectionAvailabilityRule
+        class DuplicateEnrollmentRule
+        class CreditLimitRule
+    }
+    together {
+        class PrerequisiteRule
+        class CourseConditionRule
+        class ScheduleConflictRule
+    }
+
+    EnrollmentRule -[hidden]right-> EnrollmentValidationContext
+    SectionAvailabilityRule -[hidden]right-> DuplicateEnrollmentRule
+    DuplicateEnrollmentRule -[hidden]right-> CreditLimitRule
+    PrerequisiteRule -[hidden]right-> CourseConditionRule
+    CourseConditionRule -[hidden]right-> ScheduleConflictRule
+    SectionAvailabilityRule -[hidden]down-> PrerequisiteRule
+    DuplicateEnrollmentRule -[hidden]down-> CourseConditionRule
+    CreditLimitRule -[hidden]down-> ScheduleConflictRule
+    CourseConditionRule -[hidden]down-> CourseConditionEvaluator
+}
+
+' =========================================================
+' PACKAGE 3: Repository Layer
+' =========================================================
+package "Repository Layer (com.courseregistration.repository)" as PkgRepo #FFFBEB {
+
+    interface EnrollmentRepository <<repository>> {
+    }
+    interface WaitlistRepository <<repository>> {
+    }
+    interface CourseSectionRepository <<repository>> {
+    }
+    interface AcademicResultRepository <<repository>> {
+    }
+    interface CourseConditionRepository <<repository>> {
+    }
+
+    EnrollmentRepository -[hidden]right-> WaitlistRepository
+    WaitlistRepository -[hidden]right-> CourseSectionRepository
+    CourseSectionRepository -[hidden]right-> AcademicResultRepository
+    AcademicResultRepository -[hidden]right-> CourseConditionRepository
+}
+
+' Package layout hints
+PkgCtrl -[hidden]down-> PkgService
+PkgCtrl -[hidden]right-> PkgPolicy
+PkgService -[hidden]right-> PkgPolicy
+PkgService -[hidden]down-> PkgRepo
+PkgPolicy -[hidden]down-> PkgRepo
+
+' =========================================================
+' RELATIONSHIPS (22 Quan hệ)
+' =========================================================
+
+' Controller -> Service
+TrainingManagementController --> TrainingManagementService
+StudentAcademicController --> StudentAcademicService
+EnrollmentController --> EnrollmentService
+
+' Service -> Strategy Pattern
+EnrollmentService ..> EnrollmentValidationContext : khởi tạo
+EnrollmentService o--> "1..*" EnrollmentRule : thực thi tuần tự
+EnrollmentService --> CourseConditionEvaluator : kiểm tra hủy Song hành
+
+' Strategy Pattern Internal
+EnrollmentRule ..> EnrollmentValidationContext : đánh giá
+EnrollmentRule <|.. SectionAvailabilityRule
+EnrollmentRule <|.. DuplicateEnrollmentRule
+EnrollmentRule <|.. CreditLimitRule
+EnrollmentRule <|.. PrerequisiteRule
+EnrollmentRule <|.. CourseConditionRule
+EnrollmentRule <|.. ScheduleConflictRule
+CourseConditionRule --> CourseConditionEvaluator : ủy quyền
+
+' Service & Policy -> Repository
+TrainingManagementService --> EnrollmentRepository
+TrainingManagementService --> WaitlistRepository
+StudentAcademicService --> AcademicResultRepository
+EnrollmentService --> EnrollmentRepository
+EnrollmentService --> WaitlistRepository
+EnrollmentService --> CourseSectionRepository
+CourseConditionEvaluator --> AcademicResultRepository
+CourseConditionEvaluator --> CourseConditionRepository
+
+@enduml
