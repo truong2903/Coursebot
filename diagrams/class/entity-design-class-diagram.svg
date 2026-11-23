@@ -1,0 +1,523 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2580" height="1762" viewBox="0 0 2580 1762">
+<defs>
+  <filter id="cardShadow" x="-4%" y="-4%" width="108%" height="112%">
+    <feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-color="#0F172A" flood-opacity="0.07"/>
+  </filter>
+</defs>
+<rect width="2580" height="1762" fill="#FFFFFF"/>
+<text x="1290.0" y="44.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="19" font-weight="700" letter-spacing="0.4" fill="#0F172A">BIỂU ĐỒ LỚP THIẾT KẾ TẦNG THỰC THỂ (ENTITY DESIGN CLASS DIAGRAM)</text>
+<g><path d="M 36.0 100.0 L 36.0 78.0 Q 36.0 74.0 40.0 74.0 L 419.3 74.0 Q 423.3 74.0 423.3 78.0 L 423.3 100.0 Z" fill="#E2E8F0" stroke="#64748B" stroke-width="1.35"/><rect x="36.0" y="100.0" width="1182.0" height="1132.0" rx="4" ry="4" fill="#F8FAFC" stroke="#64748B" stroke-width="1.35"/><text x="48.0" y="91.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="12.0" font-weight="700" fill="#0F172A">com.courseregistration.entity (Nhóm Học vụ &amp; Chương trình)</text></g>
+<g><path d="M 1346.0 100.0 L 1346.0 78.0 Q 1346.0 74.0 1350.0 74.0 L 1764.1 74.0 Q 1768.1 74.0 1768.1 78.0 L 1768.1 100.0 Z" fill="#DBEAFE" stroke="#3B82F6" stroke-width="1.35"/><rect x="1346.0" y="100.0" width="1198.0" height="1132.0" rx="4" ry="4" fill="#F0F7FF" stroke="#3B82F6" stroke-width="1.35"/><text x="1358.0" y="91.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="12.0" font-weight="700" fill="#0F172A">com.courseregistration.entity (Nhóm Mở lớp, Đăng ký &amp; Bảng điểm)</text></g>
+<g><path d="M 36.0 1318.0 L 36.0 1296.0 Q 36.0 1292.0 40.0 1292.0 L 447.5 1292.0 Q 451.5 1292.0 451.5 1296.0 L 451.5 1318.0 Z" fill="#F9E4DC" stroke="#C27868" stroke-width="1.35"/><rect x="36.0" y="1318.0" width="2508.0" height="358.0" rx="4" ry="4" fill="#FDF6F3" stroke="#C27868" stroke-width="1.35"/><text x="48.0" y="1309.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="12.0" font-weight="700" fill="#0F172A">com.courseregistration.entity (Nhóm Tài khoản, OTP &amp; Kiểm toán)</text></g>
+<path d="M 198.00 335.00 L 198.00 534.00" fill="none" stroke="#334155" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="193.2,524.0 198.0,534.0 202.8,524.0" fill="none" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<g><rect x="176.1" y="342.0" width="15.7" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="184.0" y="353.6" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">1</text></g>
+<g><rect x="163.7" y="512.0" width="28.5" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="178.0" y="523.6" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">0..*</text></g>
+<path d="M 198.00 726.00 L 198.00 890.00" fill="none" stroke="#334155" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="193.2,880.0 198.0,890.0 202.8,880.0" fill="none" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<g><rect x="176.1" y="733.0" width="15.7" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="184.0" y="744.6" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">1</text></g>
+<g><rect x="163.7" y="868.0" width="28.5" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="178.0" y="879.6" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">0..*</text></g>
+<path d="M 198.00 162.00 L 198.00 134.00 Q 198.00 128.00 204.00 128.00 L 1023.00 128.00 Q 1029.00 128.00 1029.00 134.00 L 1029.00 162.00" fill="none" stroke="#334155" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="1024.2,152.0 1029.0,162.0 1033.8,152.0" fill="none" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<g><rect x="204.1" y="141.0" width="15.7" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="212.0" y="152.6" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">1</text></g>
+<g><rect x="1036.7" y="141.0" width="28.5" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="1051.0" y="152.6" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">0..*</text></g>
+<path d="M 198.00 1082.00 L 198.00 1198.00 Q 198.00 1204.00 204.00 1204.00 L 924.00 1204.00 Q 930.00 1204.00 930.00 1198.00 L 930.00 1177.00" fill="none" stroke="#334155" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="934.8,1187.0 930.0,1177.0 925.2,1187.0" fill="none" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<g><rect x="204.1" y="1087.0" width="15.7" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="212.0" y="1098.6" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">1</text></g>
+<g><rect x="891.7" y="1182.0" width="28.5" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="906.0" y="1193.6" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">0..*</text></g>
+<path d="M 591.00 406.00 L 591.00 534.00" fill="none" stroke="#334155" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<polygon points="591.0,392.0 586.5,399.0 591.0,406.0 595.5,399.0" fill="#334155" stroke="#334155" stroke-width="1.0"/>
+<polyline points="586.2,524.0 591.0,534.0 595.8,524.0" fill="none" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<g><rect x="568.1" y="402.0" width="15.7" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="576.0" y="413.6" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">1</text></g>
+<g><rect x="556.7" y="512.0" width="28.5" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="571.0" y="523.6" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">0..*</text></g>
+<path d="M 866.00 620.50 L 782.00 620.50" fill="none" stroke="#334155" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="792.0,615.7 782.0,620.5 792.0,625.3" fill="none" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<g><rect x="842.1" y="599.5" width="15.7" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="850.0" y="611.1" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">1</text></g>
+<g><rect x="789.7" y="599.5" width="28.5" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="804.0" y="611.1" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">0..*</text></g>
+<path d="M 902.00 802.00 L 902.00 828.00 Q 902.00 834.00 896.00 834.00 L 563.00 834.00 Q 557.00 834.00 557.00 840.00 L 557.00 890.00" fill="none" stroke="#334155" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="552.2,880.0 557.0,890.0 561.8,880.0" fill="none" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<g><rect x="880.1" y="808.0" width="15.7" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="888.0" y="819.6" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">1</text></g>
+<g><rect x="520.7" y="869.0" width="28.5" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="535.0" y="880.6" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">0..*</text></g>
+<g><rect x="678.9" y="826.0" width="45.2" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="701.5" y="837.6" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.4" font-weight="600" fill="#0F172A">course</text></g>
+<path d="M 950.00 802.00 L 950.00 856.00 Q 950.00 862.00 944.00 862.00 L 639.00 862.00 Q 633.00 862.00 633.00 868.00 L 633.00 890.00" fill="none" stroke="#334155" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="628.2,880.0 633.0,890.0 637.8,880.0" fill="none" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<g><rect x="957.1" y="808.0" width="15.7" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="965.0" y="819.6" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">1</text></g>
+<g><rect x="640.7" y="869.0" width="28.5" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="655.0" y="880.6" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">0..*</text></g>
+<g><rect x="783.3" y="854.0" width="92.4" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="829.5" y="865.6" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.4" font-weight="600" fill="#0F172A">conditionCourse</text></g>
+<path d="M 1192.00 254.00 L 1374.00 254.00" fill="none" stroke="#334155" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="1364.0,258.8 1374.0,254.0 1364.0,249.2" fill="none" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<g><rect x="1200.1" y="233.0" width="15.7" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="1208.0" y="244.6" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">1</text></g>
+<g><rect x="1335.7" y="233.0" width="28.5" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="1350.0" y="244.6" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">0..*</text></g>
+<path d="M 1192.00 576.00 L 1250.00 576.00 Q 1256.00 576.00 1256.00 570.00 L 1256.00 364.00 Q 1256.00 358.00 1262.00 358.00 L 1374.00 358.00" fill="none" stroke="#334155" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="1364.0,362.8 1374.0,358.0 1364.0,353.2" fill="none" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<g><rect x="1200.1" y="555.0" width="15.7" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="1208.0" y="566.6" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">1</text></g>
+<g><rect x="1335.7" y="337.0" width="28.5" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="1350.0" y="348.6" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">0..*</text></g>
+<path d="M 1192.00 646.00 L 1374.00 646.00" fill="none" stroke="#334155" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="1364.0,650.8 1374.0,646.0 1364.0,641.2" fill="none" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<g><rect x="1200.1" y="625.0" width="15.7" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="1208.0" y="636.6" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">1</text></g>
+<g><rect x="1335.7" y="625.0" width="28.5" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="1350.0" y="636.6" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">0..*</text></g>
+<path d="M 1192.00 932.00 L 1276.00 932.00 Q 1282.00 932.00 1282.00 926.00 L 1282.00 746.00 Q 1282.00 740.00 1288.00 740.00 L 1374.00 740.00" fill="none" stroke="#334155" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="1364.0,744.8 1374.0,740.0 1364.0,735.2" fill="none" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<g><rect x="1200.1" y="911.0" width="15.7" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="1208.0" y="922.6" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">1</text></g>
+<g><rect x="1335.7" y="719.0" width="28.5" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="1350.0" y="730.6" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">0..*</text></g>
+<path d="M 1192.00 1038.00 L 1374.00 1038.00" fill="none" stroke="#334155" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="1364.0,1042.8 1374.0,1038.0 1364.0,1033.2" fill="none" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<g><rect x="1200.1" y="1017.0" width="15.7" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="1208.0" y="1028.6" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">1</text></g>
+<g><rect x="1335.7" y="1017.0" width="28.5" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="1350.0" y="1028.6" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">0..*</text></g>
+<path d="M 1192.00 984.00 L 1304.00 984.00 Q 1310.00 984.00 1310.00 978.00 L 1310.00 854.00 Q 1310.00 848.00 1316.00 848.00 L 1773.50 848.00 A 6.50 6.50 0 0 1 1786.50 848.00 L 1914.00 848.00 Q 1920.00 848.00 1920.00 854.00 L 1920.00 890.00" fill="none" stroke="#334155" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="1915.2,880.0 1920.0,890.0 1924.8,880.0" fill="none" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<g><rect x="1200.1" y="963.0" width="15.7" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="1208.0" y="974.6" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">1</text></g>
+<g><rect x="1883.7" y="868.0" width="28.5" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="1898.0" y="879.6" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">0..*</text></g>
+<path d="M 1744.00 282.00 L 1834.00 282.00" fill="none" stroke="#334155" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<polygon points="1730.0,282.0 1737.0,286.5 1744.0,282.0 1737.0,277.5" fill="#334155" stroke="#334155" stroke-width="1.0"/>
+<polyline points="1824.0,286.8 1834.0,282.0 1824.0,277.2" fill="none" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<g><rect x="1744.1" y="260.0" width="15.7" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="1752.0" y="271.6" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">1</text></g>
+<g><rect x="1797.7" y="260.0" width="28.5" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="1812.0" y="271.6" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">0..*</text></g>
+<path d="M 2355.00 430.00 L 2355.00 534.00" fill="none" stroke="#334155" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="2350.2,524.0 2355.0,534.0 2359.8,524.0" fill="none" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<g><rect x="2333.1" y="437.0" width="15.7" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="2341.0" y="448.6" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">1</text></g>
+<g><rect x="2320.7" y="512.0" width="28.5" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="2335.0" y="523.6" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">0..*</text></g>
+<path d="M 2355.00 162.00 L 2355.00 134.00 Q 2355.00 128.00 2349.00 128.00 L 1558.00 128.00 Q 1552.00 128.00 1552.00 134.00 L 1552.00 162.00" fill="none" stroke="#334155" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="1547.2,152.0 1552.0,162.0 1556.8,152.0" fill="none" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<g><rect x="2333.1" y="141.0" width="15.7" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="2341.0" y="152.6" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">1</text></g>
+<g><rect x="1559.7" y="141.0" width="28.5" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="1574.0" y="152.6" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">0..*</text></g>
+<path d="M 2190.00 390.00 L 2162.00 390.00 Q 2156.00 390.00 2156.00 396.00 L 2156.00 568.00 Q 2156.00 574.00 2150.00 574.00 L 2008.50 574.00 A 6.50 6.50 0 0 0 1995.50 574.00 L 1786.50 574.00 A 6.50 6.50 0 0 0 1773.50 574.00 L 1730.00 574.00" fill="none" stroke="#334155" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="1740.0,569.2 1730.0,574.0 1740.0,578.8" fill="none" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<g><rect x="2166.1" y="369.0" width="15.7" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="2174.0" y="380.6" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">1</text></g>
+<g><rect x="1739.7" y="553.0" width="28.5" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="1754.0" y="564.6" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">0..*</text></g>
+<path d="M 1658.00 449.00 L 1658.00 498.00 Q 1658.00 504.00 1664.00 504.00 L 1774.00 504.00 Q 1780.00 504.00 1780.00 510.00 L 1780.00 980.00 Q 1780.00 986.00 1774.00 986.00 L 1730.00 986.00" fill="none" stroke="#334155" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="1740.0,981.2 1730.0,986.0 1740.0,990.8" fill="none" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<g><rect x="1636.1" y="456.0" width="15.7" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="1644.0" y="467.6" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">1</text></g>
+<g><rect x="1739.7" y="965.0" width="28.5" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="1754.0" y="976.6" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">0..*</text></g>
+<path d="M 1704.00 449.00 L 1704.00 474.00 Q 1704.00 480.00 1710.00 480.00 L 1996.00 480.00 Q 2002.00 480.00 2002.00 486.00 L 2002.00 890.00" fill="none" stroke="#334155" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="1997.2,880.0 2002.0,890.0 2006.8,880.0" fill="none" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<g><rect x="1711.1" y="456.0" width="15.7" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="1719.0" y="467.6" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">1</text></g>
+<g><rect x="2009.7" y="868.0" width="28.5" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="2024.0" y="879.6" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">0..*</text></g>
+<path d="M 1552.00 1082.00 L 1552.00 1346.00" fill="none" stroke="#334155" stroke-width="1.4" stroke-dasharray="6,4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="1547.2,1336.0 1552.0,1346.0 1556.8,1336.0" fill="none" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1982.00 1082.00 L 1982.00 1346.00" fill="none" stroke="#334155" stroke-width="1.4" stroke-dasharray="6,4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="1977.2,1336.0 1982.0,1346.0 1986.8,1336.0" fill="none" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 350.00 1451.50 L 400.00 1451.50" fill="none" stroke="#334155" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<polygon points="336.0,1451.5 343.0,1456.0 350.0,1451.5 343.0,1447.0" fill="#334155" stroke="#334155" stroke-width="1.0"/>
+<polyline points="390.0,1456.3 400.0,1451.5 390.0,1446.7" fill="none" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<g><rect x="352.1" y="1429.5" width="15.7" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="360.0" y="1441.1" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">1</text></g>
+<g><rect x="363.7" y="1458.5" width="28.5" height="16.0" rx="3" ry="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#E2E8F0" stroke-width="0.6"/><text x="378.0" y="1470.1" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-weight="600" fill="#1E293B">0..*</text></g>
+<path d="M 336.00 1584.00 L 866.00 1584.00" fill="none" stroke="#334155" stroke-width="1.4" stroke-dasharray="6,4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="856.0,1588.8 866.0,1584.0 856.0,1579.2" fill="none" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1029.00 1479.00 L 1029.00 1514.00" fill="none" stroke="#334155" stroke-width="1.4" stroke-dasharray="6,4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="1024.2,1504.0 1029.0,1514.0 1033.8,1504.0" fill="none" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<g id="class-Department">
+<rect x="60.0" y="162.0" width="276.0" height="173.0" rx="5" ry="5" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.35" filter="url(#cardShadow)"/>
+<clipPath id="clip-Department"><rect x="60.0" y="162.0" width="276.0" height="173.0" rx="5" ry="5"/></clipPath>
+<rect x="60.0" y="162.0" width="276.0" height="46.0" fill="#EFF6FF" clip-path="url(#clip-Department)"/>
+<line x1="60.0" y1="208.0" x2="336.0" y2="208.0" stroke="#2563EB" stroke-width="1.05"/>
+<circle cx="82.0" cy="185.0" r="10.5" fill="#2563EB"/>
+<text x="82.0" y="189.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">C</text>
+<text x="207.0" y="179.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-style="italic" fill="#475569">«entity»</text>
+<text x="207.0" y="197.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="13.0" font-weight="700" fill="#0F172A">Department</text>
+<text x="72.0" y="229.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">id : Long</tspan></text>
+<text x="72.0" y="248.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">code : String</tspan></text>
+<text x="72.0" y="267.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">name : String</tspan></text>
+<line x1="60.0" y1="281.0" x2="336.0" y2="281.0" stroke="#CBD5E1" stroke-width="1.0"/>
+<text x="72.0" y="302.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">getCode() : String</tspan></text>
+<text x="72.0" y="321.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">getName() : String</tspan></text>
+</g>
+<g id="class-Curriculum">
+<rect x="400.0" y="162.0" width="382.0" height="230.0" rx="5" ry="5" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.35" filter="url(#cardShadow)"/>
+<clipPath id="clip-Curriculum"><rect x="400.0" y="162.0" width="382.0" height="230.0" rx="5" ry="5"/></clipPath>
+<rect x="400.0" y="162.0" width="382.0" height="46.0" fill="#EFF6FF" clip-path="url(#clip-Curriculum)"/>
+<line x1="400.0" y1="208.0" x2="782.0" y2="208.0" stroke="#2563EB" stroke-width="1.05"/>
+<circle cx="422.0" cy="185.0" r="10.5" fill="#2563EB"/>
+<text x="422.0" y="189.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">C</text>
+<text x="600.0" y="179.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-style="italic" fill="#475569">«entity»</text>
+<text x="600.0" y="197.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="13.0" font-weight="700" fill="#0F172A">Curriculum</text>
+<text x="412.0" y="229.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">id : Long</tspan></text>
+<text x="412.0" y="248.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">code : String</tspan></text>
+<text x="412.0" y="267.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">name : String</tspan></text>
+<text x="412.0" y="286.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">program : String</tspan></text>
+<text x="412.0" y="305.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">cohort : String</tspan></text>
+<text x="412.0" y="324.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">version : String</tspan></text>
+<text x="412.0" y="343.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">status : Curriculum.Status</tspan></text>
+<line x1="400.0" y1="357.0" x2="782.0" y2="357.0" stroke="#CBD5E1" stroke-width="1.0"/>
+<text x="412.0" y="378.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">update(name, program, cohort, version, status) : void</tspan></text>
+</g>
+<g id="class-Lecturer">
+<rect x="866.0" y="162.0" width="326.0" height="230.0" rx="5" ry="5" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.35" filter="url(#cardShadow)"/>
+<clipPath id="clip-Lecturer"><rect x="866.0" y="162.0" width="326.0" height="230.0" rx="5" ry="5"/></clipPath>
+<rect x="866.0" y="162.0" width="326.0" height="46.0" fill="#EFF6FF" clip-path="url(#clip-Lecturer)"/>
+<line x1="866.0" y1="208.0" x2="1192.0" y2="208.0" stroke="#2563EB" stroke-width="1.05"/>
+<circle cx="888.0" cy="185.0" r="10.5" fill="#2563EB"/>
+<text x="888.0" y="189.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">C</text>
+<text x="1038.0" y="179.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-style="italic" fill="#475569">«entity»</text>
+<text x="1038.0" y="197.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="13.0" font-weight="700" fill="#0F172A">Lecturer</text>
+<text x="878.0" y="229.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">id : Long</tspan></text>
+<text x="878.0" y="248.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">lecturerCode : String</tspan></text>
+<text x="878.0" y="267.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">fullName : String</tspan></text>
+<text x="878.0" y="286.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">title : String</tspan></text>
+<text x="878.0" y="305.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">email : String</tspan></text>
+<text x="878.0" y="324.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">departmentEntity : Department</tspan></text>
+<line x1="866.0" y1="338.0" x2="1192.0" y2="338.0" stroke="#CBD5E1" stroke-width="1.0"/>
+<text x="878.0" y="359.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">getLecturerCode() : String</tspan></text>
+<text x="878.0" y="378.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">getFullName() : String</tspan></text>
+</g>
+<g id="class-AcademicProgram">
+<rect x="60.0" y="534.0" width="276.0" height="192.0" rx="5" ry="5" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.35" filter="url(#cardShadow)"/>
+<clipPath id="clip-AcademicProgram"><rect x="60.0" y="534.0" width="276.0" height="192.0" rx="5" ry="5"/></clipPath>
+<rect x="60.0" y="534.0" width="276.0" height="46.0" fill="#EFF6FF" clip-path="url(#clip-AcademicProgram)"/>
+<line x1="60.0" y1="580.0" x2="336.0" y2="580.0" stroke="#2563EB" stroke-width="1.05"/>
+<circle cx="82.0" cy="557.0" r="10.5" fill="#2563EB"/>
+<text x="82.0" y="561.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">C</text>
+<text x="207.0" y="551.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-style="italic" fill="#475569">«entity»</text>
+<text x="207.0" y="569.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="13.0" font-weight="700" fill="#0F172A">AcademicProgram</text>
+<text x="72.0" y="601.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">id : Long</tspan></text>
+<text x="72.0" y="620.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">code : String</tspan></text>
+<text x="72.0" y="639.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">name : String</tspan></text>
+<text x="72.0" y="658.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">department : Department</tspan></text>
+<line x1="60.0" y1="672.0" x2="336.0" y2="672.0" stroke="#CBD5E1" stroke-width="1.0"/>
+<text x="72.0" y="693.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">getCode() : String</tspan></text>
+<text x="72.0" y="712.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">getDepartment() : Department</tspan></text>
+</g>
+<g id="class-CurriculumCourse">
+<rect x="400.0" y="534.0" width="382.0" height="173.0" rx="5" ry="5" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.35" filter="url(#cardShadow)"/>
+<clipPath id="clip-CurriculumCourse"><rect x="400.0" y="534.0" width="382.0" height="173.0" rx="5" ry="5"/></clipPath>
+<rect x="400.0" y="534.0" width="382.0" height="46.0" fill="#EFF6FF" clip-path="url(#clip-CurriculumCourse)"/>
+<line x1="400.0" y1="580.0" x2="782.0" y2="580.0" stroke="#2563EB" stroke-width="1.05"/>
+<circle cx="422.0" cy="557.0" r="10.5" fill="#2563EB"/>
+<text x="422.0" y="561.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">C</text>
+<text x="600.0" y="551.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-style="italic" fill="#475569">«entity»</text>
+<text x="600.0" y="569.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="13.0" font-weight="700" fill="#0F172A">CurriculumCourse</text>
+<text x="412.0" y="601.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">id : Long</tspan></text>
+<text x="412.0" y="620.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">recommendedSemester : int</tspan></text>
+<text x="412.0" y="639.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">requiredCourse : boolean</tspan></text>
+<text x="412.0" y="658.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">sortOrder : int</tspan></text>
+<line x1="400.0" y1="672.0" x2="782.0" y2="672.0" stroke="#CBD5E1" stroke-width="1.0"/>
+<text x="412.0" y="693.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">isRequiredCourse() : boolean</tspan></text>
+</g>
+<g id="class-Course">
+<rect x="866.0" y="534.0" width="326.0" height="268.0" rx="5" ry="5" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.35" filter="url(#cardShadow)"/>
+<clipPath id="clip-Course"><rect x="866.0" y="534.0" width="326.0" height="268.0" rx="5" ry="5"/></clipPath>
+<rect x="866.0" y="534.0" width="326.0" height="46.0" fill="#EFF6FF" clip-path="url(#clip-Course)"/>
+<line x1="866.0" y1="580.0" x2="1192.0" y2="580.0" stroke="#2563EB" stroke-width="1.05"/>
+<circle cx="888.0" cy="557.0" r="10.5" fill="#2563EB"/>
+<text x="888.0" y="561.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">C</text>
+<text x="1038.0" y="551.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-style="italic" fill="#475569">«entity»</text>
+<text x="1038.0" y="569.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="13.0" font-weight="700" fill="#0F172A">Course</text>
+<text x="878.0" y="601.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">id : Long</tspan></text>
+<text x="878.0" y="620.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">code : String</tspan></text>
+<text x="878.0" y="639.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">name : String</tspan></text>
+<text x="878.0" y="658.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">department : String</tspan></text>
+<text x="878.0" y="677.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">credits : int</tspan></text>
+<text x="878.0" y="696.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">prerequisite : String</tspan></text>
+<text x="878.0" y="715.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">active : boolean</tspan></text>
+<text x="878.0" y="734.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">prerequisiteCodes : Set&lt;String&gt;</tspan></text>
+<line x1="866.0" y1="748.0" x2="1192.0" y2="748.0" stroke="#CBD5E1" stroke-width="1.0"/>
+<text x="878.0" y="769.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">update(name, dept, credits, prereq, descr) : void</tspan></text>
+<text x="878.0" y="788.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">setActive(active : boolean) : void</tspan></text>
+</g>
+<g id="class-AdministrativeClass">
+<rect x="60.0" y="890.0" width="276.0" height="192.0" rx="5" ry="5" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.35" filter="url(#cardShadow)"/>
+<clipPath id="clip-AdministrativeClass"><rect x="60.0" y="890.0" width="276.0" height="192.0" rx="5" ry="5"/></clipPath>
+<rect x="60.0" y="890.0" width="276.0" height="46.0" fill="#EFF6FF" clip-path="url(#clip-AdministrativeClass)"/>
+<line x1="60.0" y1="936.0" x2="336.0" y2="936.0" stroke="#2563EB" stroke-width="1.05"/>
+<circle cx="82.0" cy="913.0" r="10.5" fill="#2563EB"/>
+<text x="82.0" y="917.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">C</text>
+<text x="207.0" y="907.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-style="italic" fill="#475569">«entity»</text>
+<text x="207.0" y="925.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="13.0" font-weight="700" fill="#0F172A">AdministrativeClass</text>
+<text x="72.0" y="957.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">id : Long</tspan></text>
+<text x="72.0" y="976.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">code : String</tspan></text>
+<text x="72.0" y="995.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">cohort : String</tspan></text>
+<text x="72.0" y="1014.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">program : AcademicProgram</tspan></text>
+<line x1="60.0" y1="1028.0" x2="336.0" y2="1028.0" stroke="#CBD5E1" stroke-width="1.0"/>
+<text x="72.0" y="1049.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">getCode() : String</tspan></text>
+<text x="72.0" y="1068.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">getCohort() : String</tspan></text>
+</g>
+<g id="class-CourseCondition">
+<rect x="400.0" y="890.0" width="382.0" height="230.0" rx="5" ry="5" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.35" filter="url(#cardShadow)"/>
+<clipPath id="clip-CourseCondition"><rect x="400.0" y="890.0" width="382.0" height="230.0" rx="5" ry="5"/></clipPath>
+<rect x="400.0" y="890.0" width="382.0" height="46.0" fill="#EFF6FF" clip-path="url(#clip-CourseCondition)"/>
+<line x1="400.0" y1="936.0" x2="782.0" y2="936.0" stroke="#2563EB" stroke-width="1.05"/>
+<circle cx="422.0" cy="913.0" r="10.5" fill="#2563EB"/>
+<text x="422.0" y="917.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">C</text>
+<text x="600.0" y="907.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-style="italic" fill="#475569">«entity»</text>
+<text x="600.0" y="925.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="13.0" font-weight="700" fill="#0F172A">CourseCondition</text>
+<text x="412.0" y="957.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2" text-decoration="underline"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">TYPE_PREREQUISITE : String = &quot;Tiên quyết&quot;</tspan></text>
+<text x="412.0" y="976.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2" text-decoration="underline"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">TYPE_PRIOR_STUDY : String = &quot;Học trước&quot;</tspan></text>
+<text x="412.0" y="995.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2" text-decoration="underline"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">TYPE_COREQUISITE : String = &quot;Song hành&quot;</tspan></text>
+<text x="412.0" y="1014.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">id : Long</tspan></text>
+<text x="412.0" y="1033.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">conditionType : String</tspan></text>
+<line x1="400.0" y1="1047.0" x2="782.0" y2="1047.0" stroke="#CBD5E1" stroke-width="1.0"/>
+<text x="412.0" y="1068.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">isPrerequisite() : boolean</tspan></text>
+<text x="412.0" y="1087.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">isSatisfiedBy(completed, prior, concurrent) : boolean</tspan></text>
+<text x="412.0" y="1106.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2" text-decoration="underline"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">evaluate(type, code, completed, prior, concurrent) : boolean</tspan></text>
+</g>
+<g id="class-Student">
+<rect x="866.0" y="890.0" width="326.0" height="287.0" rx="5" ry="5" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.35" filter="url(#cardShadow)"/>
+<clipPath id="clip-Student"><rect x="866.0" y="890.0" width="326.0" height="287.0" rx="5" ry="5"/></clipPath>
+<rect x="866.0" y="890.0" width="326.0" height="46.0" fill="#EFF6FF" clip-path="url(#clip-Student)"/>
+<line x1="866.0" y1="936.0" x2="1192.0" y2="936.0" stroke="#2563EB" stroke-width="1.05"/>
+<circle cx="888.0" cy="913.0" r="10.5" fill="#2563EB"/>
+<text x="888.0" y="917.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">C</text>
+<text x="1038.0" y="907.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-style="italic" fill="#475569">«entity»</text>
+<text x="1038.0" y="925.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="13.0" font-weight="700" fill="#0F172A">Student</text>
+<text x="878.0" y="957.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">id : Long</tspan></text>
+<text x="878.0" y="976.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">studentCode : String</tspan></text>
+<text x="878.0" y="995.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">fullName : String</tspan></text>
+<text x="878.0" y="1014.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">program : String</tspan></text>
+<text x="878.0" y="1033.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">cohort : String</tspan></text>
+<text x="878.0" y="1052.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">email : String</tspan></text>
+<text x="878.0" y="1071.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">studyStatus : String</tspan></text>
+<text x="878.0" y="1090.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">completedCourseCodes : Set&lt;String&gt;</tspan></text>
+<line x1="866.0" y1="1104.0" x2="1192.0" y2="1104.0" stroke="#CBD5E1" stroke-width="1.0"/>
+<text x="878.0" y="1125.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">getStudentCode() : String</tspan></text>
+<text x="878.0" y="1144.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">getAdministrativeClass() : AdministrativeClass</tspan></text>
+<text x="878.0" y="1163.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">getCompletedCourseCodes() : Set&lt;String&gt;</tspan></text>
+</g>
+<g id="class-CourseSection">
+<rect x="1374.0" y="162.0" width="356.0" height="287.0" rx="5" ry="5" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.35" filter="url(#cardShadow)"/>
+<clipPath id="clip-CourseSection"><rect x="1374.0" y="162.0" width="356.0" height="287.0" rx="5" ry="5"/></clipPath>
+<rect x="1374.0" y="162.0" width="356.0" height="46.0" fill="#EFF6FF" clip-path="url(#clip-CourseSection)"/>
+<line x1="1374.0" y1="208.0" x2="1730.0" y2="208.0" stroke="#2563EB" stroke-width="1.05"/>
+<circle cx="1396.0" cy="185.0" r="10.5" fill="#2563EB"/>
+<text x="1396.0" y="189.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">C</text>
+<text x="1561.0" y="179.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-style="italic" fill="#475569">«entity»</text>
+<text x="1561.0" y="197.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="13.0" font-weight="700" fill="#0F172A">CourseSection</text>
+<text x="1386.0" y="229.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">id : String</tspan></text>
+<text x="1386.0" y="248.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">sectionCode : String</tspan></text>
+<text x="1386.0" y="267.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">schedule : String</tspan></text>
+<text x="1386.0" y="286.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">room : String</tspan></text>
+<text x="1386.0" y="305.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">capacity : int</tspan></text>
+<text x="1386.0" y="324.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">status : CourseSection.Status</tspan></text>
+<text x="1386.0" y="343.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">scheduleReviewRequired : boolean</tspan></text>
+<line x1="1374.0" y1="357.0" x2="1730.0" y2="357.0" stroke="#CBD5E1" stroke-width="1.0"/>
+<text x="1386.0" y="378.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">getEffectiveMeetings() : List&lt;SectionMeeting&gt;</tspan></text>
+<text x="1386.0" y="397.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">replaceMeetings(values : List&lt;SectionMeeting&gt;) : void</tspan></text>
+<text x="1386.0" y="416.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">totalEnrolled(local : long) : int</tspan></text>
+<text x="1386.0" y="435.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">update(...) : void</tspan></text>
+</g>
+<g id="class-SectionMeeting">
+<rect x="1834.0" y="162.0" width="296.0" height="287.0" rx="5" ry="5" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.35" filter="url(#cardShadow)"/>
+<clipPath id="clip-SectionMeeting"><rect x="1834.0" y="162.0" width="296.0" height="287.0" rx="5" ry="5"/></clipPath>
+<rect x="1834.0" y="162.0" width="296.0" height="46.0" fill="#EFF6FF" clip-path="url(#clip-SectionMeeting)"/>
+<line x1="1834.0" y1="208.0" x2="2130.0" y2="208.0" stroke="#2563EB" stroke-width="1.05"/>
+<circle cx="1856.0" cy="185.0" r="10.5" fill="#2563EB"/>
+<text x="1856.0" y="189.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">C</text>
+<text x="1991.0" y="179.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-style="italic" fill="#475569">«entity»</text>
+<text x="1991.0" y="197.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="13.0" font-weight="700" fill="#0F172A">SectionMeeting</text>
+<text x="1846.0" y="229.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">id : Long</tspan></text>
+<text x="1846.0" y="248.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">dayOfWeek : Integer</tspan></text>
+<text x="1846.0" y="267.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">startsAt : LocalTime</tspan></text>
+<text x="1846.0" y="286.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">endsAt : LocalTime</tspan></text>
+<text x="1846.0" y="305.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">startPeriod : Integer</tspan></text>
+<text x="1846.0" y="324.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">periodCount : Integer</tspan></text>
+<text x="1846.0" y="343.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">room : String</tspan></text>
+<text x="1846.0" y="362.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">weeksExpression : String</tspan></text>
+<line x1="1834.0" y1="376.0" x2="2130.0" y2="376.0" stroke="#CBD5E1" stroke-width="1.0"/>
+<text x="1846.0" y="397.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">hasValidTime() : boolean</tspan></text>
+<text x="1846.0" y="416.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">overlaps(other : SectionMeeting) : boolean</tspan></text>
+<text x="1846.0" y="435.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">summary() : String</tspan></text>
+</g>
+<g id="class-Semester">
+<rect x="2190.0" y="162.0" width="330.0" height="268.0" rx="5" ry="5" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.35" filter="url(#cardShadow)"/>
+<clipPath id="clip-Semester"><rect x="2190.0" y="162.0" width="330.0" height="268.0" rx="5" ry="5"/></clipPath>
+<rect x="2190.0" y="162.0" width="330.0" height="46.0" fill="#EFF6FF" clip-path="url(#clip-Semester)"/>
+<line x1="2190.0" y1="208.0" x2="2520.0" y2="208.0" stroke="#2563EB" stroke-width="1.05"/>
+<circle cx="2212.0" cy="185.0" r="10.5" fill="#2563EB"/>
+<text x="2212.0" y="189.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">C</text>
+<text x="2364.0" y="179.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-style="italic" fill="#475569">«entity»</text>
+<text x="2364.0" y="197.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="13.0" font-weight="700" fill="#0F172A">Semester</text>
+<text x="2202.0" y="229.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">id : Long</tspan></text>
+<text x="2202.0" y="248.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">code : String</tspan></text>
+<text x="2202.0" y="267.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">name : String</tspan></text>
+<text x="2202.0" y="286.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">academicYear : String</tspan></text>
+<text x="2202.0" y="305.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">startsAt : LocalDate</tspan></text>
+<text x="2202.0" y="324.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">endsAt : LocalDate</tspan></text>
+<text x="2202.0" y="343.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">currentTerm : boolean</tspan></text>
+<text x="2202.0" y="362.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">status : Semester.Status</tspan></text>
+<line x1="2190.0" y1="376.0" x2="2520.0" y2="376.0" stroke="#CBD5E1" stroke-width="1.0"/>
+<text x="2202.0" y="397.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">isCurrentTerm() : boolean</tspan></text>
+<text x="2202.0" y="416.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">isRegistrationAlwaysOpen() : boolean</tspan></text>
+</g>
+<g id="class-AcademicResult">
+<rect x="1374.0" y="534.0" width="356.0" height="268.0" rx="5" ry="5" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.35" filter="url(#cardShadow)"/>
+<clipPath id="clip-AcademicResult"><rect x="1374.0" y="534.0" width="356.0" height="268.0" rx="5" ry="5"/></clipPath>
+<rect x="1374.0" y="534.0" width="356.0" height="46.0" fill="#EFF6FF" clip-path="url(#clip-AcademicResult)"/>
+<line x1="1374.0" y1="580.0" x2="1730.0" y2="580.0" stroke="#2563EB" stroke-width="1.05"/>
+<circle cx="1396.0" cy="557.0" r="10.5" fill="#2563EB"/>
+<text x="1396.0" y="561.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">C</text>
+<text x="1561.0" y="551.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-style="italic" fill="#475569">«entity»</text>
+<text x="1561.0" y="569.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="13.0" font-weight="700" fill="#0F172A">AcademicResult</text>
+<text x="1386.0" y="601.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2" text-decoration="underline"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">OUTCOME_PASSED : String = &quot;Đạt&quot;</tspan></text>
+<text x="1386.0" y="620.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2" text-decoration="underline"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">OUTCOME_FAILED : String = &quot;Chưa đạt&quot;</tspan></text>
+<text x="1386.0" y="639.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">id : Long</tspan></text>
+<text x="1386.0" y="658.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">outcome : String</tspan></text>
+<text x="1386.0" y="677.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">grade : BigDecimal</tspan></text>
+<text x="1386.0" y="696.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">letterGrade : String</tspan></text>
+<line x1="1374.0" y1="710.0" x2="1730.0" y2="710.0" stroke="#CBD5E1" stroke-width="1.0"/>
+<text x="1386.0" y="731.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">isPassed() : boolean</tspan></text>
+<text x="1386.0" y="750.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">isFailed() : boolean</tspan></text>
+<text x="1386.0" y="769.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">studiedBefore(targetTerm : Semester) : boolean</tspan></text>
+<text x="1386.0" y="788.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">formatTranscriptLine() : String</tspan></text>
+</g>
+<g id="class-RegistrationPeriod">
+<rect x="2190.0" y="534.0" width="330.0" height="192.0" rx="5" ry="5" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.35" filter="url(#cardShadow)"/>
+<clipPath id="clip-RegistrationPeriod"><rect x="2190.0" y="534.0" width="330.0" height="192.0" rx="5" ry="5"/></clipPath>
+<rect x="2190.0" y="534.0" width="330.0" height="46.0" fill="#EFF6FF" clip-path="url(#clip-RegistrationPeriod)"/>
+<line x1="2190.0" y1="580.0" x2="2520.0" y2="580.0" stroke="#2563EB" stroke-width="1.05"/>
+<circle cx="2212.0" cy="557.0" r="10.5" fill="#2563EB"/>
+<text x="2212.0" y="561.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">C</text>
+<text x="2364.0" y="551.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-style="italic" fill="#475569">«entity»</text>
+<text x="2364.0" y="569.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="13.0" font-weight="700" fill="#0F172A">RegistrationPeriod</text>
+<text x="2202.0" y="601.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">id : Long</tspan></text>
+<text x="2202.0" y="620.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">startsAt : LocalDateTime</tspan></text>
+<text x="2202.0" y="639.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">endsAt : LocalDateTime</tspan></text>
+<text x="2202.0" y="658.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">status : RegistrationPeriod.Status</tspan></text>
+<line x1="2190.0" y1="672.0" x2="2520.0" y2="672.0" stroke="#CBD5E1" stroke-width="1.0"/>
+<text x="2202.0" y="693.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">getEffectiveStatus() : RegistrationPeriod.Status</tspan></text>
+<text x="2202.0" y="712.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">update(semester, startsAt, endsAt, status) : void</tspan></text>
+</g>
+<g id="class-Enrollment">
+<rect x="1374.0" y="890.0" width="356.0" height="192.0" rx="5" ry="5" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.35" filter="url(#cardShadow)"/>
+<clipPath id="clip-Enrollment"><rect x="1374.0" y="890.0" width="356.0" height="192.0" rx="5" ry="5"/></clipPath>
+<rect x="1374.0" y="890.0" width="356.0" height="46.0" fill="#EFF6FF" clip-path="url(#clip-Enrollment)"/>
+<line x1="1374.0" y1="936.0" x2="1730.0" y2="936.0" stroke="#2563EB" stroke-width="1.05"/>
+<circle cx="1396.0" cy="913.0" r="10.5" fill="#2563EB"/>
+<text x="1396.0" y="917.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">C</text>
+<text x="1561.0" y="907.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-style="italic" fill="#475569">«entity»</text>
+<text x="1561.0" y="925.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="13.0" font-weight="700" fill="#0F172A">Enrollment</text>
+<text x="1386.0" y="957.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">id : Long</tspan></text>
+<text x="1386.0" y="976.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">enrolledAt : LocalDateTime</tspan></text>
+<text x="1386.0" y="995.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">status : Enrollment.Status</tspan></text>
+<line x1="1374.0" y1="1009.0" x2="1730.0" y2="1009.0" stroke="#CBD5E1" stroke-width="1.0"/>
+<text x="1386.0" y="1030.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">approve() : void</tspan></text>
+<text x="1386.0" y="1049.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">cancel() : void</tspan></text>
+<text x="1386.0" y="1068.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">reEnroll() : void</tspan></text>
+</g>
+<g id="class-WaitlistEntry">
+<rect x="1834.0" y="890.0" width="296.0" height="192.0" rx="5" ry="5" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.35" filter="url(#cardShadow)"/>
+<clipPath id="clip-WaitlistEntry"><rect x="1834.0" y="890.0" width="296.0" height="192.0" rx="5" ry="5"/></clipPath>
+<rect x="1834.0" y="890.0" width="296.0" height="46.0" fill="#EFF6FF" clip-path="url(#clip-WaitlistEntry)"/>
+<line x1="1834.0" y1="936.0" x2="2130.0" y2="936.0" stroke="#2563EB" stroke-width="1.05"/>
+<circle cx="1856.0" cy="913.0" r="10.5" fill="#2563EB"/>
+<text x="1856.0" y="917.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">C</text>
+<text x="1991.0" y="907.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-style="italic" fill="#475569">«entity»</text>
+<text x="1991.0" y="925.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="13.0" font-weight="700" fill="#0F172A">WaitlistEntry</text>
+<text x="1846.0" y="957.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">id : Long</tspan></text>
+<text x="1846.0" y="976.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">createdAt : LocalDateTime</tspan></text>
+<text x="1846.0" y="995.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">status : WaitlistEntry.Status</tspan></text>
+<line x1="1834.0" y1="1009.0" x2="2130.0" y2="1009.0" stroke="#CBD5E1" stroke-width="1.0"/>
+<text x="1846.0" y="1030.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">promote() : void</tspan></text>
+<text x="1846.0" y="1049.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">cancel() : void</tspan></text>
+<text x="1846.0" y="1068.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">rejoin() : void</tspan></text>
+</g>
+<g id="class-UserAccount">
+<rect x="60.0" y="1346.0" width="276.0" height="268.0" rx="5" ry="5" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.35" filter="url(#cardShadow)"/>
+<clipPath id="clip-UserAccount"><rect x="60.0" y="1346.0" width="276.0" height="268.0" rx="5" ry="5"/></clipPath>
+<rect x="60.0" y="1346.0" width="276.0" height="46.0" fill="#EFF6FF" clip-path="url(#clip-UserAccount)"/>
+<line x1="60.0" y1="1392.0" x2="336.0" y2="1392.0" stroke="#2563EB" stroke-width="1.05"/>
+<circle cx="82.0" cy="1369.0" r="10.5" fill="#2563EB"/>
+<text x="82.0" y="1373.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">C</text>
+<text x="207.0" y="1363.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-style="italic" fill="#475569">«entity»</text>
+<text x="207.0" y="1381.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="13.0" font-weight="700" fill="#0F172A">UserAccount</text>
+<text x="72.0" y="1413.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">id : Long</tspan></text>
+<text x="72.0" y="1432.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">username : String</tspan></text>
+<text x="72.0" y="1451.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">passwordHash : String</tspan></text>
+<text x="72.0" y="1470.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">role : UserAccount.Role</tspan></text>
+<text x="72.0" y="1489.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">status : UserAccount.Status</tspan></text>
+<text x="72.0" y="1508.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">studentCode : String</tspan></text>
+<text x="72.0" y="1527.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">lecturerCode : String</tspan></text>
+<text x="72.0" y="1546.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">email : String</tspan></text>
+<line x1="60.0" y1="1560.0" x2="336.0" y2="1560.0" stroke="#CBD5E1" stroke-width="1.0"/>
+<text x="72.0" y="1581.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">setPasswordHash(hash : String) : void</tspan></text>
+<text x="72.0" y="1600.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">setStatus(status : Status) : void</tspan></text>
+</g>
+<g id="class-PasswordResetToken">
+<rect x="400.0" y="1346.0" width="382.0" height="211.0" rx="5" ry="5" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.35" filter="url(#cardShadow)"/>
+<clipPath id="clip-PasswordResetToken"><rect x="400.0" y="1346.0" width="382.0" height="211.0" rx="5" ry="5"/></clipPath>
+<rect x="400.0" y="1346.0" width="382.0" height="46.0" fill="#EFF6FF" clip-path="url(#clip-PasswordResetToken)"/>
+<line x1="400.0" y1="1392.0" x2="782.0" y2="1392.0" stroke="#2563EB" stroke-width="1.05"/>
+<circle cx="422.0" cy="1369.0" r="10.5" fill="#2563EB"/>
+<text x="422.0" y="1373.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">C</text>
+<text x="600.0" y="1363.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-style="italic" fill="#475569">«entity»</text>
+<text x="600.0" y="1381.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="13.0" font-weight="700" fill="#0F172A">PasswordResetToken</text>
+<text x="412.0" y="1413.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">id : Long</tspan></text>
+<text x="412.0" y="1432.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">tokenHash : String</tspan></text>
+<text x="412.0" y="1451.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">expiresAt : LocalDateTime</tspan></text>
+<text x="412.0" y="1470.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">usedAt : LocalDateTime</tspan></text>
+<text x="412.0" y="1489.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">attempts : Integer</tspan></text>
+<line x1="400.0" y1="1503.0" x2="782.0" y2="1503.0" stroke="#CBD5E1" stroke-width="1.0"/>
+<text x="412.0" y="1524.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">recordFailedAttempt() : void</tspan></text>
+<text x="412.0" y="1543.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#16A34A" font-weight="700">+</tspan><tspan fill="#1E293B">markUsed() : void</tspan></text>
+</g>
+<g id="class-RolePermission">
+<rect x="866.0" y="1346.0" width="326.0" height="133.0" rx="5" ry="5" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.35" filter="url(#cardShadow)"/>
+<clipPath id="clip-RolePermission"><rect x="866.0" y="1346.0" width="326.0" height="133.0" rx="5" ry="5"/></clipPath>
+<rect x="866.0" y="1346.0" width="326.0" height="46.0" fill="#EFF6FF" clip-path="url(#clip-RolePermission)"/>
+<line x1="866.0" y1="1392.0" x2="1192.0" y2="1392.0" stroke="#2563EB" stroke-width="1.05"/>
+<circle cx="888.0" cy="1369.0" r="10.5" fill="#2563EB"/>
+<text x="888.0" y="1373.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">C</text>
+<text x="1038.0" y="1363.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-style="italic" fill="#475569">«entity»</text>
+<text x="1038.0" y="1381.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="13.0" font-weight="700" fill="#0F172A">RolePermission</text>
+<text x="878.0" y="1413.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">id : Long</tspan></text>
+<text x="878.0" y="1432.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">role : UserAccount.Role</tspan></text>
+<text x="878.0" y="1451.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">permission : String</tspan></text>
+<line x1="866.0" y1="1465.0" x2="1192.0" y2="1465.0" stroke="#CBD5E1" stroke-width="1.0"/>
+</g>
+<g id="class-UserAccount.Role">
+<rect x="866.0" y="1514.0" width="326.0" height="138.0" rx="5" ry="5" fill="#FFFFFF" stroke="#D97706" stroke-width="1.35" filter="url(#cardShadow)"/>
+<clipPath id="clip-UserAccount.Role"><rect x="866.0" y="1514.0" width="326.0" height="138.0" rx="5" ry="5"/></clipPath>
+<rect x="866.0" y="1514.0" width="326.0" height="46.0" fill="#FEF3C7" clip-path="url(#clip-UserAccount.Role)"/>
+<line x1="866.0" y1="1560.0" x2="1192.0" y2="1560.0" stroke="#D97706" stroke-width="1.05"/>
+<circle cx="888.0" cy="1537.0" r="10.5" fill="#D97706"/>
+<text x="888.0" y="1541.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">E</text>
+<text x="1038.0" y="1531.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-style="italic" fill="#475569">«enumeration»</text>
+<text x="1038.0" y="1549.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="13.0" font-weight="700" fill="#0F172A">UserAccount.Role</text>
+<text x="880.0" y="1581.0" font-family="'Consolas', 'Segoe UI', monospace" font-size="11.2" font-weight="600" fill="#1E293B">STUDENT</text>
+<text x="880.0" y="1600.0" font-family="'Consolas', 'Segoe UI', monospace" font-size="11.2" font-weight="600" fill="#1E293B">LECTURER</text>
+<text x="880.0" y="1619.0" font-family="'Consolas', 'Segoe UI', monospace" font-size="11.2" font-weight="600" fill="#1E293B">TRAINING_OFFICE</text>
+<text x="880.0" y="1638.0" font-family="'Consolas', 'Segoe UI', monospace" font-size="11.2" font-weight="600" fill="#1E293B">ADMIN</text>
+</g>
+<g id="class-Enrollment.Status">
+<rect x="1412.0" y="1346.0" width="280.0" height="119.0" rx="5" ry="5" fill="#FFFFFF" stroke="#D97706" stroke-width="1.35" filter="url(#cardShadow)"/>
+<clipPath id="clip-Enrollment.Status"><rect x="1412.0" y="1346.0" width="280.0" height="119.0" rx="5" ry="5"/></clipPath>
+<rect x="1412.0" y="1346.0" width="280.0" height="46.0" fill="#FEF3C7" clip-path="url(#clip-Enrollment.Status)"/>
+<line x1="1412.0" y1="1392.0" x2="1692.0" y2="1392.0" stroke="#D97706" stroke-width="1.05"/>
+<circle cx="1434.0" cy="1369.0" r="10.5" fill="#D97706"/>
+<text x="1434.0" y="1373.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">E</text>
+<text x="1561.0" y="1363.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-style="italic" fill="#475569">«enumeration»</text>
+<text x="1561.0" y="1381.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="13.0" font-weight="700" fill="#0F172A">Enrollment.Status</text>
+<text x="1426.0" y="1413.0" font-family="'Consolas', 'Segoe UI', monospace" font-size="11.2" font-weight="600" fill="#1E293B">ENROLLED</text>
+<text x="1426.0" y="1432.0" font-family="'Consolas', 'Segoe UI', monospace" font-size="11.2" font-weight="600" fill="#1E293B">PENDING</text>
+<text x="1426.0" y="1451.0" font-family="'Consolas', 'Segoe UI', monospace" font-size="11.2" font-weight="600" fill="#1E293B">CANCELLED</text>
+</g>
+<g id="class-WaitlistEntry.Status">
+<rect x="1842.0" y="1346.0" width="280.0" height="119.0" rx="5" ry="5" fill="#FFFFFF" stroke="#D97706" stroke-width="1.35" filter="url(#cardShadow)"/>
+<clipPath id="clip-WaitlistEntry.Status"><rect x="1842.0" y="1346.0" width="280.0" height="119.0" rx="5" ry="5"/></clipPath>
+<rect x="1842.0" y="1346.0" width="280.0" height="46.0" fill="#FEF3C7" clip-path="url(#clip-WaitlistEntry.Status)"/>
+<line x1="1842.0" y1="1392.0" x2="2122.0" y2="1392.0" stroke="#D97706" stroke-width="1.05"/>
+<circle cx="1864.0" cy="1369.0" r="10.5" fill="#D97706"/>
+<text x="1864.0" y="1373.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">E</text>
+<text x="1991.0" y="1363.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-style="italic" fill="#475569">«enumeration»</text>
+<text x="1991.0" y="1381.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="13.0" font-weight="700" fill="#0F172A">WaitlistEntry.Status</text>
+<text x="1856.0" y="1413.0" font-family="'Consolas', 'Segoe UI', monospace" font-size="11.2" font-weight="600" fill="#1E293B">WAITING</text>
+<text x="1856.0" y="1432.0" font-family="'Consolas', 'Segoe UI', monospace" font-size="11.2" font-weight="600" fill="#1E293B">PROMOTED</text>
+<text x="1856.0" y="1451.0" font-family="'Consolas', 'Segoe UI', monospace" font-size="11.2" font-weight="600" fill="#1E293B">CANCELLED</text>
+</g>
+<g id="class-AuditLog">
+<rect x="2190.0" y="1346.0" width="330.0" height="190.0" rx="5" ry="5" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.35" filter="url(#cardShadow)"/>
+<clipPath id="clip-AuditLog"><rect x="2190.0" y="1346.0" width="330.0" height="190.0" rx="5" ry="5"/></clipPath>
+<rect x="2190.0" y="1346.0" width="330.0" height="46.0" fill="#EFF6FF" clip-path="url(#clip-AuditLog)"/>
+<line x1="2190.0" y1="1392.0" x2="2520.0" y2="1392.0" stroke="#2563EB" stroke-width="1.05"/>
+<circle cx="2212.0" cy="1369.0" r="10.5" fill="#2563EB"/>
+<text x="2212.0" y="1373.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">C</text>
+<text x="2364.0" y="1363.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10.2" font-style="italic" fill="#475569">«entity»</text>
+<text x="2364.0" y="1381.5" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="13.0" font-weight="700" fill="#0F172A">AuditLog</text>
+<text x="2202.0" y="1413.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">id : Long</tspan></text>
+<text x="2202.0" y="1432.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">actor : String</tspan></text>
+<text x="2202.0" y="1451.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">action : String</tspan></text>
+<text x="2202.0" y="1470.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">target : String</tspan></text>
+<text x="2202.0" y="1489.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">details : String</tspan></text>
+<text x="2202.0" y="1508.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2"><tspan fill="#DC2626" font-weight="700">-</tspan><tspan fill="#1E293B">createdAt : LocalDateTime</tspan></text>
+<line x1="2190.0" y1="1522.0" x2="2520.0" y2="1522.0" stroke="#CBD5E1" stroke-width="1.0"/>
+</g>
+<g id="legend"><rect x="36.0" y="1696.0" width="2508.0" height="40.0" rx="5" ry="5" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.1"/><text x="54.0" y="1720.5" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.2" font-weight="700" fill="#0F172A">Chú thích UML 2.5:</text><circle cx="201.0" cy="1716.0" r="9" fill="#2563EB"/><text x="201.0" y="1720.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10" font-weight="700" fill="#FFF">C</text><text x="218.0" y="1720.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.0" fill="#334155">Lớp Thực thể («entity»)</text><circle cx="396.0" cy="1716.0" r="9" fill="#D97706"/><text x="396.0" y="1720.0" text-anchor="middle" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="10" font-weight="700" fill="#FFF">E</text><text x="413.0" y="1720.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.0" fill="#334155">Kiểu Liệt kê («enumeration»)</text><line x1="621.0" y1="1716.0" x2="671.0" y2="1716.0" stroke="#334155" stroke-width="1.4"/><polyline points="663.0,1711.5 671.0,1716.0 663.0,1720.5" fill="none" stroke="#334155" stroke-width="1.4"/><text x="681.0" y="1720.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.0" fill="#334155">Kết hợp có hướng (Association 1 ──► 0..*)</text><polygon points="941.0,1716.0 948.0,1711.5 955.0,1716.0 948.0,1720.5" fill="#334155"/><line x1="955.0" y1="1716.0" x2="996.0" y2="1716.0" stroke="#334155" stroke-width="1.4"/><polyline points="988.0,1711.5 996.0,1716.0 988.0,1720.5" fill="none" stroke="#334155" stroke-width="1.4"/><text x="1006.0" y="1720.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.0" fill="#334155">Hợp thành (Composition ◆──►)</text><line x1="1226.0" y1="1716.0" x2="1276.0" y2="1716.0" stroke="#334155" stroke-width="1.4" stroke-dasharray="6,4"/><polyline points="1268.0,1711.5 1276.0,1716.0 1268.0,1720.5" fill="none" stroke="#334155" stroke-width="1.4"/><text x="1286.0" y="1720.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.0" fill="#334155">Phụ thuộc Enum (Dependency - -►)</text><path d="M 1516.0 1716.0 L 1531.0 1716.0 A 6 6 0 0 1 1543.0 1716.0 L 1558.0 1716.0" fill="none" stroke="#334155" stroke-width="1.4"/><line x1="1537.0" y1="1705.0" x2="1537.0" y2="1727.0" stroke="#334155" stroke-width="1.4"/><text x="1568.0" y="1720.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.0" fill="#334155">Cầu nhảy tránh cắt đường nối</text><text x="1781.0" y="1720.0" font-family="'Segoe UI', 'Inter', Arial, sans-serif" font-size="11.0" fill="#334155"><tspan fill="#16A34A" font-weight="700">+</tspan> public   <tspan fill="#DC2626" font-weight="700">-</tspan> private   <tspan text-decoration="underline">gạch chân</tspan> = static</text></g>
+</svg>

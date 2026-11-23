@@ -1,0 +1,397 @@
+@startuml entity-design-class-diagram
+title BIỂU ĐỒ LỚP THIẾT KẾ TẦNG THỰC THỂ (ENTITY DESIGN CLASS DIAGRAM)
+
+top to bottom direction
+skinparam linetype ortho
+skinparam shadowing false
+skinparam roundcorner 8
+skinparam nodesep 55
+skinparam ranksep 65
+skinparam padding 6
+skinparam packageStyle rectangle
+skinparam classAttributeIconSize 0
+
+skinparam class {
+    BackgroundColor #FFFFFF
+    HeaderBackgroundColor #EFF6FF
+    BorderColor #2563EB
+    FontColor #0F172A
+    FontName "Segoe UI"
+    FontSize 12
+    AttributeFontName "Segoe UI"
+    AttributeFontSize 11
+    StereotypeFontSize 10
+    ArrowColor #334155
+    ArrowThickness 1.3
+}
+
+skinparam enum {
+    BackgroundColor #FFFFFF
+    HeaderBackgroundColor #FEF3C7
+    BorderColor #D97706
+}
+
+' =========================================================
+' PACKAGE 1: Nhóm Học vụ & Chương trình
+' =========================================================
+package "com.courseregistration.entity (Nhóm Học vụ & Chương trình)" as PkgAcademic #F8FAFC {
+
+    class Department <<entity>> {
+        - id : Long
+        - code : String
+        - name : String
+        --
+        + getCode() : String
+        + getName() : String
+    }
+
+    class Curriculum <<entity>> {
+        - id : Long
+        - code : String
+        - name : String
+        - program : String
+        - cohort : String
+        - version : String
+        - status : Curriculum.Status
+        --
+        + update(name, program, cohort, version, status) : void
+    }
+
+    class Lecturer <<entity>> {
+        - id : Long
+        - lecturerCode : String
+        - fullName : String
+        - title : String
+        - email : String
+        - departmentEntity : Department
+        --
+        + getLecturerCode() : String
+        + getFullName() : String
+    }
+
+    class AcademicProgram <<entity>> {
+        - id : Long
+        - code : String
+        - name : String
+        - department : Department
+        --
+        + getCode() : String
+        + getDepartment() : Department
+    }
+
+    class CurriculumCourse <<entity>> {
+        - id : Long
+        - recommendedSemester : int
+        - requiredCourse : boolean
+        - sortOrder : int
+        --
+        + isRequiredCourse() : boolean
+    }
+
+    class Course <<entity>> {
+        - id : Long
+        - code : String
+        - name : String
+        - department : String
+        - credits : int
+        - prerequisite : String
+        - active : boolean
+        - prerequisiteCodes : Set<String>
+        --
+        + update(name, dept, credits, prereq, descr) : void
+        + setActive(active : boolean) : void
+    }
+
+    class AdministrativeClass <<entity>> {
+        - id : Long
+        - code : String
+        - cohort : String
+        - program : AcademicProgram
+        --
+        + getCode() : String
+        + getCohort() : String
+    }
+
+    class CourseCondition <<entity>> {
+        {static} + TYPE_PREREQUISITE : String = "Tiên quyết"
+        {static} + TYPE_PRIOR_STUDY : String = "Học trước"
+        {static} + TYPE_COREQUISITE : String = "Song hành"
+        - id : Long
+        - conditionType : String
+        --
+        + isPrerequisite() : boolean
+        + isSatisfiedBy(completed, prior, concurrent) : boolean
+        {static} + evaluate(type, code, completed, prior, concurrent) : boolean
+    }
+
+    class Student <<entity>> {
+        - id : Long
+        - studentCode : String
+        - fullName : String
+        - program : String
+        - cohort : String
+        - email : String
+        - studyStatus : String
+        - completedCourseCodes : Set<String>
+        --
+        + getStudentCode() : String
+        + getAdministrativeClass() : AdministrativeClass
+        + getCompletedCourseCodes() : Set<String>
+    }
+
+    ' Grid alignment hints (3 columns x 3 rows)
+    together {
+        class Department
+        class Curriculum
+        class Lecturer
+    }
+    together {
+        class AcademicProgram
+        class CurriculumCourse
+        class Course
+    }
+    together {
+        class AdministrativeClass
+        class CourseCondition
+        class Student
+    }
+    Department -[hidden]right-> Curriculum
+    Curriculum -[hidden]right-> Lecturer
+    AcademicProgram -[hidden]right-> CurriculumCourse
+    CurriculumCourse -[hidden]right-> Course
+    AdministrativeClass -[hidden]right-> CourseCondition
+    CourseCondition -[hidden]right-> Student
+}
+
+' =========================================================
+' PACKAGE 2: Nhóm Mở lớp, Đăng ký & Bảng điểm
+' =========================================================
+package "com.courseregistration.entity (Nhóm Mở lớp, Đăng ký & Bảng điểm)" as PkgRegistration #F0F7FF {
+
+    class CourseSection <<entity>> {
+        - id : String
+        - sectionCode : String
+        - schedule : String
+        - room : String
+        - capacity : int
+        - status : CourseSection.Status
+        - scheduleReviewRequired : boolean
+        --
+        + getEffectiveMeetings() : List<SectionMeeting>
+        + replaceMeetings(values : List<SectionMeeting>) : void
+        + totalEnrolled(local : long) : int
+        + update(...) : void
+    }
+
+    class SectionMeeting <<entity>> {
+        - id : Long
+        - dayOfWeek : Integer
+        - startsAt : LocalTime
+        - endsAt : LocalTime
+        - startPeriod : Integer
+        - periodCount : Integer
+        - room : String
+        - weeksExpression : String
+        --
+        + hasValidTime() : boolean
+        + overlaps(other : SectionMeeting) : boolean
+        + summary() : String
+    }
+
+    class Semester <<entity>> {
+        - id : Long
+        - code : String
+        - name : String
+        - academicYear : String
+        - startsAt : LocalDate
+        - endsAt : LocalDate
+        - currentTerm : boolean
+        - status : Semester.Status
+        --
+        + isCurrentTerm() : boolean
+        + isRegistrationAlwaysOpen() : boolean
+    }
+
+    class AcademicResult <<entity>> {
+        {static} + OUTCOME_PASSED : String = "Đạt"
+        {static} + OUTCOME_FAILED : String = "Chưa đạt"
+        - id : Long
+        - outcome : String
+        - grade : BigDecimal
+        - letterGrade : String
+        --
+        + isPassed() : boolean
+        + isFailed() : boolean
+        + studiedBefore(targetTerm : Semester) : boolean
+        + formatTranscriptLine() : String
+    }
+
+    class RegistrationPeriod <<entity>> {
+        - id : Long
+        - startsAt : LocalDateTime
+        - endsAt : LocalDateTime
+        - status : RegistrationPeriod.Status
+        --
+        + getEffectiveStatus() : RegistrationPeriod.Status
+        + update(semester, startsAt, endsAt, status) : void
+    }
+
+    class Enrollment <<entity>> {
+        - id : Long
+        - enrolledAt : LocalDateTime
+        - status : Enrollment.Status
+        --
+        + approve() : void
+        + cancel() : void
+        + reEnroll() : void
+    }
+
+    class WaitlistEntry <<entity>> {
+        - id : Long
+        - createdAt : LocalDateTime
+        - status : WaitlistEntry.Status
+        --
+        + promote() : void
+        + cancel() : void
+        + rejoin() : void
+    }
+
+    ' Grid alignment hints
+    together {
+        class CourseSection
+        class SectionMeeting
+        class Semester
+    }
+    together {
+        class AcademicResult
+        class RegistrationPeriod
+    }
+    together {
+        class Enrollment
+        class WaitlistEntry
+    }
+    CourseSection -[hidden]right-> SectionMeeting
+    SectionMeeting -[hidden]right-> Semester
+    AcademicResult -[hidden]right-> RegistrationPeriod
+    Enrollment -[hidden]right-> WaitlistEntry
+    CourseSection -[hidden]down-> AcademicResult
+    AcademicResult -[hidden]down-> Enrollment
+    SectionMeeting -[hidden]down-> WaitlistEntry
+}
+
+' =========================================================
+' PACKAGE 3: Nhóm Tài khoản, OTP & Kiểm toán
+' =========================================================
+package "com.courseregistration.entity (Nhóm Tài khoản, OTP & Kiểm toán)" as PkgSecurity #FDF6F3 {
+
+    class UserAccount <<entity>> {
+        - id : Long
+        - username : String
+        - passwordHash : String
+        - role : UserAccount.Role
+        - status : UserAccount.Status
+        - studentCode : String
+        - lecturerCode : String
+        - email : String
+        --
+        + setPasswordHash(hash : String) : void
+        + setStatus(status : Status) : void
+    }
+
+    class PasswordResetToken <<entity>> {
+        - id : Long
+        - tokenHash : String
+        - expiresAt : LocalDateTime
+        - usedAt : LocalDateTime
+        - attempts : Integer
+        --
+        + recordFailedAttempt() : void
+        + markUsed() : void
+    }
+
+    class RolePermission <<entity>> {
+        - id : Long
+        - role : UserAccount.Role
+        - permission : String
+    }
+
+    enum "UserAccount.Role" as UserAccountRole <<enumeration>> {
+        STUDENT
+        LECTURER
+        TRAINING_OFFICE
+        ADMIN
+    }
+
+    enum "Enrollment.Status" as EnrollmentStatus <<enumeration>> {
+        ENROLLED
+        PENDING
+        CANCELLED
+    }
+
+    enum "WaitlistEntry.Status" as WaitlistEntryStatus <<enumeration>> {
+        WAITING
+        PROMOTED
+        CANCELLED
+    }
+
+    class AuditLog <<entity>> {
+        - id : Long
+        - actor : String
+        - action : String
+        - target : String
+        - details : String
+        - createdAt : LocalDateTime
+    }
+
+    UserAccount -[hidden]right-> PasswordResetToken
+    PasswordResetToken -[hidden]right-> RolePermission
+    RolePermission -[hidden]right-> EnrollmentStatus
+    EnrollmentStatus -[hidden]right-> WaitlistEntryStatus
+    WaitlistEntryStatus -[hidden]right-> AuditLog
+}
+
+' Keep Package 1 left of Package 2, and Package 3 below
+PkgAcademic -[hidden]right-> PkgRegistration
+PkgAcademic -[hidden]down-> PkgSecurity
+PkgRegistration -[hidden]down-> PkgSecurity
+
+' =========================================================
+' RELATIONSHIPS (25 Quan hệ)
+' =========================================================
+
+' Package 1
+Department "1" --> "0..*" AcademicProgram
+AcademicProgram "1" --> "0..*" AdministrativeClass
+Department "1" --> "0..*" Lecturer
+AdministrativeClass "1" --> "0..*" Student
+Curriculum "1" *-- "0..*" CurriculumCourse
+Course "1" -left-> "0..*" CurriculumCourse
+Course "1" --> "0..*" CourseCondition : course
+Course "1" --> "0..*" CourseCondition : conditionCourse
+
+' Cross-Package 1 -> 2
+Lecturer "1" --> "0..*" CourseSection
+Course "1" --> "0..*" CourseSection
+Course "1" --> "0..*" AcademicResult
+Student "1" --> "0..*" AcademicResult
+Student "1" --> "0..*" Enrollment
+Student "1" --> "0..*" WaitlistEntry
+
+' Package 2
+CourseSection "1" *-- "0..*" SectionMeeting
+Semester "1" --> "0..*" RegistrationPeriod
+Semester "1" --> "0..*" CourseSection
+Semester "1" --> "0..*" AcademicResult
+CourseSection "1" --> "0..*" Enrollment
+CourseSection "1" --> "0..*" WaitlistEntry
+
+' Cross-Package 2 -> 3
+Enrollment ..> EnrollmentStatus
+WaitlistEntry ..> WaitlistEntryStatus
+
+' Package 3
+UserAccount "1" *-- "0..*" PasswordResetToken
+UserAccount ..> UserAccountRole
+RolePermission ..> UserAccountRole
+
+@enduml
