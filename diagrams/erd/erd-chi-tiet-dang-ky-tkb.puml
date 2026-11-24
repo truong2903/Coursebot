@@ -1,0 +1,175 @@
+@startuml erd-chi-tiet-dang-ky-tkb
+set namespaceSeparator none
+hide circle
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam linetype ortho
+
+skinparam class {
+  BackgroundColor #FFFFFF
+  BorderColor #1F4E79
+  HeaderBackgroundColor #D9E2F3
+  ArrowColor #1F4E79
+}
+
+title SƠ ĐỒ ERD CHI TIẾT RÀNG BUỘC TOÀN VẸN CỤM ĐĂNG KÝ, ĐIỀU KIỆN & THỜI KHÓA BIỂU
+
+entity "students" as students {
+  * **id** : bigint <<PK, IDENTITY>>
+  --
+  * student_code : varchar(30) <<UNIQUE>>
+  * full_name : varchar(120) <<NOT NULL>>
+  * program : varchar(120) <<NOT NULL>>
+  cohort : varchar(20)
+  email : varchar(160)
+  phone : varchar(30)
+  study_status : varchar(40)
+  administrative_class_code : varchar(40) <<FK>>
+}
+
+entity "courses" as courses {
+  * **id** : bigint <<PK, IDENTITY>>
+  --
+  * code : varchar(20) <<UNIQUE>>
+  * name : varchar(160) <<NOT NULL>>
+  * credits : integer <<NOT NULL>>
+  * department : varchar(120) <<NOT NULL>>
+  * prerequisite : varchar(160) <<NOT NULL>>
+  active : boolean
+  description : varchar(2000)
+  syllabus_url : varchar(500)
+}
+
+entity "course_conditions" as course_conditions {
+  * **id** : bigint <<PK, IDENTITY>>
+  --
+  * course_id : bigint <<FK>>
+  * condition_course_id : bigint <<FK>>
+  * condition_type : varchar(40) <<NOT NULL>>
+  --
+  <<UNIQUE (course_id, condition_course_id, condition_type)>>
+  <<Values: "Tiên quyết" | "Học trước" | "Song hành">>
+}
+
+entity "semesters" as semesters {
+  * **id** : bigint <<PK, IDENTITY>>
+  --
+  * code : varchar(30) <<UNIQUE>>
+  * name : varchar(100) <<NOT NULL>>
+  academic_year : varchar(20)
+  term_number : integer
+  starts_at : date <<Mốc tính hạn hủy 7 ngày>>
+  ends_at : date
+  week_one_starts_at : date
+  teaching_weeks : integer
+  registration_open_at : date
+  registration_close_at : date
+  * registration_always_open : boolean
+  status : varchar(20) <<CHECK: PLANNED|ACTIVE|COMPLETED|ARCHIVED>>
+}
+
+entity "registration_periods" as registration_periods {
+  * **id** : bigint <<PK, IDENTITY>>
+  --
+  * semester_id : bigint <<FK, UNIQUE (1:1)>>
+  * starts_at : timestamp(6) <<NOT NULL>>
+  * ends_at : timestamp(6) <<NOT NULL>>
+  * status : varchar(20) <<CHECK: SCHEDULED|OPEN|CLOSED|CANCELLED>>
+}
+
+entity "course_sections" as course_sections {
+  * **id** : varchar(40) <<PK>>
+  --
+  * section_code : varchar(30) <<NOT NULL>>
+  * course_id : bigint <<FK, NOT NULL>>
+  * semester_id : bigint <<FK, NOT NULL>>
+  lecturer_id : bigint <<FK, NULLABLE>>
+  * capacity : integer <<NOT NULL>>
+  imported_enrolled : integer
+  * room : varchar(40) <<NOT NULL>>
+  * schedule : varchar(100) <<NOT NULL>>
+  * color : varchar(20) <<NOT NULL>>
+  section_type : varchar(40)
+  linked_section_code : varchar(40)
+  source_status : varchar(80)
+  source_import_key : varchar(120)
+  * schedule_review_required : boolean <<DEFAULT false>>
+  status : varchar(20) <<CHECK: OPEN|CLOSED|CANCELLED>>
+  --
+  <<Row Lock: PESSIMISTIC_WRITE (FOR NO KEY UPDATE)>>
+}
+
+entity "section_meetings" as section_meetings {
+  * **id** : bigint <<PK, IDENTITY>>
+  --
+  * section_id : varchar(40) <<FK, NOT NULL>>
+  day_of_week : integer <<1..7>>
+  start_period : integer <<1..12>>
+  period_count : integer
+  starts_at : time(6)
+  ends_at : time(6)
+  room : varchar(80)
+  weeks_expression : varchar(500) <<VD: 1-15>>
+  time_raw : varchar(40)
+  source_row : integer
+  time_source_status : varchar(100)
+  --
+  <<INDEX B-Tree: idx_meeting_section(section_id)>>
+}
+
+entity "enrollments" as enrollments {
+  * **id** : bigint <<PK, IDENTITY>>
+  --
+  * student_id : bigint <<FK, NOT NULL>>
+  * section_id : varchar(40) <<FK, NOT NULL>>
+  * status : varchar(20) <<CHECK: ENROLLED|CANCELLED|PENDING>>
+  * enrolled_at : timestamp(6) <<NOT NULL>>
+  * enrollment_date_only : boolean <<DEFAULT false>>
+  --
+  <<UNIQUE (student_id, section_id)>>
+}
+
+entity "waitlist_entries" as waitlist_entries {
+  * **id** : bigint <<PK, IDENTITY>>
+  --
+  * student_id : bigint <<FK, NOT NULL>>
+  * section_id : varchar(40) <<FK, NOT NULL>>
+  * status : varchar(20) <<CHECK: WAITING|PROMOTED|CANCELLED>>
+  * created_at : timestamp(6) <<Thứ tự hàng đợi FIFO>>
+  --
+  <<UNIQUE (student_id, section_id)>>
+}
+
+entity "academic_results" as academic_results {
+  * **id** : bigint <<PK, IDENTITY>>
+  --
+  * student_id : bigint <<FK, NOT NULL>>
+  * course_id : bigint <<FK, NOT NULL>>
+  * semester_id : bigint <<FK, NOT NULL>>
+  grade : numeric(4,2) <<Thang 10>>
+  letter_grade : varchar(10) <<A, B+, B, C+, C, D+, D, F>>
+  * outcome : varchar(20) <<Đạt | Chưa đạt>>
+  --
+  <<UNIQUE (student_id, course_id, semester_id)>>
+}
+
+courses ||--o{ course_conditions : "course_id"
+courses ||--o{ course_conditions : "condition_course_id"
+semesters ||--o| registration_periods : "semester_id"
+courses ||--o{ course_sections : "course_id"
+semesters ||--o{ course_sections : "semester_id"
+course_sections ||--|{ section_meetings : "section_id"
+
+students ||--o{ enrollments : "student_id"
+course_sections ||--o{ enrollments : "section_id"
+
+students ||--o{ waitlist_entries : "student_id"
+course_sections ||--o{ waitlist_entries : "section_id"
+
+students ||--o{ academic_results : "student_id"
+courses ||--o{ academic_results : "course_id"
+semesters ||--o{ academic_results : "semester_id"
+
+@enduml

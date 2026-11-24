@@ -1,0 +1,316 @@
+@startuml erd-tong-the-25-bang
+set namespaceSeparator none
+hide circle
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 10
+skinparam linetype ortho
+skinparam packageStyle rectangle
+
+skinparam class {
+  BackgroundColor #FFFFFF
+  BorderColor #2B579A
+  HeaderBackgroundColor #D9E2F3
+  ArrowColor #1F4E79
+}
+
+title SƠ ĐỒ THỰC THỂ LIÊN KẾT VẬT LÝ TỔNG THỂ 25 BẢNG CSDL POSTGRESQL 16 (MASTER PHYSICAL ERD)
+
+package "1. Tổ chức Đào tạo & Hồ sơ Học vụ (6 bảng)" #F8FAFC {
+  entity "departments" as departments {
+    * **code** : varchar(40) <<PK>>
+    --
+    * name : varchar(160)
+  }
+
+  entity "academic_programs" as academic_programs {
+    * **code** : varchar(40) <<PK>>
+    --
+    * name : varchar(160)
+    * department_code : varchar(40) <<FK>>
+  }
+
+  entity "administrative_classes" as administrative_classes {
+    * **code** : varchar(40) <<PK>>
+    --
+    * cohort : varchar(20)
+    * program_code : varchar(40) <<FK>>
+  }
+
+  entity "students" as students {
+    * **id** : bigint <<PK>>
+    --
+    * student_code : varchar(30) <<UK>>
+    * full_name : varchar(120)
+    * program : varchar(120)
+    cohort : varchar(20)
+    email : varchar(160)
+    phone : varchar(30)
+    study_status : varchar(40)
+    administrative_class_code : varchar(40) <<FK>>
+  }
+
+  entity "student_completed_courses" as student_completed_courses {
+    * student_id : bigint <<FK>>
+    course_code : varchar(20)
+  }
+
+  entity "lecturers" as lecturers {
+    * **id** : bigint <<PK>>
+    --
+    * lecturer_code : varchar(30) <<UK>>
+    * full_name : varchar(120)
+    * department : varchar(120)
+    academic_degree : varchar(80)
+    academic_title : varchar(80)
+    email : varchar(160)
+    phone : varchar(30)
+    subject_group : varchar(160)
+    academic_department_code : varchar(40) <<FK>>
+  }
+}
+
+package "2. Học phần, Điều kiện & Khung CTĐT (5 bảng)" #F0FDF4 {
+  entity "courses" as courses {
+    * **id** : bigint <<PK>>
+    --
+    * code : varchar(20) <<UK>>
+    * name : varchar(160)
+    * credits : integer
+    * department : varchar(120)
+    * prerequisite : varchar(160)
+    active : boolean
+    description : varchar(2000)
+    syllabus_url : varchar(500)
+  }
+
+  entity "course_prerequisites" as course_prerequisites {
+    * course_id : bigint <<FK>>
+    prerequisite_code : varchar(20)
+  }
+
+  entity "course_conditions" as course_conditions {
+    * **id** : bigint <<PK>>
+    --
+    * course_id : bigint <<FK,UK>>
+    * condition_course_id : bigint <<FK,UK>>
+    * condition_type : varchar(40) <<UK>>
+  }
+
+  entity "curricula" as curricula {
+    * **id** : bigint <<PK>>
+    --
+    * code : varchar(40) <<UK>>
+    * name : varchar(160)
+    * program : varchar(120)
+    * cohort : varchar(20)
+    * version : varchar(40)
+    * status : varchar(20)
+  }
+
+  entity "curriculum_courses" as curriculum_courses {
+    * **id** : bigint <<PK>>
+    --
+    * curriculum_id : bigint <<FK,UK>>
+    * course_id : bigint <<FK,UK>>
+    * suggested_semester : varchar(40)
+    * required_course : boolean
+    * order_index : integer
+  }
+}
+
+package "3. Học kỳ, Lớp học phần & Thời khóa biểu (5 bảng)" #EFF6FF {
+  entity "semesters" as semesters {
+    * **id** : bigint <<PK>>
+    --
+    * code : varchar(30) <<UK>>
+    * name : varchar(100)
+    academic_year : varchar(20)
+    term_number : integer
+    starts_at : date
+    ends_at : date
+    week_one_starts_at : date
+    teaching_weeks : integer
+    registration_open_at : date
+    registration_close_at : date
+    * registration_always_open : boolean
+    status : varchar(20)
+  }
+
+  entity "registration_periods" as registration_periods {
+    * **id** : bigint <<PK>>
+    --
+    * semester_id : bigint <<FK,UK>>
+    * starts_at : timestamp(6)
+    * ends_at : timestamp(6)
+    * status : varchar(20)
+  }
+
+  entity "teaching_periods" as teaching_periods {
+    * **code** : integer <<PK>>
+    --
+    * session_name : varchar(20)
+    * starts_at : time(6)
+    * ends_at : time(6)
+    * confirmation_status : varchar(100)
+  }
+
+  entity "course_sections" as course_sections {
+    * **id** : varchar(40) <<PK>>
+    --
+    * section_code : varchar(30)
+    * course_id : bigint <<FK>>
+    * semester_id : bigint <<FK>>
+    lecturer_id : bigint <<FK>>
+    * capacity : integer
+    imported_enrolled : integer
+    * room : varchar(40)
+    * schedule : varchar(100)
+    * color : varchar(20)
+    section_type : varchar(40)
+    linked_section_code : varchar(40)
+    source_status : varchar(80)
+    source_import_key : varchar(120)
+    * schedule_review_required : boolean
+    status : varchar(20)
+  }
+
+  entity "section_meetings" as section_meetings {
+    * **id** : bigint <<PK>>
+    --
+    * section_id : varchar(40) <<FK,IDX>>
+    day_of_week : integer
+    start_period : integer
+    period_count : integer
+    starts_at : time(6)
+    ends_at : time(6)
+    room : varchar(80)
+    weeks_expression : varchar(500)
+    time_raw : varchar(40)
+    source_row : integer
+    time_source_status : varchar(100)
+  }
+}
+
+package "4. Giao dịch Đăng ký, Hàng chờ & Bảng điểm (3 bảng)" #FEFCE8 {
+  entity "enrollments" as enrollments {
+    * **id** : bigint <<PK>>
+    --
+    * student_id : bigint <<FK,UK>>
+    * section_id : varchar(40) <<FK,UK>>
+    * status : varchar(20)
+    * enrolled_at : timestamp(6)
+    * enrollment_date_only : boolean
+  }
+
+  entity "waitlist_entries" as waitlist_entries {
+    * **id** : bigint <<PK>>
+    --
+    * student_id : bigint <<FK,UK>>
+    * section_id : varchar(40) <<FK,UK>>
+    * status : varchar(20)
+    * created_at : timestamp(6)
+  }
+
+  entity "academic_results" as academic_results {
+    * **id** : bigint <<PK>>
+    --
+    * student_id : bigint <<FK,UK>>
+    * course_id : bigint <<FK,UK>>
+    * semester_id : bigint <<FK,UK>>
+    grade : numeric(4,2)
+    letter_grade : varchar(10)
+    * outcome : varchar(20)
+  }
+}
+
+package "5. Bảo mật RBAC, OTP, Kiểm toán & Đối soát Import (6 bảng)" #FFF7ED {
+  entity "user_accounts" as user_accounts {
+    * **id** : bigint <<PK>>
+    --
+    * username : varchar(80) <<UK>>
+    * password_hash : varchar(120)
+    * role : varchar(24)
+    * status : varchar(24)
+    email : varchar(160)
+    student_code : varchar(30)
+    lecturer_code : varchar(30)
+    * created_at : timestamp(6)
+    * updated_at : timestamp(6)
+  }
+
+  entity "password_reset_tokens" as password_reset_tokens {
+    * **id** : bigint <<PK>>
+    --
+    * account_id : bigint <<FK>>
+    * token_hash : varchar(64) <<UK>>
+    * expires_at : timestamp(6)
+    used_at : timestamp(6)
+    attempts : integer
+  }
+
+  entity "role_permissions" as role_permissions {
+    * **id** : bigint <<PK>>
+    --
+    * role_name : varchar(24) <<UK>>
+    * permission_key : varchar(50) <<UK>>
+  }
+
+  entity "audit_logs" as audit_logs {
+    * **id** : bigint <<PK>>
+    --
+    * actor : varchar(80)
+    * action : varchar(80)
+    target : varchar(160)
+    details : varchar(2000)
+    * created_at : timestamp(6)
+  }
+
+  entity "academic_data_imports" as academic_data_imports {
+    * **sha256** : varchar(64) <<PK>>
+    --
+    * imported_at : timestamp(6)
+    manifest_json : text
+  }
+
+  entity "timetable_app_imports" as timetable_app_imports {
+    * **sha256** : varchar(64) <<PK>>
+    --
+    * imported_at : timestamp(6)
+  }
+}
+
+departments ||--o{ academic_programs : "department_code"
+departments ||--o{ lecturers : "academic_department_code"
+academic_programs ||--o{ administrative_classes : "program_code"
+administrative_classes ||--o{ students : "administrative_class_code"
+students ||--o{ student_completed_courses : "student_id"
+
+courses ||--o{ course_prerequisites : "course_id"
+courses ||--o{ course_conditions : "course_id (môn đích)"
+courses ||--o{ course_conditions : "condition_course_id (môn ĐK)"
+curricula ||--|{ curriculum_courses : "curriculum_id"
+courses ||--o{ curriculum_courses : "course_id"
+
+semesters ||--o| registration_periods : "semester_id (1-1)"
+semesters ||--o{ course_sections : "semester_id"
+courses ||--o{ course_sections : "course_id"
+lecturers |o--o{ course_sections : "lecturer_id"
+course_sections ||--|{ section_meetings : "section_id"
+teaching_periods ..> section_meetings : "start_period (tham chiếu tiết)"
+
+students ||--o{ enrollments : "student_id"
+course_sections ||--o{ enrollments : "section_id"
+students ||--o{ waitlist_entries : "student_id"
+course_sections ||--o{ waitlist_entries : "section_id"
+students ||--o{ academic_results : "student_id"
+courses ||--o{ academic_results : "course_id"
+semesters ||--o{ academic_results : "semester_id"
+
+user_accounts ||--o{ password_reset_tokens : "account_id"
+user_accounts ..> students : "student_code"
+user_accounts ..> lecturers : "lecturer_code"
+user_accounts ..> role_permissions : "role = role_name"
+
+@enduml
