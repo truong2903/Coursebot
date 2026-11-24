@@ -8,9 +8,18 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./assets/css/auth.css?v=20261109e">
+  <link rel="stylesheet" href="./assets/css/theme.css?v=20261125a">
+  <script src="./assets/js/core/theme.js?v=20261125a"></script>
   <script type="module" src="./assets/js/features/auth/login.js"></script>
 </head>
 <body class="login-body">
+  <button class="theme-toggle-btn theme-toggle-floating" type="button" data-theme-toggle aria-label="Chuyển giao diện sáng/tối" title="Chuyển giao diện sáng/tối">
+    <span class="theme-icon" aria-hidden="true">
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+    </span>
+    <span class="theme-label">Tối</span>
+  </button>
   <div class="login-layout">
     <!-- Cột trái: Hero Showcase với Animated Book loading.gif -->
     <aside class="login-hero-panel">

@@ -9,6 +9,8 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/workspace.css?v=20261109d">
   <link rel="stylesheet" href="/assets/css/workspace-extra.css?v=20261109d">
+  <link rel="stylesheet" href="/assets/css/theme.css?v=20261125a">
+  <script src="/assets/js/core/theme.js?v=20261125a"></script>
   <script type="module" src="/assets/js/features/workspace/workspace.js?v=20261109d"></script>
 </head>
 <body>
@@ -47,6 +49,13 @@
         </div>
         <div class="workspace-top-actions" id="workspaceTopActions">
           <div class="workspace-semester" id="semesterLabel">—</div>
+          <button class="theme-toggle-btn" type="button" data-theme-toggle aria-label="Chuyển giao diện sáng/tối" title="Chuyển giao diện sáng/tối">
+            <span class="theme-icon" aria-hidden="true">
+              <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+              <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+            </span>
+            <span class="theme-label">Tối</span>
+          </button>
           <div class="account-menu" id="accountMenu">
             <button class="top-user account-menu-toggle" id="accountMenuToggle" type="button" aria-label="Tùy chọn tài khoản" aria-expanded="false" aria-controls="accountMenuPanel">
               <span class="avatar small" id="topAvatar">—</span>
