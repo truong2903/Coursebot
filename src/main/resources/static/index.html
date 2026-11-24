@@ -42,7 +42,7 @@
           </span>
           <span>Đăng ký học phần</span>
         </a>
-        <a class="nav-item" href="#schedule">
+        <button class="nav-item nav-button" id="scheduleOpen" type="button">
           <span class="nav-icon" aria-hidden="true">
             <svg class="anim-svg anim-calendar" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
@@ -57,7 +57,7 @@
             </svg>
           </span>
           <span>Thời khóa biểu</span>
-        </a>
+        </button>
         <button class="nav-item nav-button" id="historyOpen" type="button">
           <span class="nav-icon" aria-hidden="true">
             <svg class="anim-svg anim-clock" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -155,11 +155,11 @@
     </main>
   </div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <dialog id="scheduleDialog" class="schedule-dialog"><div class="dialog-head"><div><span class="eyebrow">HỌC KỲ HIỆN TẠI</span><h2>Thời khóa biểu của bạn</h2></div><div class="dialog-actions"><button id="exportSchedule" class="secondary-button" type="button">Xuất CSV</button><button id="closeDialog" aria-label="Đóng">×</button></div></div><div id="dialogSchedule"></div></dialog>
+  <dialog id="scheduleDialog" class="schedule-dialog history-dialog"><div class="dialog-head"><div><span class="eyebrow">HỌC KỲ HIỆN TẠI</span><h2>Thời khóa biểu của bạn</h2></div><div class="dialog-actions"><button id="exportSchedule" class="secondary-button" type="button">Xuất CSV</button><button id="closeDialog" aria-label="Đóng">×</button></div></div><div id="dialogSchedule"></div></dialog>
   <dialog id="courseDialog" class="schedule-dialog"><div class="dialog-head"><div><span class="eyebrow">CHI TIẾT LỚP HỌC PHẦN</span><h2 id="courseDialogTitle">Thông tin lớp</h2></div><button id="closeCourseDialog" aria-label="Đóng">×</button></div><div id="courseDialogBody"></div></dialog>
   <dialog id="historyDialog" class="schedule-dialog history-dialog"><div class="dialog-head"><div><span class="eyebrow">TRA CỨU</span><h2>Lịch sử đăng ký</h2></div><button id="closeHistoryDialog" aria-label="Đóng">×</button></div><div id="historyDialogBody"></div></dialog>
   <dialog id="transcriptDialog" class="schedule-dialog history-dialog"><div class="dialog-head"><div><span class="eyebrow">HỒ SƠ HỌC TẬP</span><h2>Kết quả học tập · Bảng điểm</h2></div><div class="dialog-actions"><button id="exportTranscript" class="secondary-button" type="button">Xuất CSV</button><button id="closeTranscriptDialog" aria-label="Đóng">×</button></div></div><div id="transcriptDialogBody"></div></dialog>
   <dialog id="curriculumDialog" class="schedule-dialog history-dialog"><div class="dialog-head"><div><span class="eyebrow">CHƯƠNG TRÌNH ĐÀO TẠO</span><h2 id="curriculumTitle">Khung chương trình</h2></div><button id="closeCurriculumDialog" aria-label="Đóng">×</button></div><div id="curriculumDialogBody"></div></dialog>
-  <script type="module" src="/assets/js/features/student/dashboard.js?v=20261115b"></script>
+  <script type="module" src="/assets/js/features/student/dashboard.js?v=20261125a"></script>
 </body>
 </html>

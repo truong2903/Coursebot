@@ -442,10 +442,13 @@ $('#chatForm').addEventListener('submit', event => { event.preventDefault(); sen
 $('#assistant .suggestions').addEventListener('click',event=>{const button=event.target.closest('[data-question]');if(button)sendChat(button.dataset.question);});
 $('#clearChat').addEventListener('click',()=>{if(chatBusy)return;chatHistory.length=0;$('#chatBody').replaceChildren();appendMessage('Cuộc trò chuyện mới. Bạn muốn tra cứu lịch học, điểm, điều kiện hay gợi ý môn học?', 'bot');});
 loadChatStatus();
-$('#viewSchedule').addEventListener('click', () => {
-  $('#scheduleDialog').showModal();
+function openScheduleDialog() {
+  const dialog = $('#scheduleDialog');
+  if (!dialog.open) dialog.showModal();
   loadStudentSchedule(state.semesterCode);
-});
+}
+$('#scheduleOpen')?.addEventListener('click', openScheduleDialog);
+$('#viewSchedule').addEventListener('click', openScheduleDialog);
 let selectedSchedule;
 async function loadStudentSchedule(semesterCode='') {
   const target=$('#dialogSchedule');target.innerHTML='<div class="dialog-empty">Đang tải thời khóa biểu…</div>';
@@ -453,7 +456,33 @@ async function loadStudentSchedule(semesterCode='') {
     selectedSchedule=await apiGet(`/api/student/schedule${semesterCode?`?semester=${encodeURIComponent(semesterCode)}`:''}`);
     const weekdays=['Thứ 2','Thứ 3','Thứ 4','Thứ 5','Thứ 6','Thứ 7','Chủ nhật'];const byDay=new Map(weekdays.map(day=>[day,[]]));
     selectedSchedule.courses.flatMap(courseSessions).forEach(course=>{const day=weekdays.find(value=>course.schedule.startsWith(value));if(day)byDay.get(day).push(course);});
-    target.innerHTML=`<div class="schedule-controls"><label for="scheduleSemester">Học kỳ</label><select id="scheduleSemester">${selectedSchedule.semesters.map(semester=>`<option value="${escapeHtml(semester.code)}" ${semester.code===selectedSchedule.semesterCode?'selected':''}>${escapeHtml(semester.name)}</option>`).join('')}</select><strong>${escapeHtml(selectedSchedule.semesterName)}</strong></div>${selectedSchedule.courses.length?`<div class="schedule-grid">${weekdays.map(day=>`<section class="schedule-day"><h3>${day}</h3>${byDay.get(day).length?byDay.get(day).map(course=>{const time=course.schedule.split(' · ').slice(1).join(' · ');return `<article class="schedule-event ${escapeHtml(course.color)}"><strong>${escapeHtml(time||'Thời gian chưa cập nhật')}</strong><span>${escapeHtml(course.code)} · ${escapeHtml(course.sectionCode)}</span><small>${escapeHtml(course.name)}</small><small>${escapeHtml(course.instructor)}</small><small>${escapeHtml(course.room)}</small></article>`;}).join(''):'<p class="schedule-free">Không có lớp</p>'}</section>`).join('')}</div>`:'<div class="dialog-empty">Không có học phần trong thời khóa biểu ở học kỳ này.</div>'}`;
+    const totalCredits=selectedSchedule.courses.reduce((sum,course)=>sum+(course.credits||0),0);
+    target.innerHTML=`
+      <div class="dialog-filter-card">
+        <div class="dialog-filter-grid cols-2">
+          <div class="dialog-filter-field">
+            <label class="dialog-filter-label" for="scheduleSemester">Học kỳ</label>
+            <div class="dialog-control-wrap">
+              <span class="dialog-control-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+              </span>
+              <select id="scheduleSemester">${selectedSchedule.semesters.map(semester=>`<option value="${escapeHtml(semester.code)}" ${semester.code===selectedSchedule.semesterCode?'selected':''}>${escapeHtml(semester.name)}</option>`).join('')}</select>
+              <span class="dialog-control-chevron" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+              </span>
+            </div>
+          </div>
+          <div class="dialog-filter-field">
+            <span class="dialog-filter-label">Tổng quan lịch học</span>
+            <div class="curriculum-chips" style="margin-top:4px;">
+              <span class="curriculum-chip is-accent"><b>Học kỳ</b> ${escapeHtml(selectedSchedule.semesterName)}</span>
+              <span class="curriculum-chip"><b>Số lớp</b> ${selectedSchedule.courses.length}</span>
+              <span class="curriculum-chip"><b>Tín chỉ</b> ${totalCredits}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      ${selectedSchedule.courses.length?`<div class="schedule-grid">${weekdays.map(day=>`<section class="schedule-day"><h3>${day}</h3>${byDay.get(day).length?byDay.get(day).map(course=>{const time=course.schedule.split(' · ').slice(1).join(' · ');return `<article class="schedule-event ${escapeHtml(course.color)}"><strong>${escapeHtml(time||'Thời gian chưa cập nhật')}</strong><span>${escapeHtml(course.code)} · ${escapeHtml(course.sectionCode)}</span><small>${escapeHtml(course.name)}</small><small>${escapeHtml(course.instructor)}</small><small>${escapeHtml(course.room)}</small></article>`;}).join(''):'<p class="schedule-free">Không có lớp</p>'}</section>`).join('')}</div>`:'<div class="dialog-empty">Không có học phần trong thời khóa biểu ở học kỳ này.</div>'}`;
     $('#scheduleSemester').addEventListener('change',event=>loadStudentSchedule(event.target.value));
   }catch(error){target.innerHTML=`<div class="dialog-empty">${escapeHtml(error.message)}</div>`;}
 }
@@ -505,7 +534,6 @@ const navItems = Array.from(document.querySelectorAll('.main-nav .nav-item'));
 const sectionNavs = [
   { id: 'overview', el: $('#overview'), link: document.querySelector('.main-nav a[href="#overview"]') },
   { id: 'courses', el: $('#courses'), link: document.querySelector('.main-nav a[href="#courses"]') },
-  { id: 'schedule', el: $('#schedule'), link: document.querySelector('.main-nav a[href="#schedule"]') },
   { id: 'assistant', el: $('#assistant'), link: document.querySelector('.main-nav a[href="#assistant"]') }
 ];
 
@@ -531,6 +559,7 @@ sectionNavs.forEach(({ link, el }) => {
 
 // 2. Click on modal dialog buttons: set active state
 const modalNavButtons = [
+  { btn: $('#scheduleOpen'), dialog: $('#scheduleDialog') },
   { btn: $('#historyOpen'), dialog: $('#historyDialog') },
   { btn: $('#transcriptOpen'), dialog: $('#transcriptDialog') },
   { btn: $('#curriculumOpen'), dialog: $('#curriculumDialog') }
@@ -550,8 +579,8 @@ modalNavButtons.forEach(({ btn, dialog }) => {
 
 // Also when opening schedule from registered list button
 $('#viewSchedule')?.addEventListener('click', () => {
-  const schedLink = document.querySelector('.main-nav a[href="#schedule"]');
-  if (schedLink) setActiveNav(schedLink);
+  const schedBtn = $('#scheduleOpen');
+  if (schedBtn) setActiveNav(schedBtn);
 });
 
 // 3. Scrollspy: auto-update active nav as user scrolls through sections
