@@ -1,0 +1,209 @@
+/* ==========================================================================
+   SLING BUTTON — Faithful Vanilla CSS Port of @react-bits/SlingButton-JS-CSS
+   Adapted with EduPortal Future Campus Light & Dark Theme Tokens
+   ========================================================================== */
+
+.sling-button {
+  --sl-size: 44px;
+  --sl-svg: 78px;
+  --sl-pad: linear-gradient(135deg, #2563eb 0%, #3b82f6 55%, #0ea5e9 100%);
+  --sl-icon: #ffffff;
+  --sl-accent: #2563eb;
+  --sl-well: #e2e8f0;
+  --sl-band: #94a3b8;
+  --sl-stroke: 2.5px;
+  --sl-dot: 7px;
+  --sl-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+
+  position: relative;
+  display: inline-block;
+  width: var(--sl-size);
+  height: var(--sl-size);
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.sling-button[data-held],
+.sling-button[data-armed] {
+  z-index: 60;
+}
+
+html[data-theme="dark"] .sling-button {
+  --sl-pad: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+  --sl-icon: #ffffff;
+  --sl-accent: #38bdf8;
+  --sl-well: #1e293b;
+  --sl-band: #475569;
+}
+
+.sling-button__fx {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--sl-svg);
+  height: var(--sl-svg);
+  margin: calc(var(--sl-svg) / -2) 0 0 calc(var(--sl-svg) / -2);
+  overflow: visible;
+  pointer-events: none;
+  shape-rendering: geometricPrecision;
+}
+
+.sling-button__well {
+  fill: var(--sl-well);
+  transition: fill 200ms ease;
+}
+
+.sling-button[data-sent] .sling-button__well {
+  fill: var(--sl-accent);
+}
+
+.sling-button__band {
+  fill: none;
+  stroke: var(--sl-band);
+  stroke-width: var(--sl-stroke);
+  stroke-linecap: round;
+  transition: stroke-width 160ms var(--sl-ease-out);
+}
+
+.sling-button[data-armed] .sling-button__band {
+  stroke-width: calc(var(--sl-stroke) * 1.5);
+}
+
+.sling-button__band--hot {
+  stroke: var(--sl-accent);
+}
+
+.sling-button__arc {
+  fill: none;
+  stroke: var(--sl-accent);
+  stroke-width: var(--sl-stroke);
+  stroke-linecap: butt;
+  transition: stroke-width 160ms var(--sl-ease-out);
+}
+
+.sling-button[data-armed] .sling-button__arc {
+  stroke-width: calc(var(--sl-stroke) * 1.5);
+}
+
+.sling-button__move {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+.sling-button__pad {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  cursor: grab;
+  outline: none;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sling-button__pad::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+}
+
+.sling-button__pad:focus-visible .sling-button__face {
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.35), 0 6px 16px rgba(37, 99, 235, 0.3);
+}
+
+.sling-button__pad[data-held] {
+  cursor: grabbing;
+}
+
+.sling-button__pad[aria-disabled='true'] {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.sling-button__face {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--sl-pad);
+  color: var(--sl-icon);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.28);
+  transition: transform 160ms var(--sl-ease-out), box-shadow 180ms ease;
+}
+
+html[data-theme="dark"] .sling-button__face {
+  box-shadow: 0 4px 16px rgba(56, 189, 248, 0.32);
+}
+
+.sling-button__pad[data-held] .sling-button__face {
+  transform: scale(0.97);
+}
+
+.sling-button__pad[data-armed] .sling-button__face {
+  transform: scale(1.06);
+  box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.25), 0 8px 22px rgba(37, 99, 235, 0.45);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .sling-button__pad:not([data-held]):not([aria-disabled='true']):hover .sling-button__face {
+    transform: scale(1.04);
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.36);
+  }
+}
+
+.sling-button__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform;
+}
+
+.sling-button__dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--sl-dot);
+  height: var(--sl-dot);
+  margin: calc(var(--sl-dot) / -2) 0 0 calc(var(--sl-dot) / -2);
+  border-radius: 50%;
+  background: var(--sl-accent);
+  box-shadow: 0 0 8px var(--sl-accent);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sling-button__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.ai-send-sling-mount {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  flex-shrink: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sling-button__face {
+    transform: none !important;
+    transition: none;
+  }
+}

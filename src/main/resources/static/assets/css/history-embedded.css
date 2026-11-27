@@ -1,0 +1,1174 @@
+/* ==========================================================================
+   EDUPORTAL — EMBEDDED REGISTRATION HISTORY DASHBOARD (IN-PLACE SPA VIEW)
+   Includes Motion System, Micro-Interactions, Skeleton Shimmer & Reduced Motion
+   ========================================================================== */
+
+#historyViewSection {
+  --hist-bg: var(--page, #f8fafc);
+  --hist-surface: var(--paper, #ffffff);
+  --hist-subtle: var(--line-subtle, #f1f5f9);
+  --hist-border: var(--line, #e2e8f0);
+  --hist-text: var(--ink, #0f172a);
+  --hist-text-2: var(--ink-secondary, #334155);
+  --hist-muted: var(--muted, #64748b);
+  --hist-muted-light: var(--muted-light, #94a3b8);
+  --hist-primary: var(--primary, #2563eb);
+  --hist-primary-hover: var(--primary-hover, #1d4ed8);
+  --hist-primary-soft: var(--primary-light, #eff6ff);
+  --hist-primary-border: var(--primary-border, #bfdbfe);
+  --hist-success: var(--green, #059669);
+  --hist-success-soft: var(--green-light, #ecfdf5);
+  --hist-success-border: var(--green-border, #a7f3d0);
+  --hist-warning: var(--amber, #d97706);
+  --hist-warning-soft: var(--amber-light, #fffbeb);
+  --hist-warning-border: var(--amber-border, #fde68a);
+  --hist-danger: var(--red, #dc2626);
+  --hist-danger-soft: var(--red-light, #fef2f2);
+  --hist-danger-border: var(--red-border, #fecaca);
+
+  /* Motion Design Tokens */
+  --ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-entrance: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --dur-micro: 150ms;
+  --dur-hover: 190ms;
+  --dur-dropdown: 210ms;
+  --dur-modal: 260ms;
+  --dur-entrance: 360ms;
+  --dur-theme: 220ms;
+
+  display: grid;
+  gap: 16px;
+  padding-bottom: 12px;
+  transition: color var(--dur-theme) var(--ease-standard), background-color var(--dur-theme) var(--ease-standard);
+}
+
+html[data-theme="dark"] #historyViewSection {
+  --hist-subtle: #162033;
+}
+
+body.hist-modal-open {
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   KEYFRAMES (GPU-ACCELERATED TRANSFORM & OPACITY ONLY)
+   ========================================================================== */
+
+@keyframes histFadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes histFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes histIconPop {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes histRowReveal {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes histPopoverIn {
+  from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes histPopoverOut {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to   { opacity: 0; transform: translateY(-4px) scale(0.98); }
+}
+
+@keyframes histModalIn {
+  from { opacity: 0; transform: translateY(14px) scale(0.985); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes histModalOut {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to   { opacity: 0; transform: translateY(10px) scale(0.985); }
+}
+
+@keyframes histBackdropIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes histBackdropOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+@keyframes histShimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@keyframes histSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* ==========================================================================
+   3. COORDINATED PAGE ENTRANCE (INITIAL LOAD ONLY — < 600ms TOTAL)
+   ========================================================================== */
+
+#historyViewSection.is-entering .hist-hero {
+  animation: histFadeUp 340ms var(--ease-entrance) both;
+}
+
+#historyViewSection.is-entering .hist-cat-badge {
+  animation: histFadeIn 320ms var(--ease-entrance) 80ms both;
+}
+
+#historyViewSection.is-entering .hist-stat-card {
+  animation: histFadeUp 340ms var(--ease-entrance) both;
+}
+#historyViewSection.is-entering .hist-stat-card:nth-child(1) { animation-delay: 50ms; }
+#historyViewSection.is-entering .hist-stat-card:nth-child(2) { animation-delay: 95ms; }
+#historyViewSection.is-entering .hist-stat-card:nth-child(3) { animation-delay: 140ms; }
+#historyViewSection.is-entering .hist-stat-card:nth-child(4) { animation-delay: 185ms; }
+
+#historyViewSection.is-entering .hist-stat-icon {
+  animation: histIconPop 320ms var(--ease-entrance) 120ms both;
+}
+
+#historyViewSection.is-entering .hist-toolbar {
+  animation: histFadeUp 340ms var(--ease-entrance) 140ms both;
+}
+
+#historyViewSection.is-entering .hist-surface {
+  animation: histFadeUp 360ms var(--ease-entrance) 190ms both;
+}
+
+/* ==========================================================================
+   4. HEADER & MICRO-INTERACTIONS
+   ========================================================================== */
+
+.hist-hero {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 6px 0 20px;
+  border-bottom: 1px solid var(--hist-border);
+  transition: border-color var(--dur-theme) var(--ease-standard);
+}
+
+.hist-hero-left {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.hist-hero-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--hist-primary-soft);
+  border: 1px solid var(--hist-primary-border);
+  color: var(--hist-primary);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+  transition: transform var(--dur-hover) var(--ease-standard),
+              background-color var(--dur-theme) var(--ease-standard),
+              border-color var(--dur-theme) var(--ease-standard);
+}
+
+.hist-hero-icon:hover {
+  transform: scale(1.04);
+}
+
+.hist-hero-icon svg { width: 20px; height: 20px; }
+
+.hist-hero-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.hist-hero h1 {
+  margin: 0;
+  font: 800 26px var(--display);
+  letter-spacing: -0.6px;
+  color: var(--hist-text);
+  line-height: 1.2;
+}
+
+.hist-cat-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--hist-subtle);
+  border: 1px solid var(--hist-border);
+  color: var(--hist-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: background-color var(--dur-theme) var(--ease-standard), border-color var(--dur-theme) var(--ease-standard);
+}
+
+.hist-hero-sub {
+  margin: 5px 0 0;
+  font-size: 13.5px;
+  color: var(--hist-muted);
+}
+
+.hist-hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   9. BUTTON MICRO-INTERACTIONS & 13. TOOLTIPS
+   ========================================================================== */
+
+.hist-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 13px;
+  border-radius: 10px;
+  border: 1px solid var(--hist-border);
+  background: var(--hist-surface);
+  color: var(--hist-text-2);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  text-decoration: none;
+  box-shadow: var(--shadow-bento);
+  transition: background-color var(--dur-hover) var(--ease-standard),
+              border-color var(--dur-hover) var(--ease-standard),
+              color var(--dur-hover) var(--ease-standard),
+              transform var(--dur-micro) var(--ease-standard),
+              box-shadow var(--dur-hover) var(--ease-standard);
+}
+
+.hist-btn svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  transition: transform var(--dur-hover) var(--ease-standard);
+}
+
+.hist-btn:hover:not(:disabled) {
+  background: var(--hist-subtle);
+  border-color: var(--hist-primary-border);
+  color: var(--hist-primary);
+}
+
+.hist-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.hist-btn:focus-visible,
+.hist-action-btn:focus-visible,
+.hist-link-btn:focus-visible,
+.hist-search-clear:focus-visible {
+  outline: 2px solid var(--hist-primary);
+  outline-offset: 2px;
+}
+
+.hist-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Subtle icon directional feedback */
+#histBackToOverviewBtn:hover:not(:disabled) svg { transform: translateX(-2px); }
+#histExportCsvBtn:hover:not(:disabled) svg      { transform: translateY(1.5px); }
+
+.hist-btn.is-success {
+  background: var(--hist-success-soft);
+  border-color: var(--hist-success-border);
+  color: var(--hist-success);
+}
+
+.hist-btn.is-loading {
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+.hist-btn-spinner {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  animation: histSpin 700ms linear infinite;
+}
+
+.hist-btn-primary {
+  background: var(--hist-primary);
+  border-color: var(--hist-primary);
+  color: #ffffff;
+}
+
+.hist-btn-primary:hover:not(:disabled) {
+  background: var(--hist-primary-hover);
+  border-color: var(--hist-primary-hover);
+  color: #ffffff;
+}
+
+/* Non-obstructive Animated Tooltips */
+[data-hist-tooltip] {
+  position: relative;
+}
+
+[data-hist-tooltip]::after {
+  content: attr(data-hist-tooltip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  padding: 5px 9px;
+  border-radius: 7px;
+  background: #0f172a;
+  color: #f8fafc;
+  border: 1px solid #334155;
+  font-size: 11.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 60;
+  box-shadow: 0 6px 18px rgba(2, 6, 23, 0.25);
+  transition: opacity 150ms var(--ease-standard), transform 160ms var(--ease-entrance);
+}
+
+[data-hist-tooltip]:hover::after,
+[data-hist-tooltip]:focus-visible::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ==========================================================================
+   5. STATISTICS CARD ANIMATIONS
+   ========================================================================== */
+
+.hist-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.hist-stat-card {
+  background: var(--hist-surface);
+  border: 1px solid var(--hist-border);
+  border-radius: var(--radius-lg, 16px);
+  padding: 16px 18px;
+  box-shadow: var(--shadow-bento);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: transform 200ms var(--ease-standard),
+              border-color 200ms var(--ease-standard),
+              box-shadow 200ms var(--ease-standard),
+              background-color var(--dur-theme) var(--ease-standard);
+}
+
+.hist-stat-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--hist-primary-border);
+  box-shadow: var(--shadow-bento-hover);
+}
+
+.hist-stat-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.hist-stat-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--hist-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.hist-stat-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  transition: transform 200ms var(--ease-standard),
+              background-color var(--dur-theme) var(--ease-standard);
+}
+
+.hist-stat-card:hover .hist-stat-icon {
+  transform: scale(1.07);
+}
+
+.hist-stat-icon svg { width: 16px; height: 16px; }
+.hist-stat-icon.is-total     { background: var(--hist-primary-soft); color: var(--hist-primary); }
+.hist-stat-icon.is-enrolled  { background: var(--hist-success-soft); color: var(--hist-success); }
+.hist-stat-icon.is-pending   { background: var(--hist-warning-soft); color: var(--hist-warning); }
+.hist-stat-icon.is-cancelled { background: var(--hist-subtle);       color: var(--hist-muted); border: 1px solid var(--hist-border); }
+
+.hist-stat-value {
+  font: 800 26px var(--display);
+  letter-spacing: -0.6px;
+  line-height: 1.15;
+  color: var(--hist-text);
+  margin-top: 2px;
+  font-variant-numeric: tabular-nums;
+}
+
+.hist-stat-sub {
+  font-size: 12px;
+  color: var(--hist-muted);
+}
+
+/* ==========================================================================
+   6. FILTER TOOLBAR ANIMATIONS
+   ========================================================================== */
+
+.hist-toolbar {
+  background: var(--hist-surface);
+  border: 1px solid var(--hist-border);
+  border-radius: var(--radius-lg, 16px);
+  padding: 14px 16px;
+  box-shadow: var(--shadow-bento);
+  display: grid;
+  gap: 12px;
+  transition: background-color var(--dur-theme) var(--ease-standard), border-color var(--dur-theme) var(--ease-standard);
+}
+
+.hist-toolbar-row {
+  display: grid;
+  grid-template-columns: minmax(220px, 1.45fr) minmax(175px, 0.9fr) minmax(165px, 0.85fr) auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.hist-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.hist-input-icon {
+  position: absolute;
+  left: 11px;
+  width: 15px;
+  height: 15px;
+  color: var(--hist-muted);
+  pointer-events: none;
+  transition: color var(--dur-hover) var(--ease-standard), transform var(--dur-hover) var(--ease-standard);
+}
+
+.hist-input-wrap:focus-within .hist-input-icon {
+  color: var(--hist-primary);
+  transform: scale(1.06);
+}
+
+.hist-input-wrap input,
+.hist-input-wrap select {
+  width: 100%;
+  height: 38px;
+  padding: 0 34px 0 34px;
+  border-radius: 10px;
+  border: 1px solid var(--hist-border);
+  background: var(--hist-subtle);
+  color: var(--hist-text);
+  font-size: 13px;
+  font-weight: 500;
+  transition: border-color var(--dur-hover) var(--ease-standard),
+              background-color var(--dur-hover) var(--ease-standard),
+              box-shadow var(--dur-hover) var(--ease-standard);
+}
+
+.hist-input-wrap select {
+  padding-right: 12px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.hist-input-wrap input:hover,
+.hist-input-wrap select:hover {
+  border-color: var(--hist-primary-border);
+}
+
+.hist-input-wrap input:focus,
+.hist-input-wrap select:focus {
+  outline: none;
+  border-color: var(--hist-primary);
+  background: var(--hist-surface);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
+}
+
+/* Search Clear Button (fades in smoothly when text exists) */
+.hist-search-clear {
+  position: absolute;
+  right: 8px;
+  width: 22px;
+  height: 22px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--hist-border);
+  color: var(--hist-text-2);
+  display: inline-grid;
+  place-items: center;
+  opacity: 0;
+  transform: scale(0.85);
+  pointer-events: none;
+  transition: opacity var(--dur-micro) var(--ease-standard),
+              transform var(--dur-micro) var(--ease-standard),
+              background-color var(--dur-micro) var(--ease-standard);
+}
+
+.hist-search-clear svg { width: 12px; height: 12px; }
+
+.hist-search-clear.is-visible {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+.hist-search-clear:hover {
+  background: var(--hist-primary-soft);
+  color: var(--hist-primary);
+}
+
+.hist-search-clear:active {
+  transform: scale(0.92);
+}
+
+.hist-toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+/* Advanced Filter Popover (Smooth Open & Close) */
+.hist-adv-wrap { position: relative; }
+
+.hist-filter-count {
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--hist-primary);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  display: inline-grid;
+  place-items: center;
+  transition: transform var(--dur-micro) var(--ease-standard), opacity var(--dur-micro) var(--ease-standard);
+}
+
+.hist-adv-popover {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  width: min(300px, calc(100vw - 32px));
+  background: var(--hist-surface);
+  border: 1px solid var(--hist-border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-lg);
+  padding: 14px;
+  z-index: 45;
+  transform-origin: top right;
+}
+
+.hist-adv-popover.is-open {
+  animation: histPopoverIn var(--dur-dropdown) var(--ease-entrance) both;
+}
+
+.hist-adv-popover.is-closing {
+  animation: histPopoverOut 150ms var(--ease-exit) both;
+  pointer-events: none;
+}
+
+.hist-adv-popover.is-open .hist-field {
+  animation: histFadeUp 200ms var(--ease-entrance) both;
+}
+.hist-adv-popover.is-open .hist-field:nth-child(1) { animation-delay: 25ms; }
+.hist-adv-popover.is-open .hist-field:nth-child(2) { animation-delay: 55ms; }
+.hist-adv-popover.is-open .hist-field:nth-child(3) { animation-delay: 85ms; }
+
+.hist-popover-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--hist-border);
+}
+
+.hist-popover-head strong { font-size: 13.5px; color: var(--hist-text); }
+
+.hist-link-btn {
+  border: 0;
+  background: transparent;
+  color: var(--hist-primary);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 6px;
+  transition: background-color var(--dur-micro) var(--ease-standard);
+}
+
+.hist-link-btn:hover { background: var(--hist-primary-soft); }
+.hist-link-btn:active { transform: scale(0.97); }
+
+.hist-popover-fields { display: grid; gap: 11px; }
+.hist-field { display: grid; gap: 5px; }
+.hist-field > span { font-size: 11.5px; font-weight: 700; color: var(--hist-muted); }
+
+.hist-field select {
+  height: 36px;
+  width: 100%;
+  padding: 0 10px;
+  border-radius: 9px;
+  border: 1px solid var(--hist-border);
+  background: var(--hist-subtle);
+  color: var(--hist-text);
+  font-size: 13px;
+  transition: border-color var(--dur-hover) var(--ease-standard), background-color var(--dur-hover) var(--ease-standard);
+}
+
+.hist-field select:focus {
+  outline: none;
+  border-color: var(--hist-primary);
+  background: var(--hist-surface);
+}
+
+.hist-toolbar-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding-top: 10px;
+  border-top: 1px solid var(--hist-border);
+  font-size: 12.5px;
+  color: var(--hist-muted);
+}
+
+.hist-toolbar-meta strong { color: var(--hist-text); }
+
+/* ==========================================================================
+   7. REGISTRATION TABLE ANIMATIONS & MICRO-INTERACTIONS
+   ========================================================================== */
+
+.hist-surface {
+  background: var(--hist-surface);
+  border: 1px solid var(--hist-border);
+  border-radius: var(--radius-lg, 16px);
+  box-shadow: var(--shadow-bento);
+  overflow: hidden;
+  transition: background-color var(--dur-theme) var(--ease-standard), border-color var(--dur-theme) var(--ease-standard);
+}
+
+.hist-table-scroll {
+  overflow-x: auto;
+  max-height: min(64vh, 640px);
+}
+
+.hist-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 820px;
+  font-size: 13.5px;
+}
+
+.hist-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  background: var(--hist-subtle);
+  color: var(--hist-muted);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: left;
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--hist-border);
+  white-space: nowrap;
+  transition: background-color var(--dur-theme) var(--ease-standard), border-color var(--dur-theme) var(--ease-standard);
+}
+
+.hist-table thead th:last-child { text-align: right; }
+
+/* A. Row Hover (stable text, zero vertical shift, leading accent) */
+.hist-table tbody tr {
+  border-bottom: 1px solid var(--hist-border);
+  cursor: pointer;
+  transition: background-color 170ms var(--ease-standard),
+              box-shadow 170ms var(--ease-standard);
+}
+
+.hist-table tbody tr:last-child { border-bottom: 0; }
+
+.hist-table tbody tr:hover {
+  background: var(--hist-subtle);
+  box-shadow: inset 3px 0 0 var(--hist-primary-border);
+}
+
+/* C. Row Selection */
+.hist-table tbody tr.is-selected {
+  background: var(--hist-primary-soft);
+  box-shadow: inset 3px 0 0 var(--hist-primary);
+}
+
+.hist-table tbody tr:focus-visible {
+  outline: 2px solid var(--hist-primary);
+  outline-offset: -2px;
+}
+
+/* B. Row Entrance (initial load stagger, capped to avoid slowness) */
+.hist-table.is-animating-rows tbody tr {
+  animation: histRowReveal 260ms var(--ease-entrance) both;
+  animation-delay: calc(var(--row-i, 0) * 28ms);
+}
+
+.hist-table tbody td {
+  padding: 14px 16px;
+  vertical-align: middle;
+  color: var(--hist-text-2);
+}
+
+/* Course Info */
+.hist-course-cell { display: grid; gap: 4px; min-width: 220px; }
+.hist-course-name { font-size: 14px; font-weight: 700; color: var(--hist-text); line-height: 1.3; }
+.hist-course-meta { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; font-size: 12px; color: var(--hist-muted); }
+
+.hist-code-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 7px;
+  border-radius: 6px;
+  background: var(--hist-primary-soft);
+  border: 1px solid var(--hist-primary-border);
+  color: var(--hist-primary);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+}
+
+.hist-section-code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--hist-muted);
+  white-space: nowrap;
+}
+
+.hist-schedule-cell { display: grid; gap: 3px; min-width: 175px; }
+
+.hist-schedule-main {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--hist-text);
+  white-space: nowrap;
+}
+
+.hist-schedule-main svg { width: 14px; height: 14px; color: var(--hist-primary); flex-shrink: 0; }
+.hist-schedule-weeks { font-size: 12px; color: var(--hist-muted); padding-left: 20px; }
+
+/* D. Status Badges (one-shot subtle entrance, zero continuous blinking) */
+.hist-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  transition: background-color var(--dur-theme) var(--ease-standard),
+              border-color var(--dur-theme) var(--ease-standard),
+              color var(--dur-theme) var(--ease-standard);
+}
+
+.hist-status-badge svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+.hist-status-badge.is-enrolled {
+  background: var(--hist-success-soft);
+  border-color: var(--hist-success-border);
+  color: var(--hist-success);
+}
+
+.hist-status-badge.is-pending {
+  background: var(--hist-warning-soft);
+  border-color: var(--hist-warning-border);
+  color: var(--hist-warning);
+}
+
+.hist-status-badge.is-cancelled {
+  background: var(--hist-subtle);
+  border-color: var(--hist-border);
+  color: var(--hist-muted);
+}
+
+.hist-time-cell { display: grid; gap: 2px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.hist-time-date { font-size: 13px; font-weight: 600; color: var(--hist-text); }
+.hist-time-clock { font-size: 11.5px; color: var(--hist-muted); }
+
+/* Row Actions (subtle reveal enhancement on hover/focus) */
+.hist-actions-cell { text-align: right; white-space: nowrap; }
+.hist-row-actions { display: inline-flex; align-items: center; gap: 6px; justify-content: flex-end; }
+
+.hist-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 30px;
+  padding: 0 10px;
+  border-radius: 8px;
+  border: 1px solid var(--hist-border);
+  background: var(--hist-surface);
+  color: var(--hist-text-2);
+  font-size: 12px;
+  font-weight: 600;
+  opacity: 0.78;
+  transition: opacity var(--dur-hover) var(--ease-standard),
+              border-color var(--dur-hover) var(--ease-standard),
+              background-color var(--dur-hover) var(--ease-standard),
+              color var(--dur-hover) var(--ease-standard),
+              transform var(--dur-micro) var(--ease-standard);
+}
+
+.hist-table tbody tr:hover .hist-action-btn,
+.hist-table tbody tr.is-selected .hist-action-btn,
+.hist-table tbody tr:focus-within .hist-action-btn,
+.hist-mobile-card .hist-action-btn {
+  opacity: 1;
+}
+
+.hist-action-btn svg { width: 13px; height: 13px; transition: transform var(--dur-hover) var(--ease-standard); }
+
+.hist-action-btn:hover {
+  border-color: var(--hist-primary-border);
+  background: var(--hist-primary-soft);
+  color: var(--hist-primary);
+}
+
+.hist-action-btn:hover svg { transform: scale(1.08); }
+.hist-action-btn:active { transform: scale(0.97); }
+
+/* Pagination Bar */
+.hist-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--hist-border);
+  background: var(--hist-surface);
+  font-size: 12.5px;
+  color: var(--hist-muted);
+}
+
+.hist-page-controls { display: inline-flex; align-items: center; gap: 6px; }
+
+/* Mobile Responsive Card List */
+.hist-mobile-list { display: none; gap: 10px; padding: 12px; }
+
+.hist-mobile-card {
+  border: 1px solid var(--hist-border);
+  border-radius: 14px;
+  background: var(--hist-subtle);
+  padding: 14px;
+  display: grid;
+  gap: 10px;
+  text-align: left;
+  width: 100%;
+  transition: border-color var(--dur-hover) var(--ease-standard),
+              background-color var(--dur-hover) var(--ease-standard),
+              transform var(--dur-micro) var(--ease-standard);
+}
+
+.hist-mobile-list.is-animating-rows .hist-mobile-card {
+  animation: histRowReveal 260ms var(--ease-entrance) both;
+  animation-delay: calc(var(--row-i, 0) * 35ms);
+}
+
+.hist-mobile-card:hover,
+.hist-mobile-card.is-selected {
+  border-color: var(--hist-primary-border);
+}
+
+.hist-mobile-card:active {
+  transform: scale(0.99);
+}
+
+.hist-mobile-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.hist-mobile-card-title { display: grid; gap: 4px; min-width: 0; }
+.hist-mobile-card-title strong { font-size: 14.5px; font-weight: 700; color: var(--hist-text); line-height: 1.3; }
+
+.hist-mobile-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 12px;
+  padding-top: 8px;
+  border-top: 1px solid var(--hist-border);
+  font-size: 12.5px;
+}
+
+.hist-mobile-card-grid span { display: block; font-size: 11px; color: var(--hist-muted); margin-bottom: 2px; }
+.hist-mobile-card-grid b { color: var(--hist-text-2); font-weight: 600; }
+
+.hist-mobile-card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--hist-border);
+}
+
+/* ==========================================================================
+   10. LAYOUT-MATCHED SKELETON SHIMMER (1400ms CYCLE, THEME-AWARE)
+   ========================================================================== */
+
+.hist-skel-bar {
+  display: block;
+  border-radius: 6px;
+  background: linear-gradient(90deg, var(--hist-subtle) 25%, var(--hist-border) 50%, var(--hist-subtle) 75%);
+  background-size: 200% 100%;
+  animation: histShimmer 1400ms ease-in-out infinite;
+}
+
+.hist-skel-table td {
+  padding: 15px 16px;
+}
+
+.hist-skel-stack { display: grid; gap: 6px; }
+.hist-skel-row-inline { display: flex; gap: 6px; align-items: center; }
+
+/* ==========================================================================
+   11. EMPTY & ERROR STATES
+   ========================================================================== */
+
+.hist-state-box {
+  padding: 56px 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  animation: histFadeUp 260ms var(--ease-entrance) both;
+}
+
+.hist-state-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
+  background: var(--hist-subtle);
+  border: 1px solid var(--hist-border);
+  color: var(--hist-primary);
+  display: grid;
+  place-items: center;
+  animation: histIconPop 280ms var(--ease-entrance) 40ms both;
+}
+
+.hist-state-icon.is-error {
+  background: var(--hist-danger-soft);
+  border-color: var(--hist-danger-border);
+  color: var(--hist-danger);
+}
+
+.hist-state-icon svg { width: 22px; height: 22px; }
+.hist-state-box h3 { margin: 4px 0 0; font-size: 16.5px; font-weight: 700; color: var(--hist-text); }
+.hist-state-box p { margin: 0; max-width: 420px; font-size: 13.5px; color: var(--hist-muted); }
+
+/* ==========================================================================
+   8. REGISTRATION DETAIL MODAL (OPEN & CLOSE SEQUENCES)
+   ========================================================================== */
+
+.hist-modal {
+  width: min(560px, calc(100vw - 28px));
+  padding: 0;
+  border: 1px solid var(--line, #e2e8f0);
+  border-radius: 16px;
+  background: var(--paper, #ffffff);
+  color: var(--ink, #0f172a);
+  box-shadow: 0 28px 64px rgba(0, 0, 0, 0.35);
+}
+
+html[data-theme="dark"] .hist-modal {
+  background: #0f172a;
+  border-color: var(--line, #273549);
+}
+
+.hist-modal[open] {
+  animation: histModalIn 260ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.hist-modal[open]::backdrop {
+  background: rgba(2, 6, 23, 0.62);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  animation: histBackdropIn 220ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.hist-modal.is-closing {
+  animation: histModalOut 180ms cubic-bezier(0.4, 0, 1, 1) both;
+  pointer-events: none;
+}
+
+.hist-modal.is-closing::backdrop {
+  animation: histBackdropOut 180ms cubic-bezier(0.4, 0, 1, 1) both;
+}
+
+.hist-modal[open] .hist-detail-section {
+  animation: histFadeUp 260ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.hist-modal[open] .hist-detail-section:nth-child(1) { animation-delay: 50ms; }
+.hist-modal[open] .hist-detail-section:nth-child(2) { animation-delay: 100ms; }
+.hist-modal[open] .hist-detail-section:nth-child(3) { animation-delay: 150ms; }
+
+.hist-modal-head {
+  padding: 18px 22px 14px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.hist-modal-head .sched-icon-btn {
+  transition: background-color 170ms cubic-bezier(0.2, 0.8, 0.2, 1),
+              border-color 170ms cubic-bezier(0.2, 0.8, 0.2, 1),
+              color 170ms cubic-bezier(0.2, 0.8, 0.2, 1),
+              transform 140ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.hist-modal-head .sched-icon-btn:active {
+  transform: scale(0.95);
+}
+
+.hist-modal-head .sched-icon-btn:focus-visible {
+  outline: 2px solid var(--primary, #2563eb);
+  outline-offset: 2px;
+}
+
+.hist-modal-badges { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; margin-bottom: 6px; }
+.hist-modal-head h2 { margin: 0; font-size: 18px; font-weight: 800; color: var(--ink); line-height: 1.3; }
+
+.hist-modal-body {
+  padding: 18px 22px;
+  max-height: min(66vh, 520px);
+  overflow-y: auto;
+  display: grid;
+  gap: 16px;
+}
+
+.hist-detail-section { display: grid; gap: 10px; }
+
+.hist-detail-section-title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--muted);
+}
+
+.hist-detail-section-title svg { width: 14px; height: 14px; color: var(--primary); }
+
+.hist-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 16px;
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--line-subtle);
+  border: 1px solid var(--line);
+}
+
+html[data-theme="dark"] .hist-detail-grid { background: #162033; }
+.hist-detail-cell.is-full { grid-column: 1 / -1; }
+.hist-detail-cell dt { font-size: 11px; font-weight: 600; color: var(--muted); margin-bottom: 2px; }
+.hist-detail-cell dd { margin: 0; font-size: 13.5px; font-weight: 700; color: var(--ink); overflow-wrap: anywhere; }
+
+.hist-modal-foot {
+  padding: 14px 22px 18px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1160px) {
+  .hist-stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hist-toolbar-row { grid-template-columns: 1fr 1fr; }
+  .hist-toolbar-actions { grid-column: 1 / -1; justify-content: space-between; }
+}
+
+@media (max-width: 767px) {
+  .hist-stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .hist-stat-card { padding: 13px 14px; }
+  .hist-stat-value { font-size: 22px; }
+  .hist-toolbar-row { grid-template-columns: 1fr; }
+  .hist-table-scroll { display: none; }
+  .hist-mobile-list { display: grid; }
+  .hist-pagination { flex-direction: column; align-items: stretch; text-align: center; }
+  .hist-page-controls { justify-content: center; }
+  .hist-detail-grid { grid-template-columns: 1fr; }
+  [data-hist-tooltip]::after { display: none; }
+}
+
+/* ==========================================================================
+   15. ACCESSIBILITY — PREFERS REDUCED MOTION
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  #historyViewSection,
+  #historyViewSection *,
+  .hist-modal,
+  .hist-modal *,
+  .hist-modal::backdrop {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .hist-stat-card:hover,
+  .hist-btn:active,
+  .hist-action-btn:active,
+  .hist-mobile-card:active {
+    transform: none !important;
+  }
+
+  .hist-skel-bar {
+    animation: none !important;
+    background: var(--hist-subtle) !important;
+  }
+}

@@ -16,7 +16,6 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<ActionResponse> authentication(AuthenticationException exception) {
-        audit.record("LOGIN_FAILED","unknown","Thông tin xác thực không hợp lệ");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ActionResponse(false, "Tên đăng nhập hoặc mật khẩu không đúng."));
     }
 

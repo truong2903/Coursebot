@@ -6,11 +6,16 @@
   <title>Đăng nhập · EduPortal Cổng Đăng Ký Học Phần</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./assets/css/auth.css?v=20261109e">
   <link rel="stylesheet" href="./assets/css/theme.css?v=20261125a">
-  <script src="./assets/js/core/theme.js?v=20261125a"></script>
-  <script type="module" src="./assets/js/features/auth/login.js"></script>
+  <link rel="stylesheet" href="./assets/css/future-campus.css?v=20261125sg">
+  <link rel="stylesheet" href="./assets/css/future-effects.css?v=20261125fe">
+  <link rel="stylesheet" href="./assets/css/specular-button.css?v=20261125sb">
+  <script src="./assets/js/core/theme.js?v=20261125fc"></script>
+  <script src="./assets/js/core/shape-grid.js?v=20261125sg" defer></script>
+  <script src="./assets/js/core/future-effects.js?v=20261125fe" defer></script>
+  <script type="module" src="./assets/js/features/auth/login.js?v=20261125sb"></script>
 </head>
 <body class="login-body">
   <button class="theme-toggle-btn theme-toggle-floating" type="button" data-theme-toggle aria-label="Chuyển giao diện sáng/tối" title="Chuyển giao diện sáng/tối">
@@ -172,11 +177,14 @@
             <input id="showPassword" type="checkbox" style="display:none">
           </div>
 
-          <button class="auth-button" type="submit">
-            <span class="btn-text">Đăng nhập vào hệ thống</span>
-            <span class="btn-spinner" style="display:none">
-              <img src="./assets/img/book-loading.gif" alt="Đang xử lý" class="btn-spinner-gif">
-              <span>Đang xác thực…</span>
+          <button class="auth-button specular-button" id="loginSubmitBtn" type="submit">
+            <canvas class="specular-button__light" aria-hidden="true"></canvas>
+            <span class="specular-button__label">
+              <span class="btn-text">Đăng nhập vào hệ thống</span>
+              <span class="btn-spinner" style="display:none">
+                <img src="./assets/img/book-loading.gif" alt="Đang xử lý" class="btn-spinner-gif">
+                <span>Đang xác thực…</span>
+              </span>
             </span>
           </button>
 

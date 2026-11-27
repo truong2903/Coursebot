@@ -1,4 +1,5 @@
 import { apiDelete, apiGet, apiPost, apiPut } from '../../core/api.js';
+import { initFutureShell } from '../../core/future-shell.js?v=20261127gn';
 import { resourceDefinitions as definitions } from './resource-definitions.js';
 
 const $ = selector => document.querySelector(selector);
@@ -19,6 +20,7 @@ let toastTimer;
 let selectedCurriculumCode = null;
 let selectedLecturerCurriculum = '';
 let auditFilterState = {};
+let auditActionOptions = [];
 let reportFilterState = {semester:'',courseCode:'',sectionCode:''};
 let lecturerSemesterOptions = [];
 let selectedLecturerSemester = '';
@@ -27,16 +29,30 @@ let enrollmentSemesters = [];
 
 function menuFor(role) {
   const entries = role === 'LECTURER' ? [
-    ['OVERVIEW','TỔNG QUAN'],['overview','Lịch giảng dạy'],['roster','Danh sách sinh viên'],['curricula','Khung chương trình']
+    ['OVERVIEW','TỔNG QUAN'],['overview','Lịch giảng dạy'],['roster','Danh sách sinh viên'],['curricula','Khung chương trình'],['profile','Hồ sơ cá nhân']
   ] : role === 'TRAINING_OFFICE' ? [
     ['OVERVIEW','ĐIỀU PHỐI HỌC VỤ'],['overview','Tổng quan'],['enrollments','Duyệt & Hủy đăng ký'],['semesters','Học kỳ & Đợt đăng ký'],['sections','Lớp học phần'],['courses','Môn học'],['curricula','Khung chương trình'],['prerequisites','Tiên quyết'],['reports','Báo cáo']
   ] : [
-    ['OVERVIEW','QUẢN TRỊ'],['overview','Tổng quan'],['accounts','Tài khoản'],['permissions','Phân quyền'],['logs','Nhật ký hệ thống'],['reports','Báo cáo']
+    ['OVERVIEW','QUẢN TRỊ'],['overview','Tổng quan'],['accounts','Tài khoản'],['permissions','Phân quyền'],['logs','Nhật ký hệ thống']
   ];
   const needed={accounts:'ACCOUNTS_MANAGE',permissions:'PERMISSIONS_MANAGE',logs:'AUDIT_VIEW',reports:'REPORTS_VIEW',enrollments:'TRAINING_READ',sections:'TRAINING_READ',courses:'TRAINING_READ',curricula:'TRAINING_READ',prerequisites:'TRAINING_READ',semesters:'TRAINING_READ'};
-  nav.innerHTML = entries.filter(([key])=>key==='OVERVIEW'||key==='overview'||!needed[key]||account.permissions?.includes(needed[key])).map(([key,label]) => key === 'OVERVIEW'
+  const visible = entries.filter(([key])=>key==='OVERVIEW'||key==='overview'||!needed[key]||account.permissions?.includes(needed[key]));
+  const signature = `${role}:${visible.map(([key]) => key).join(',')}`;
+  if (nav.dataset.menuSignature === signature) {
+    nav.querySelectorAll('button[data-page]').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.page === currentPage);
+    });
+    return;
+  }
+  nav.dataset.menuSignature = signature;
+  nav.querySelectorAll('.nav-group, button[data-page]').forEach(el => {
+    if (!el.closest('.gooey-nav__overlay')) el.remove();
+  });
+  const markup = visible.map(([key,label]) => key === 'OVERVIEW'
     ? `<span class="nav-group">${esc(label)}</span>`
-    : `<button type="button" data-page="${esc(key)}" class="${key === currentPage ? 'active' : ''}"><span class="ws-nav-icon" aria-hidden="true">${iconFor(key)}</span><span class="ws-nav-text">${esc(label)}</span></button>`).join('');
+    : `<button type="button" data-page="${esc(key)}" data-fc-tip="${esc(label)}" class="${key === currentPage ? 'active' : ''}"><span class="ws-nav-icon" aria-hidden="true">${iconFor(key)}</span><span class="ws-nav-text">${esc(label)}</span></button>`).join('');
+  nav.insertAdjacentHTML('beforeend', markup);
+  futureShell?.syncNavTooltips();
 }
 
 function iconFor(key) {
@@ -53,7 +69,8 @@ function iconFor(key) {
     reports: `<svg class="ws-anim-svg ws-icon-reports" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10" class="rep-bar b3"></line><line x1="12" y1="20" x2="12" y2="4" class="rep-bar b2"></line><line x1="6" y1="20" x2="6" y2="14" class="rep-bar b1"></line></svg>`,
     accounts: `<svg class="ws-anim-svg ws-icon-accounts" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle class="acc-head" cx="12" cy="7" r="4"></circle><path class="acc-badge" d="M19 8l2 2 4-4" stroke-width="1.8"></path></svg>`,
     permissions: `<svg class="ws-anim-svg ws-icon-permissions" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle class="key-ring" cx="7.5" cy="15.5" r="5.5"></circle><path class="key-shaft" d="m11.5 11.5 7.5-7.5"></path><line class="key-tooth1" x1="16" y1="5" x2="18" y2="7"></line><line class="key-tooth2" x1="18" y1="7" x2="20" y2="9"></line></svg>`,
-    logs: `<svg class="ws-anim-svg ws-icon-logs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline class="term-prompt" points="4 17 10 11 4 5"></polyline><line class="term-cursor" x1="12" y1="19" x2="20" y2="19"></line></svg>`
+    logs: `<svg class="ws-anim-svg ws-icon-logs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline class="term-prompt" points="4 17 10 11 4 5"></polyline><line class="term-cursor" x1="12" y1="19" x2="20" y2="19"></line></svg>`,
+    profile: `<svg class="ws-anim-svg ws-icon-accounts" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle class="acc-head" cx="12" cy="7" r="4"></circle></svg>`
   };
   return icons[key] || '•';
 }
@@ -96,6 +113,10 @@ function renderLecturerOverview(data) {
   $('#lecturerSemesterSelect').addEventListener('change',async event=>{selectedLecturerSemester=event.target.value;try{const next=await apiGet(`/api/workspace/lecturer?semester=${encodeURIComponent(selectedLecturerSemester)}`);renderLecturerOverview(next);}catch(error){showToast(error.message);}});
   $('#exportLecturerSchedule').addEventListener('click',()=>exportCsv(`lich-giang-day-${data.semesterCode}`,columns,data.sections));
   view.querySelectorAll('[data-section-detail]').forEach(button=>button.addEventListener('click',async()=>{try{showSectionDetail(await apiGet(`/api/workspace/lecturer/sections/${encodeURIComponent(button.dataset.sectionDetail)}`));}catch(error){showToast(error.message);}}));
+  futureShell?.updateNotifications([
+    { tone: 'info', title: `${data.sections.length} lớp được phân công (${data.semester})`, body: `Tổng ${number(data.totalStudents)} sinh viên đang theo học.`, action: () => openPage('roster') },
+    { tone: 'success', title: 'Hồ sơ giảng viên công khai', body: 'Cập nhật giờ tiếp sinh viên, phòng làm việc và hướng nghiên cứu.', action: () => openPage('profile') }
+  ]);
 }
 function showSectionDetail(section) {
   $('#dialogEyebrow').textContent='CHI TIẾT LỚP HỌC PHẦN';$('#dialogTitle').textContent=`${section.sectionCode} · ${section.courseName}`;
@@ -125,6 +146,174 @@ function showCurriculumCourseDetail(course) {
   $('#dialogFields').innerHTML=fields.map(([label,value])=>`<div class="dialog-field ${label==='Mô tả'?'full':''}"><label>${esc(label)}</label><p>${esc(value)}</p></div>`).join('')+`<div class="dialog-field"><label>Đề cương</label><p>${safeUrl?`<a href="${esc(safeUrl)}" target="_blank" rel="noopener noreferrer">Xem / tải đề cương ↗</a>`:'Chưa có đề cương'}</p></div>`;
   $('#dialogSave').hidden=true;dialog.showModal();
 }
+
+async function loadLecturerProfile() {
+  setPageHeader('Hồ sơ cá nhân giảng viên', 'Cập nhật thông tin học thuật, phòng làm việc và giờ tiếp sinh viên hiển thị trên Cổng sinh viên.');
+  view.innerHTML = '<div class="workspace-loading">Đang tải hồ sơ cá nhân…</div>';
+  try {
+    const profile = await apiGet('/api/workspace/lecturer/profile');
+    renderLecturerProfile(profile);
+  } catch (error) {
+    view.innerHTML = `<section class="workspace-panel empty-state">${esc(error.message)}</section>`;
+  }
+}
+
+function renderLecturerProfile(profile) {
+  const initials = String(profile.fullName || 'GV').trim().split(/\s+/).slice(-2).map(w => w[0] || '').join('').toLocaleUpperCase('vi') || 'GV';
+  const titleLine = [profile.academicTitle, profile.academicDegree].filter(Boolean).join(' · ');
+
+  view.innerHTML = `
+    <div class="lecturer-profile-layout">
+      <section class="workspace-panel lp-form-card">
+        <div class="lp-section-head">
+          <h2>Thông tin hồ sơ công khai</h2>
+          <p>Các mục Mã GV, Họ tên, Khoa, Bộ môn, Học hàm/Học vị được đồng bộ từ dữ liệu nhân sự đào tạo.</p>
+        </div>
+
+        <div class="lp-readonly-grid">
+          <div><span>Mã giảng viên</span><strong>${esc(profile.lecturerCode)}</strong></div>
+          <div><span>Họ và tên</span><strong>${esc(profile.fullName)}</strong></div>
+          <div><span>Khoa / Viện</span><strong>${esc(profile.department || '—')}</strong></div>
+          <div><span>Bộ môn</span><strong>${esc(profile.subjectGroup || 'Chưa cập nhật')}</strong></div>
+          <div><span>Học hàm / Học vị</span><strong>${esc(titleLine || 'Chưa cập nhật')}</strong></div>
+        </div>
+
+        <form id="lecturerProfileForm" class="lp-form">
+          <div class="lp-form-grid">
+            <label>Email liên hệ
+              <input type="email" name="email" maxlength="160" value="${esc(profile.email || '')}" placeholder="vd: giangvien@eduportal.edu.vn">
+            </label>
+            <label>Số điện thoại
+              <input type="text" name="phone" maxlength="30" value="${esc(profile.phone || '')}" placeholder="vd: 0912 345 678">
+            </label>
+          </div>
+
+          <label class="lp-toggle-row">
+            <input type="checkbox" name="showPhoneToStudents" ${profile.showPhoneToStudents ? 'checked' : ''}>
+            <span>
+              <strong>Cho phép sinh viên xem số điện thoại</strong>
+              <small>Mặc định tắt để bảo vệ quyền riêng tư. Khi tắt, sinh viên chỉ thấy email và giờ tiếp sinh viên.</small>
+            </span>
+          </label>
+
+          <div class="lp-form-grid">
+            <label>Phòng làm việc
+              <input type="text" name="officeLocation" maxlength="160" value="${esc(profile.officeLocation || '')}" placeholder="vd: Nhà B1 · Phòng 402">
+            </label>
+            <label>Giờ tiếp sinh viên
+              <input type="text" name="officeHours" maxlength="240" value="${esc(profile.officeHours || '')}" placeholder="vd: Thứ 3 & Thứ 5, 14:00 – 16:30">
+            </label>
+          </div>
+
+          <label>Trang học thuật / Google Scholar (tùy chọn)
+            <input type="url" name="websiteUrl" maxlength="300" value="${esc(profile.websiteUrl || '')}" placeholder="https://scholar.google.com/...">
+          </label>
+
+          <label>Hướng nghiên cứu & Chuyên môn (phân tách bằng dấu phẩy)
+            <input type="text" name="researchInterests" maxlength="500" value="${esc(profile.researchInterests || '')}" placeholder="vd: Trí tuệ nhân tạo, Kỹ thuật phần mềm, Hệ phân tán">
+          </label>
+
+          <label>Giới thiệu bản thân & Kinh nghiệm giảng dạy
+            <textarea name="bio" rows="4" maxlength="1200" placeholder="Giới thiệu ngắn gọn về quá trình giảng dạy, định hướng môn học hoặc lưu ý dành cho sinh viên…">${esc(profile.bio || '')}</textarea>
+            <small class="lp-char-count" id="lpBioCount">${(profile.bio || '').length} / 1200 ký tự</small>
+          </label>
+
+          <div class="lp-form-actions">
+            <button type="submit" class="primary-button" id="lpSaveBtn">Lưu hồ sơ công khai</button>
+          </div>
+        </form>
+      </section>
+
+      <aside class="workspace-panel lp-preview-card">
+        <div class="lp-section-head">
+          <span class="lp-preview-eyebrow">XEM TRƯỚC TRÊN CỔNG SINH VIÊN</span>
+          <h2>Sinh viên sẽ nhìn thấy</h2>
+        </div>
+
+        <div class="lp-preview-box" id="lpPreviewBox"></div>
+      </aside>
+    </div>`;
+
+  const formEl = $('#lecturerProfileForm');
+  const previewEl = $('#lpPreviewBox');
+  const bioCountEl = $('#lpBioCount');
+
+  const updatePreview = () => {
+    const fd = new FormData(formEl);
+    const email = String(fd.get('email') || '').trim();
+    const phone = String(fd.get('phone') || '').trim();
+    const showPhone = formEl.elements.showPhoneToStudents.checked;
+    const officeLocation = String(fd.get('officeLocation') || '').trim();
+    const officeHours = String(fd.get('officeHours') || '').trim();
+    const websiteUrl = String(fd.get('websiteUrl') || '').trim();
+    const research = String(fd.get('researchInterests') || '').trim();
+    const bio = String(fd.get('bio') || '').trim();
+
+    if (bioCountEl) bioCountEl.textContent = `${bio.length} / 1200 ký tự`;
+
+    const tags = research.split(/[,;\n]+/).map(s => s.trim()).filter(Boolean);
+    const sections = profile.currentSections || [];
+
+    previewEl.innerHTML = `
+      <div class="lp-preview-hero">
+        <span class="lp-preview-avatar">${esc(initials)}</span>
+        <div>
+          ${titleLine ? `<span class="lp-preview-prefix">${esc(titleLine)}</span>` : ''}
+          <strong>${esc(profile.fullName)}</strong>
+          <small>${esc([profile.department, profile.subjectGroup].filter(Boolean).join(' · '))}</small>
+        </div>
+      </div>
+      <div class="lp-preview-meta">
+        <div><span>Email</span><strong>${esc(email || 'Chưa cập nhật')}</strong></div>
+        <div><span>Phòng làm việc</span><strong>${esc(officeLocation || 'Chưa cập nhật')}</strong></div>
+        <div><span>Giờ tiếp SV</span><strong>${esc(officeHours || 'Liên hệ qua email')}</strong></div>
+        <div><span>Điện thoại</span><strong>${showPhone && phone ? esc(phone) : 'Đang ẩn với sinh viên'}</strong></div>
+        ${websiteUrl ? `<div class="full"><span>Liên kết</span><strong>${esc(websiteUrl)}</strong></div>` : ''}
+      </div>
+      <div class="lp-preview-block">
+        <h4>Giới thiệu</h4>
+        <p>${esc(bio || 'Giảng viên chưa cập nhật phần giới thiệu cá nhân.')}</p>
+      </div>
+      ${tags.length ? `<div class="lp-preview-block"><h4>Chuyên môn</h4><div class="lp-interest-pills">${tags.map(t => `<span>${esc(t)}</span>`).join('')}</div></div>` : ''}
+      <div class="lp-preview-block">
+        <h4>Lớp đang phụ trách (${sections.length})</h4>
+        ${sections.length
+          ? `<ul class="lp-preview-sections">${sections.slice(0, 4).map(s => `<li><strong>${esc(s.courseCode)} · ${esc(s.courseName)}</strong><small>${esc(s.sectionCode)} · ${esc(s.schedule)}</small></li>`).join('')}</ul>`
+          : '<p>Chưa có lớp được phân công kỳ này.</p>'}
+      </div>`;
+  };
+
+  updatePreview();
+  formEl.addEventListener('input', updatePreview);
+  formEl.addEventListener('change', updatePreview);
+
+  formEl.addEventListener('submit', async event => {
+    event.preventDefault();
+    const saveBtn = $('#lpSaveBtn');
+    const fd = new FormData(formEl);
+    const payload = {
+      email: String(fd.get('email') || ''),
+      phone: String(fd.get('phone') || ''),
+      showPhoneToStudents: formEl.elements.showPhoneToStudents.checked,
+      officeLocation: String(fd.get('officeLocation') || ''),
+      officeHours: String(fd.get('officeHours') || ''),
+      websiteUrl: String(fd.get('websiteUrl') || ''),
+      researchInterests: String(fd.get('researchInterests') || ''),
+      bio: String(fd.get('bio') || '')
+    };
+    saveBtn.disabled = true;
+    saveBtn.textContent = 'Đang lưu…';
+    try {
+      const updated = await apiPut('/api/workspace/lecturer/profile', payload);
+      showToast('Đã lưu hồ sơ công khai cho sinh viên.');
+      renderLecturerProfile(updated);
+    } catch (error) {
+      showToast(error.message || 'Không thể lưu hồ sơ.');
+      saveBtn.disabled = false;
+      saveBtn.textContent = 'Lưu hồ sơ công khai';
+    }
+  });
+}
 function renderTrainingOverview(data) {
   setPageHeader('Tổng quan học vụ',`${data.semester} · Đăng ký từ ${date(data.registrationOpenAt)} đến ${date(data.registrationCloseAt)}`);
   const rows=data.sections.map(item=>({...item,enrolled:`${item.enrolled} / ${item.capacity}`}));
@@ -133,10 +322,17 @@ function renderTrainingOverview(data) {
     : '';
   view.innerHTML=`<div class="workspace-stats">${statCard('Sinh viên',data.studentCount)}${statCard('Môn học',data.courseCount)}${statCard('Lớp học phần',data.sectionCount)}${statCard('Đăng ký đang hoạt động',data.enrollmentCount,`${number(data.waitingListCount)} chờ lớp · ${number(data.pendingCount||0)} chờ duyệt`)}</div>${pendingBanner}<section class="workspace-panel"><div class="workspace-toolbar"><strong>Sĩ số lớp học kỳ này</strong></div>${tableMarkup([['sectionCode','Mã lớp'],['courseCode','Mã môn'],['courseName','Tên môn'],['lecturer','Giảng viên'],['schedule','Lịch'],['enrolled','Sĩ số'],['prerequisite','Tiên quyết']],rows,'Học kỳ này chưa có lớp học phần.')}</section>`;
   $('#jumpPendingButton')?.addEventListener('click', () => { enrollmentFilterState.status = 'PENDING'; openPage('enrollments'); });
+  futureShell?.updateNotifications([
+    ...(data.pendingCount > 0 ? [{ tone: 'warning', title: `${number(data.pendingCount)} đăng ký chờ duyệt`, body: 'Cần Ban Đào tạo xem xét duyệt hoặc từ chối.', action: () => { enrollmentFilterState.status = 'PENDING'; openPage('enrollments'); } }] : []),
+    { tone: 'info', title: `${data.semester} · ${number(data.sectionCount)} lớp mở`, body: `${number(data.enrollmentCount)} đăng ký hiệu lực · ${number(data.waitingListCount)} chờ lớp.`, action: () => openPage('sections') }
+  ]);
 }
 function renderAdminOverview(data) {
   setPageHeader('Tổng quan quản trị','Số liệu hệ thống được lấy trực tiếp từ cơ sở dữ liệu.');
   view.innerHTML=`<div class="workspace-stats">${statCard('Tài khoản sinh viên',data.studentAccounts)}${statCard('Tài khoản giảng viên',data.lecturerAccounts)}${statCard('Môn học',data.courses)}${statCard('Lớp học phần',data.courseSections)}</div><section class="workspace-panel"><div class="workspace-toolbar"><strong>Tình hình đăng ký</strong></div><p>${number(data.activeEnrollments)} lượt đăng ký đang có hiệu lực trên hệ thống.</p></section>`;
+  futureShell?.updateNotifications([
+    { tone: 'info', title: `${number(data.studentAccounts)} sinh viên · ${number(data.lecturerAccounts)} giảng viên`, body: `${number(data.activeEnrollments)} lượt đăng ký đang hoạt động.`, action: () => openPage('accounts') }
+  ]);
 }
 
 function statusCell(value) {
@@ -159,18 +355,34 @@ async function loadResource(key) {
       records=reportRows;renderReports(semesters);return;
     }
     records=await apiGet(definition.endpoint);
-    if(key==='logs')renderAuditLogs();else renderResource(key);
+    if(key==='logs'){
+      auditFilterState={};
+      auditActionOptions=[...new Set(records.map(row=>row.action).filter(Boolean))].sort();
+      renderAuditLogs();
+    }else renderResource(key);
   } catch(error) { view.innerHTML=`<section class="workspace-panel"><div class="empty-state">${esc(error.message)}<br><small>Chức năng này cần API và quyền truy cập tương ứng.</small></div></section>`; }
 }
 function renderAuditLogs(query='') {
   const definition=definitions.logs,filtered=records.filter(row=>JSON.stringify(row).toLocaleLowerCase('vi').includes(query.toLocaleLowerCase('vi')));
   const rows=filtered.map(row=>`<tr><td>${esc(new Intl.DateTimeFormat('vi-VN',{dateStyle:'short',timeStyle:'short'}).format(new Date(row.createdAt)))}</td><td>${esc(row.actor)}</td><td>${esc(roleNames[row.role]||row.role)}</td><td>${esc(row.action)}</td><td>${esc(row.target||'—')}</td><td>${esc(row.details||'—')}</td><td><button type="button" class="secondary-button" data-audit-detail="${row.id}">Chi tiết</button></td></tr>`).join('');
-  const actions=[...new Set(records.map(row=>row.action))].sort();
-  view.innerHTML=`<section class="workspace-panel"><form id="auditFilters" class="audit-filters"><label>Tài khoản<input name="actor" type="search" placeholder="Tên đăng nhập"></label><label>Vai trò<select name="role"><option value="">Tất cả</option><option value="STUDENT">Sinh viên</option><option value="LECTURER">Giảng viên</option><option value="TRAINING_OFFICE">Ban Đào tạo</option><option value="ADMIN">Quản trị viên</option><option value="SYSTEM">Hệ thống</option></select></label><label>Thao tác<select name="action"><option value="">Tất cả thao tác</option>${actions.map(action=>`<option value="${esc(action)}">${esc(action)}</option>`).join('')}</select></label><label>Từ ngày<input name="from" type="datetime-local"></label><label>Đến ngày<input name="to" type="datetime-local"></label><button class="primary-button" type="submit">Lọc nhật ký</button></form><div class="workspace-toolbar"><input id="auditSearch" class="workspace-search" type="search" placeholder="Tìm trong kết quả…"><button type="button" class="secondary-button" id="exportAudit">Xuất CSV</button></div><div class="workspace-table-wrap"><table class="workspace-table"><thead><tr>${definition.columns.map(([,label])=>`<th>${esc(label)}</th>`).join('')}<th></th></tr></thead><tbody>${rows||`<tr><td colspan="${definition.columns.length+1}" class="empty-state">${query?'Không tìm thấy nhật ký phù hợp.':'Không có bản ghi nhật ký.'}</td></tr>`}</tbody></table></div><p class="table-summary">${number(filtered.length)} bản ghi trong kết quả</p></section>`;
+  const actions=[...new Set([...auditActionOptions, ...records.map(row=>row.action).filter(Boolean)])].sort();
+  auditActionOptions = actions;
+  view.innerHTML=`<section class="workspace-panel"><form id="auditFilters" class="audit-filters"><label>Tài khoản<input name="actor" type="search" placeholder="Tên đăng nhập"></label><label>Vai trò<select name="role"><option value="">Tất cả</option><option value="STUDENT">Sinh viên</option><option value="LECTURER">Giảng viên</option><option value="TRAINING_OFFICE">Ban Đào tạo</option><option value="ADMIN">Quản trị viên</option><option value="SYSTEM">Hệ thống</option></select></label><label>Thao tác<select name="action"><option value="">Tất cả thao tác</option>${actions.map(action=>`<option value="${esc(action)}">${esc(action)}</option>`).join('')}</select></label><label>Từ ngày<input name="from" type="datetime-local"></label><label>Đến ngày<input name="to" type="datetime-local"></label><button class="primary-button" type="submit">Lọc nhật ký</button></form><div class="workspace-toolbar"><input id="auditSearch" class="workspace-search" type="search" placeholder="Tìm trong kết quả…"><div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="secondary-button" id="resetAuditFilters">Xóa lọc &amp; làm mới</button><button type="button" class="secondary-button" id="exportAudit">Xuất CSV</button></div></div><div class="workspace-table-wrap"><table class="workspace-table"><thead><tr>${definition.columns.map(([,label])=>`<th>${esc(label)}</th>`).join('')}<th></th></tr></thead><tbody>${rows||`<tr><td colspan="${definition.columns.length+1}" class="empty-state">${query?'Không tìm thấy nhật ký phù hợp.':'Không có bản ghi nhật ký.'}</td></tr>`}</tbody></table></div><p class="table-summary">${number(filtered.length)} bản ghi trong kết quả</p></section>`;
   $('#auditSearch').value=query;
   for(const [key,value] of Object.entries(auditFilterState))if($('#auditFilters').elements[key])$('#auditFilters').elements[key].value=value;
   $('#auditSearch').addEventListener('input',event=>{const text=event.target.value;const focus=()=>{const search=$('#auditSearch');search.focus();search.setSelectionRange(text.length,text.length);};auditFilterState=Object.fromEntries(new FormData($('#auditFilters')).entries());renderAuditLogs(text);focus();});
-  $('#auditFilters').addEventListener('submit',async event=>{event.preventDefault();auditFilterState=Object.fromEntries(new FormData(event.currentTarget).entries());const params=new URLSearchParams(auditFilterState);try{records=await apiGet(`${definitions.logs.endpoint}?${params}`);renderAuditLogs($('#auditSearch')?.value||'');}catch(error){showToast(error.message);}});
+  $('#auditFilters').addEventListener('submit',async event=>{
+    event.preventDefault();
+    auditFilterState=Object.fromEntries(new FormData(event.currentTarget).entries());
+    const cleanParams=Object.fromEntries(Object.entries(auditFilterState).filter(([,v])=>String(v||'').trim()!==''));
+    const params=new URLSearchParams(cleanParams);
+    try{records=await apiGet(`${definitions.logs.endpoint}${params.size?'?'+params:''}`);renderAuditLogs($('#auditSearch')?.value||'');}catch(error){showToast(error.message);}
+  });
+  $('#resetAuditFilters').addEventListener('click',async()=>{
+    auditFilterState={};
+    try{records=await apiGet(definitions.logs.endpoint);auditActionOptions=[...new Set(records.map(r=>r.action).filter(Boolean))].sort();renderAuditLogs('');showToast('Đã làm mới nhật ký hệ thống.');}
+    catch(error){showToast(error.message);}
+  });
   $('#exportAudit').addEventListener('click',()=>exportCsv('nhat-ky-he-thong',definition.columns,filtered));
   view.querySelectorAll('[data-audit-detail]').forEach(button=>button.addEventListener('click',()=>showAuditDetail(records.find(row=>String(row.id)===button.dataset.auditDetail))));
 }
@@ -298,6 +510,7 @@ async function openPage(key) {
   else if(key==='roster')await loadRoster();
   else if(key==='enrollments')await loadTrainingEnrollments();
   else if(key==='curricula'&&account.role==='LECTURER')await loadLecturerCurricula();
+  else if(key==='profile'&&account.role==='LECTURER')await loadLecturerProfile();
   else if(key==='permissions')await loadPermissions();
   else await loadResource(key);
 }
@@ -598,6 +811,24 @@ $('#sidebarProfileButton')?.addEventListener('click', () => {
   if (accountMenuPanel) {
     setAccountMenu(accountMenuPanel.hidden);
     if (!accountMenuPanel.hidden) accountMenuPanel.querySelector('a')?.focus();
+  }
+});
+
+const futureShell = initFutureShell({
+  sidebarSelector: '.workspace-sidebar',
+  navSelector: '#workspaceNav button[data-page]',
+  getCommands: () => {
+    const navCmds = Array.from(document.querySelectorAll('#workspaceNav button[data-page]')).map(btn => ({
+      group: `Điều hướng (${roleNames[account?.role] || 'Workspace'})`,
+      title: btn.querySelector('.ws-nav-text')?.textContent?.trim() || btn.textContent.trim(),
+      subtitle: 'Chuyển nhanh tới trang được cấp quyền',
+      tag: 'NAV',
+      action: () => openPage(btn.dataset.page)
+    }));
+    return [
+      ...navCmds,
+      { group: 'Tài khoản', title: 'Đổi mật khẩu tài khoản', subtitle: 'Mở trang bảo mật đổi mật khẩu', tag: 'SEC', action: () => location.assign('/change-password.html') }
+    ];
   }
 });
 

@@ -361,6 +361,28 @@ button {
   100% { transform: scale(1.25); transform-origin: center; opacity: 1; }
 }
 
+/* 6.5. Giảng viên (Head bob & subtle shoulder shift) */
+.nav-item:hover .lec-head-main, .nav-item.active .lec-head-main {
+  animation: lecHeadBob 0.85s infinite alternate ease-in-out;
+}
+.nav-item:hover .lec-head-sub, .nav-item.active .lec-head-sub {
+  animation: lecHeadBob 0.85s infinite alternate ease-in-out 0.28s;
+}
+.nav-item:hover .lec-body-main, .nav-item.active .lec-body-main {
+  animation: lecBodyShift 0.85s infinite alternate ease-in-out;
+}
+.nav-item:hover .lec-body-sub, .nav-item.active .lec-body-sub {
+  animation: lecBodyShift 0.85s infinite alternate ease-in-out 0.28s;
+}
+@keyframes lecHeadBob {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-2.2px); }
+}
+@keyframes lecBodyShift {
+  0% { transform: translateY(0); opacity: 0.85; }
+  100% { transform: translateY(-0.8px); opacity: 1; }
+}
+
 /* 7. Trợ lý AI (Sparkle rotation & pulse) */
 .nav-item:hover .main-star, .nav-item.active .main-star {
   transform-origin: 12px 11px;

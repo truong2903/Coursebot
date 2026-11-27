@@ -1,29 +1,225 @@
 import { apiGet, apiPost } from '../../core/api.js';
+import { initFutureShell } from '../../core/future-shell.js?v=20261127gn';
+import { createScheduleController } from './schedule/schedule-app.js?v=20261125l';
+import { createHistoryController } from './history/history-app.js?v=20261125h';
+import { createTranscriptController } from './transcript/transcript-app.js?v=20261125j';
+import { createCurriculumController } from './curriculum/curriculum-app.js?v=20261125f';
+import { createLecturersController } from './lecturers/lecturers-app.js?v=20261125l';
+import { createAssistantController } from './assistant/assistant-app.js?v=20261127sl';
 
-const state = { courses: [], registered: [], credits: 0, maxCredits: 20, filter: 'all', query: '', department: '', weekday: '', creditsFilter: '', sort: 'code' };
-const chatHistory = [];
-let chatBusy = false;
-const $ = (selector) => document.querySelector(selector);
+const state = {
+  courses: [],
+  registered: [],
+  credits: 0,
+  maxCredits: 20,
+  filter: 'all',
+  query: '',
+  department: '',
+  weekday: '',
+  creditsFilter: '',
+  sort: 'code',
+  page: 1,
+  loaded: false,
+  activeView: 'overview',
+  advOpen: false,
+  lastNumbers: {}
+};
+
+const $ = selector => document.querySelector(selector);
 const list = $('#courseList');
-const escapeHtml = (value) => String(value).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[c]);
-const monogram = (name) => name.split(/\s+/).slice(-2).map(part => part[0]).join('').toUpperCase();
+const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+const monogram = name => String(name || 'HP').split(/\s+/).slice(-2).map(part => part[0] || '').join('').toUpperCase() || 'HP';
 const formatDate = value => value ? new Intl.DateTimeFormat('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' }).format(new Date(`${value}T00:00:00`)) : 'Chưa thiết lập';
-const weekdays = ['Thứ 2','Thứ 3','Thứ 4','Thứ 5','Thứ 6','Thứ 7','Chủ nhật'];
-function courseSessions(course){
-  if(!course.meetings?.length)return [course];
-  return course.meetings.map(meeting=>({...course,
-    schedule:`${weekdays[meeting.dayOfWeek-1]||'Chưa xếp lịch'} · ${meeting.startsAt&&meeting.endsAt?`${meeting.startsAt.slice(0,5)} – ${meeting.endsAt.slice(0,5)}`:'Giờ học cần xác nhận'}${meeting.weeksExpression?` · Tuần ${meeting.weeksExpression}`:''}`,
-    room:meeting.room||'Chưa có phòng',meetingDay:meeting.dayOfWeek,meetingValid:meeting.valid}));
+const WEEKDAYS = ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'Chủ nhật'];
+const WEEKDAY_SHORT = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'];
+
+const prefersReducedMotion = () =>
+  Boolean(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+function courseSessions(course) {
+  if (!course.meetings?.length) return [course];
+  return course.meetings.map(meeting => ({
+    ...course,
+    schedule: `${WEEKDAYS[meeting.dayOfWeek - 1] || 'Chưa xếp lịch'} · ${meeting.startsAt && meeting.endsAt ? `${meeting.startsAt.slice(0, 5)} – ${meeting.endsAt.slice(0, 5)}` : 'Giờ học cần xác nhận'}${meeting.weeksExpression ? ` · Tuần ${meeting.weeksExpression}` : ''}`,
+    room: meeting.room || 'Chưa có phòng',
+    meetingDay: meeting.dayOfWeek,
+    meetingValid: meeting.valid
+  }));
+}
+
+function animateNumber(el, target, { key = null, duration = 480, pad = 0 } = {}) {
+  if (!el) return;
+  const num = Number(target) || 0;
+  const format = v => pad > 0 ? String(Math.round(v)).padStart(pad, '0') : String(Math.round(v));
+  const prev = key && state.lastNumbers[key] !== undefined ? state.lastNumbers[key] : null;
+  if (key) state.lastNumbers[key] = num;
+
+  if (prefersReducedMotion() || prev === num) {
+    el.textContent = format(num);
+    return;
+  }
+
+  const from = prev !== null ? prev : 0;
+  const start = performance.now();
+  const tick = now => {
+    const progress = Math.min(1, (now - start) / duration);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    el.textContent = format(from + (num - from) * eased);
+    if (progress < 1) requestAnimationFrame(tick);
+    else el.textContent = format(num);
+  };
+  requestAnimationFrame(tick);
+}
+
+const entranceTimers = new WeakMap();
+function triggerSectionEntrance(sectionEl) {
+  if (!sectionEl || prefersReducedMotion()) return;
+  const oldTimer = entranceTimers.get(sectionEl);
+  if (oldTimer) window.clearTimeout(oldTimer);
+  sectionEl.classList.remove('is-entering');
+  void sectionEl.offsetWidth;
+  sectionEl.classList.add('is-entering');
+  const timer = window.setTimeout(() => sectionEl.classList.remove('is-entering'), 620);
+  entranceTimers.set(sectionEl, timer);
+}
+
+function renderInitialSkeletons() {
+  const skelCard = `
+    <div class="dash-skeleton-card" aria-hidden="true">
+      <div class="dash-skel dash-skel-box"></div>
+      <div class="dash-skel-lines">
+        <div class="dash-skel dash-skel-line w-60"></div>
+        <div class="dash-skel dash-skel-line w-85"></div>
+      </div>
+      <div class="dash-skel dash-skel-btn"></div>
+    </div>`;
+  const ovList = $('#ovRegisteredList');
+  if (ovList && !state.loaded) ovList.innerHTML = `<div class="dash-skeleton-list">${skelCard.repeat(3)}</div>`;
+  if (list && !state.loaded) list.innerHTML = `<div class="dash-skeleton-list">${skelCard.repeat(4)}</div>`;
+}
+
+function renderOverviewWidgets() {
+  const openCount = state.courses.length;
+  const availableCount = state.courses.filter(c => (c.capacity - c.enrolled) > 0).length;
+  const fullCount = openCount - availableCount;
+
+  animateNumber($('#ovOpenCoursesCount'), openCount, { key: 'ovOpen' });
+  const availSub = $('#ovAvailableCoursesSub');
+  if (availSub) {
+    availSub.textContent = openCount
+      ? `${availableCount} lớp còn chỗ · ${fullCount} lớp đã đủ sĩ số`
+      : 'Hiện chưa có lớp mở trong học kỳ';
+  }
+
+  animateNumber($('#ovRegisteredCount'), state.registered.length, { key: 'ovRegCount' });
+  const ovRegSem = $('#ovRegisteredSemester');
+  if (ovRegSem) ovRegSem.textContent = state.semesterName || 'Học kỳ hiện tại';
+
+  const ovList = $('#ovRegisteredList');
+  if (ovList) {
+    if (!state.registered.length) {
+      ovList.innerHTML = `
+        <div class="ov-empty-box">
+          <strong>Bạn chưa đăng ký học phần nào</strong>
+          <p>Chuyển sang mục Đăng ký học phần để tìm kiếm lớp đang mở và sắp xếp lịch học phù hợp.</p>
+          <button class="dash-btn dash-btn-primary" type="button" data-ov-empty-go="courses">Đi tới Đăng ký học phần →</button>
+        </div>`;
+    } else {
+      ovList.innerHTML = state.registered.map((course, idx) => `
+        <div class="ov-enrolled-item" style="--item-i:${Math.min(idx, 10)}">
+          <span class="ov-enrolled-stripe ${escapeHtml(course.color || 'lavender')}"></span>
+          <div class="ov-enrolled-copy">
+            <div class="ov-enrolled-top">
+              <span class="ov-enrolled-code">${escapeHtml(course.code)}</span>
+              <strong>${escapeHtml(course.name)}</strong>
+            </div>
+            <div class="ov-enrolled-meta">
+              <span>${escapeHtml(course.schedule)}</span>
+              <span>· ${escapeHtml(course.room || 'Chưa có phòng')}</span>
+              <span>· ${course.credits} tín chỉ</span>
+            </div>
+          </div>
+          <div class="ov-enrolled-actions">
+            <button class="ov-mini-btn" type="button" data-details="${escapeHtml(course.id)}">Chi tiết</button>
+            <button class="ov-mini-btn is-danger" type="button" data-action="drop" data-id="${escapeHtml(course.id)}">Hủy lớp</button>
+          </div>
+        </div>`).join('');
+    }
+  }
+
+  const weekPreview = $('#ovWeekPreview');
+  if (weekPreview) {
+    const byDay = new Map(WEEKDAYS.map(day => [day, []]));
+    state.registered.flatMap(courseSessions).forEach(session => {
+      const day = WEEKDAYS.find(d => String(session.schedule || '').startsWith(d));
+      if (day) byDay.get(day).push(session);
+    });
+    const activeEntries = [...byDay.entries()].filter(([, items]) => items.length > 0);
+    if (!activeEntries.length) {
+      weekPreview.innerHTML = `
+        <div class="ov-empty-box" style="grid-column:1 / -1">
+          <strong>Chưa có lịch học trong tuần</strong>
+          <p>Các buổi học sẽ tự động hiển thị tại đây ngay sau khi bạn đăng ký lớp học phần.</p>
+        </div>`;
+    } else {
+      weekPreview.innerHTML = activeEntries.map(([day, items]) => `
+        <div class="ov-week-day">
+          <div class="ov-week-day-head">
+            <strong>${escapeHtml(day)}</strong>
+            <span>${items.length} lớp</span>
+          </div>
+          ${items.map(item => {
+            const timePart = String(item.schedule || '').split(' · ').slice(1).join(' · ');
+            return `
+              <div class="ov-week-slot">
+                <strong>${escapeHtml(item.code)} · ${escapeHtml(item.name)}</strong>
+                <small>${escapeHtml(timePart || 'Đang cập nhật giờ')} · ${escapeHtml(item.room || 'Chưa có phòng')}</small>
+              </div>`;
+          }).join('')}
+        </div>`).join('');
+    }
+  }
+}
+
+function renderRegistrationStats() {
+  const pct = state.maxCredits > 0 ? Math.min(100, (state.credits / state.maxCredits) * 100) : 0;
+  const availableCount = state.courses.filter(c => (c.capacity - c.enrolled) > 0).length;
+
+  animateNumber($('#regStatCredits'), state.credits, { key: 'regCredits' });
+  const limitEl = $('#regStatCreditLimit');
+  if (limitEl) limitEl.textContent = `/ ${state.maxCredits} tín chỉ`;
+  const progEl = $('#regStatProgress');
+  if (progEl) progEl.style.width = `${pct}%`;
+
+  animateNumber($('#regStatTotal'), state.courses.length, { key: 'regTotal' });
+  animateNumber($('#regStatAvailable'), availableCount, { key: 'regAvail' });
+  animateNumber($('#regStatEnrolled'), state.registered.length, { key: 'regEnrolled' });
+
+  const deadlineSub = $('#regStatDeadlineSub');
+  if (deadlineSub) {
+    deadlineSub.textContent = state.registrationAlwaysOpen
+      ? 'Mở đăng ký liên tục'
+      : `Hạn: ${formatDate(state.registrationCloseAt)}`;
+  }
+
+  const cartText = $('#regCartCreditsText');
+  if (cartText) cartText.textContent = `${state.credits} / ${state.maxCredits} TC`;
+  const cartProg = $('#regCartProgress');
+  if (cartProg) cartProg.style.width = `${pct}%`;
 }
 
 async function loadDashboard() {
+  if (!state.loaded) renderInitialSkeletons();
   const currentAccount = await apiGet('/api/auth/me');
   if (currentAccount.role !== 'STUDENT') {
     location.replace('/workspace.html');
     return;
   }
+
   Object.assign(state, await apiGet('/api/dashboard'));
-  $('#copyrightYear').textContent=new Date().getFullYear();
+  state.loaded = true;
+
+  $('#copyrightYear').textContent = new Date().getFullYear();
   const initials = monogram(state.student.name);
   $('#sidebarName').textContent = state.student.name;
   $('#topName').textContent = state.student.name;
@@ -33,509 +229,367 @@ async function loadDashboard() {
   $('#sidebarId').textContent = state.student.id;
   $('#semesterName').textContent = state.semesterName;
   $('#registeredSemester').textContent = state.semesterName;
-  if($('#chatGreeting'))$('#chatGreeting').textContent = `Xin chào ${state.student.name.split(' ').at(-1)}! Mình có thể giúp bạn tra cứu học phần, lịch học và điều kiện đăng ký.`;
-  $('#registrationStatus').innerHTML = `<span class="status-pulse"></span> ${state.registrationOpen ? 'CỔNG ĐĂNG KÝ ĐANG MỞ' : 'CỔNG ĐĂNG KÝ ĐANG ĐÓNG'}`;
-  $('#registrationStatusCard').textContent = state.registrationOpen ? '● ĐANG MỞ' : '● ĐANG ĐÓNG';
-  $('#registrationStatusCard').classList.toggle('good', state.registrationOpen);
-  $('#registrationDeadline').textContent = state.registrationAlwaysOpen?'Đến khi có thông báo':formatDate(state.registrationCloseAt);
-  $('#registrationDates').textContent = state.registrationAlwaysOpen?'Mở đăng ký liên tục (tạm thời)':`${formatDate(state.registrationOpenAt)} – ${formatDate(state.registrationCloseAt)}`;
-  const openBadge=document.querySelector('.open-badge');openBadge.innerHTML=`<i></i> ${state.registrationOpen?'ĐANG MỞ':'ĐANG ĐÓNG'}`;openBadge.classList.toggle('closed',!state.registrationOpen);
-  document.querySelector('.semester-picker strong').textContent = state.semesterName;
-  document.querySelector('.registered-heading p').textContent = state.semesterName;
-  $('#creditValue').textContent = state.credits;
-  $('#creditLimitLabel').textContent = ` / ${state.maxCredits} tín chỉ`;
-  $('#dropPolicy').textContent=state.registrationAlwaysOpen&&!state.semesterStartsAt?'Đang mở đăng ký và hủy lớp tạm thời. Thời hạn chính thức sẽ được cập nhật khi có ngày bắt đầu học kỳ.':`Bạn có thể tự hủy trong ${state.dropWindowDays} ngày đầu học kỳ. Sau thời hạn này, hãy liên hệ Ban Đào tạo.`;
-  $('#creditProgress').style.width = `${Math.min(100, state.credits / state.maxCredits * 100)}%`;
+
+  const ovSemBadge = $('#ovSemesterBadge');
+  if (ovSemBadge) ovSemBadge.textContent = state.semesterName;
+  const regSemBadge = $('#regSemesterBadge');
+  if (regSemBadge) regSemBadge.textContent = state.semesterName;
+
+  const statusPill = $('#registrationStatus');
+  if (statusPill) {
+    statusPill.innerHTML = `<span class="ov-status-dot"></span><span>${state.registrationOpen ? 'CỔNG ĐĂNG KÝ ĐANG MỞ' : 'CỔNG ĐĂNG KÝ ĐANG ĐÓNG'}</span>`;
+    statusPill.classList.toggle('is-closed', !state.registrationOpen);
+  }
+
+  const statusCard = $('#registrationStatusCard');
+  if (statusCard) {
+    statusCard.textContent = state.registrationOpen ? 'Đang mở đăng ký' : 'Đã đóng đăng ký';
+  }
+
+  $('#registrationDeadline').textContent = state.registrationAlwaysOpen ? 'Đến khi có thông báo' : formatDate(state.registrationCloseAt);
+  $('#registrationDates').textContent = state.registrationAlwaysOpen
+    ? 'Mở đăng ký liên tục (tạm thời)'
+    : `${formatDate(state.registrationOpenAt)} – ${formatDate(state.registrationCloseAt)}`;
+
+  const openBadge = document.querySelector('#coursesViewSection .open-badge');
+  if (openBadge) {
+    openBadge.innerHTML = `<i></i> ${state.registrationOpen ? 'ĐANG MỞ' : 'ĐANG ĐÓNG'}`;
+    openBadge.classList.toggle('closed', !state.registrationOpen);
+  }
+
+  const pickerStrong = document.querySelector('.semester-picker strong');
+  if (pickerStrong) pickerStrong.textContent = state.semesterName;
+
+  animateNumber($('#creditValue'), state.credits, { key: 'ovCredits' });
+  $('#creditLimitLabel').textContent = `/ ${state.maxCredits} tín chỉ`;
+  const pct = state.maxCredits > 0 ? Math.min(100, (state.credits / state.maxCredits) * 100) : 0;
+  $('#creditProgress').style.width = `${pct}%`;
   $('#courseCount').textContent = `${state.registered.length} học phần đã đăng ký`;
-  $('#registeredCount').textContent = String(state.registered.length).padStart(2, '0');
-  const weekdays = ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'Chủ nhật'];
-  const activeDays = new Set(state.registered.flatMap(courseSessions).map(course=>course.schedule.split(' · ')[0]).filter(day=>weekdays.includes(day)));
-  $('#weekdayCount').textContent = activeDays.size;
+
+  const policyText = state.registrationAlwaysOpen && !state.semesterStartsAt
+    ? 'Đang mở đăng ký và hủy lớp tạm thời. Thời hạn chính thức sẽ được cập nhật khi có ngày bắt đầu học kỳ.'
+    : `Bạn có thể tự hủy học phần trong ${state.dropWindowDays} ngày đầu học kỳ. Sau thời hạn này, vui lòng liên hệ Ban Đào tạo.`;
+  $('#dropPolicy').textContent = policyText;
+  const regPolicy = $('#regDropPolicy');
+  if (regPolicy) regPolicy.textContent = policyText;
+
+  animateNumber($('#registeredCount'), state.registered.length, { key: 'cartCount', pad: 2 });
+
+  const activeDays = new Set(
+    state.registered
+      .flatMap(courseSessions)
+      .map(course => String(course.schedule || '').split(' · ')[0])
+      .filter(day => WEEKDAYS.includes(day))
+  );
+  animateNumber($('#weekdayCount'), activeDays.size, { key: 'ovDays' });
   $('#weekdayDots').setAttribute('aria-label', activeDays.size ? `Lịch học ${[...activeDays].join(', ')}` : 'Chưa có ngày học');
-  $('#weekdayDots').innerHTML = weekdays.map((day, index) => `<span class="${activeDays.has(day) ? 'on' : ''}">${['T2','T3','T4','T5','T6','T7','CN'][index]}</span>`).join('');
+  $('#weekdayDots').innerHTML = WEEKDAYS.map((day, idx) => `<span class="${activeDays.has(day) ? 'on' : ''}">${WEEKDAY_SHORT[idx]}</span>`).join('');
+
   const departments = [...new Set(state.courses.map(course => course.department).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'vi'));
   const departmentFilter = $('#departmentFilter');
-  const selectedDepartment = state.department;
-  departmentFilter.innerHTML = '<option value="">Tất cả khoa</option>' + departments.map(department => `<option value="${escapeHtml(department)}">${escapeHtml(department)}</option>`).join('');
-  departmentFilter.value = selectedDepartment;
-  const creditOptions=[...new Set(state.courses.map(course=>course.credits))].sort((a,b)=>a-b);
-  $('#creditFilter').innerHTML='<option value="">Tất cả</option>'+creditOptions.map(credits=>`<option value="${credits}">${credits} tín chỉ</option>`).join('');
-  $('#creditFilter').value=state.creditsFilter;
-  renderCourses();
+  departmentFilter.innerHTML = '<option value="">Tất cả khoa</option>' + departments.map(d => `<option value="${escapeHtml(d)}">${escapeHtml(d)}</option>`).join('');
+  departmentFilter.value = state.department;
+
+  const creditOptions = [...new Set(state.courses.map(course => course.credits))].sort((a, b) => a - b);
+  $('#creditFilter').innerHTML = '<option value="">Tất cả</option>' + creditOptions.map(c => `<option value="${c}">${c} tín chỉ</option>`).join('');
+  $('#creditFilter').value = state.creditsFilter;
+
+  renderOverviewWidgets();
+  renderRegistrationStats();
+  syncRegistrationToolbarState();
+  renderCourses({ crossfade: false });
   renderRegistered();
+  syncFutureNotifications();
 }
 
-function renderCourses() {
-  const today=new Date();today.setHours(0,0,0,0);
-  const registrationNotStarted=Boolean(!state.registrationAlwaysOpen&&state.registrationOpenAt&&new Date(`${state.registrationOpenAt}T00:00:00`)>today);
+function countAdvancedFilters() {
+  let n = 0;
+  if (state.department) n++;
+  if (state.weekday) n++;
+  if (state.creditsFilter) n++;
+  if (state.sort && state.sort !== 'code') n++;
+  return n;
+}
+
+function hasAnyRegFilter() {
+  return Boolean(state.query.trim() || state.filter !== 'all' || countAdvancedFilters() > 0);
+}
+
+function syncRegistrationToolbarState() {
+  const hasQuery = Boolean(state.query.trim());
+  $('#regSearchWrap')?.classList.toggle('has-value', hasQuery);
+  $('#regSearchClearBtn')?.classList.toggle('is-visible', hasQuery);
+
+  const advCount = countAdvancedFilters();
+  const advBadge = $('#regAdvCount');
+  if (advBadge) {
+    advBadge.textContent = String(advCount);
+    advBadge.classList.toggle('hidden', advCount === 0);
+  }
+  $('#regResetAllBtn')?.classList.toggle('hidden', !hasAnyRegFilter());
+}
+
+function resetRegistrationFilters() {
+  state.filter = 'all';
+  state.query = '';
+  state.department = '';
+  state.weekday = '';
+  state.creditsFilter = '';
+  state.sort = 'code';
+  state.page = 1;
+
+  const searchInput = $('#searchInput');
+  if (searchInput) searchInput.value = '';
+  if ($('#departmentFilter')) $('#departmentFilter').value = '';
+  if ($('#weekdayFilter')) $('#weekdayFilter').value = '';
+  if ($('#creditFilter')) $('#creditFilter').value = '';
+  if ($('#sortFilter')) $('#sortFilter').value = 'code';
+
+  document.querySelectorAll('.filter-chip').forEach(btn => {
+    btn.classList.toggle('selected', btn.dataset.filter === 'all');
+  });
+
+  syncRegistrationToolbarState();
+  renderCourses({ crossfade: true });
+}
+
+function renderCourses({ crossfade = false } = {}) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const registrationNotStarted = Boolean(!state.registrationAlwaysOpen && state.registrationOpenAt && new Date(`${state.registrationOpenAt}T00:00:00`) > today);
+
+  const queryNorm = state.query.trim().toLocaleLowerCase('vi');
   const filtered = state.courses.filter(course => {
-    const matchesQuery = `${course.code} ${course.name} ${course.department} ${course.instructor} ${course.schedule}`.toLocaleLowerCase('vi').includes(state.query.toLocaleLowerCase('vi'));
-    const matchesFilter = state.filter === 'all' || (state.filter === 'available' && course.enrolled < course.capacity) || (state.filter === 'full' && course.enrolled >= course.capacity) || (state.filter === 'registered' && course.registered);
+    const matchesQuery = !queryNorm || `${course.code} ${course.name} ${course.department} ${course.instructor} ${course.schedule}`.toLocaleLowerCase('vi').includes(queryNorm);
+    const matchesFilter = state.filter === 'all'
+      || (state.filter === 'available' && course.enrolled < course.capacity)
+      || (state.filter === 'full' && course.enrolled >= course.capacity)
+      || (state.filter === 'registered' && course.registered);
     const matchesDepartment = !state.department || course.department === state.department;
-    const matchesWeekday = !state.weekday || courseSessions(course).some(session=>session.schedule.startsWith(state.weekday));
+    const matchesWeekday = !state.weekday || courseSessions(course).some(session => String(session.schedule || '').startsWith(state.weekday));
     const matchesCredits = !state.creditsFilter || String(course.credits) === state.creditsFilter;
     return matchesQuery && matchesFilter && matchesDepartment && matchesWeekday && matchesCredits;
   }).sort((a, b) => {
     if (state.sort === 'name') return a.name.localeCompare(b.name, 'vi');
     if (state.sort === 'credits') return a.credits - b.credits || a.code.localeCompare(b.code);
-    if (state.sort === 'seats') return (a.capacity - a.enrolled) - (b.capacity - b.enrolled);
+    if (state.sort === 'seats') return (b.capacity - b.enrolled) - (a.capacity - a.enrolled);
     return a.code.localeCompare(b.code, 'vi');
   });
+
   $('#visibleCount').textContent = filtered.length;
   $('#emptyState').classList.toggle('hidden', filtered.length > 0);
   list.classList.toggle('hidden', filtered.length === 0);
-  const pages=Math.max(1,Math.ceil(filtered.length/50));state.page=Math.min(state.page||1,pages);
-  let pager=$('#coursePager');if(!pager){pager=document.createElement('nav');pager.id='coursePager';pager.setAttribute('aria-label','Phân trang lớp học phần');list.insertAdjacentElement('afterend',pager);}
-  pager.innerHTML=filtered.length>50?`<button type="button" class="details-button" data-page-step="-1" ${state.page===1?'disabled':''}>Trang trước</button><span> Trang ${state.page} / ${pages} · ${filtered.length} lớp </span><button type="button" class="details-button" data-page-step="1" ${state.page===pages?'disabled':''}>Trang sau</button>`:'';
-  pager.querySelectorAll('[data-page-step]').forEach(button=>button.addEventListener('click',()=>{state.page+=Number(button.dataset.pageStep);renderCourses();list.scrollIntoView({block:'start'});}));
-  list.innerHTML = filtered.slice((state.page-1)*50,state.page*50).map(course => {
-    const available = course.capacity - course.enrolled;
+
+  const pages = Math.max(1, Math.ceil(filtered.length / 50));
+  state.page = Math.min(state.page || 1, pages);
+  let pager = $('#coursePager');
+  if (!pager) {
+    pager = document.createElement('nav');
+    pager.id = 'coursePager';
+    pager.setAttribute('aria-label', 'Phân trang lớp học phần');
+    list.insertAdjacentElement('afterend', pager);
+  }
+  pager.innerHTML = filtered.length > 50
+    ? `<button type="button" class="dash-btn" data-page-step="-1" ${state.page === 1 ? 'disabled' : ''}>← Trang trước</button><span>Trang <strong>${state.page}</strong> / ${pages} · ${filtered.length} lớp</span><button type="button" class="dash-btn" data-page-step="1" ${state.page === pages ? 'disabled' : ''}>Trang sau →</button>`
+    : '';
+  pager.querySelectorAll('[data-page-step]').forEach(button => {
+    button.addEventListener('click', () => {
+      state.page += Number(button.dataset.pageStep);
+      renderCourses({ crossfade: true });
+      list.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
+    });
+  });
+
+  const clockSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
+  const userSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
+  const pinSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>';
+
+  const pageSlice = filtered.slice((state.page - 1) * 50, state.page * 50);
+  list.innerHTML = pageSlice.map((course, idx) => {
+    const available = Math.max(0, course.capacity - course.enrolled);
     const isFull = available <= 0;
+    const isLow = !isFull && available <= 5;
+    const seatClass = isFull ? 'is-full' : isLow ? 'is-low' : '';
+
     const action = course.registered
-      ? `<button class="cancel-button" data-action="drop" data-id="${escapeHtml(course.id)}">Hủy lớp</button>`
+      ? `<button class="reg-card-btn is-drop" type="button" data-action="drop" data-id="${escapeHtml(course.id)}">Hủy lớp</button>`
       : course.waitlisted
-        ? `<button class="cancel-button" data-action="waitlist/leave" data-id="${escapeHtml(course.id)}">Rời danh sách chờ #${course.waitlistPosition}</button>`
-      : !state.registrationOpen
-        ? `<button class="register-button" disabled>${registrationNotStarted?'Chưa đến đợt đăng ký':'Đã hết đợt đăng ký'}</button>`
-        : course.scheduleReviewRequired
-          ? '<button class="register-button" disabled>Chờ xác nhận lịch / sĩ số</button>'
-        : `<button class="register-button" data-action="enroll" data-id="${escapeHtml(course.id)}" ${!course.prerequisiteMet ? 'disabled' : ''} ${!course.prerequisiteMet && course.unmetConditionMessage ? `title="${escapeHtml(course.unmetConditionMessage)}"` : ''}>${!course.prerequisiteMet ? escapeHtml(course.conditionBlockReason || 'Thiếu điều kiện') : isFull ? 'Vào danh sách chờ' : 'Đăng ký lớp'} <span>${course.prerequisiteMet ? '↗' : ''}</span></button>`;
+        ? `<button class="reg-card-btn is-drop" type="button" data-action="waitlist/leave" data-id="${escapeHtml(course.id)}">Rời hàng chờ #${course.waitlistPosition}</button>`
+        : !state.registrationOpen
+          ? `<button class="reg-card-btn" type="button" disabled>${registrationNotStarted ? 'Chưa đến đợt ĐK' : 'Đã hết đợt ĐK'}</button>`
+          : course.scheduleReviewRequired
+            ? '<button class="reg-card-btn" type="button" disabled>Chờ xác nhận lịch</button>'
+            : `<button class="reg-card-btn ${isFull ? 'is-waitlist' : 'is-enroll'}" type="button" data-action="enroll" data-id="${escapeHtml(course.id)}" ${!course.prerequisiteMet ? 'disabled' : ''} ${!course.prerequisiteMet && course.unmetConditionMessage ? `title="${escapeHtml(course.unmetConditionMessage)}"` : ''}>${!course.prerequisiteMet ? escapeHtml(course.conditionBlockReason || 'Thiếu điều kiện') : isFull ? 'Vào hàng chờ' : 'Đăng ký lớp ↗'}</button>`;
+
     const conditionText = /^(Tiên quyết|Học trước|Song hành):/i.test(course.prerequisite || '')
       ? escapeHtml(course.prerequisite)
-      : `Điều kiện: ${escapeHtml(course.prerequisite)}`;
-    return `<article class="course-card">
-      <div class="course-symbol ${escapeHtml(course.color)}">${escapeHtml(monogram(course.code))}</div>
-      <div class="course-main"><div class="course-heading"><h3>${escapeHtml(course.name)}</h3><span class="course-code">${escapeHtml(course.code)}</span></div>
-        <div class="course-meta"><span><b>◷</b> ${escapeHtml(course.schedule)}</span><span><b>♧</b> ${escapeHtml(course.instructor)}</span><span><b>⌖</b> ${escapeHtml(course.room)}</span></div>
-        <div class="course-bottom"><span class="credit-pill">${course.credits} tín chỉ</span><span class="prereq-pill">${conditionText}</span><span class="seat-pill ${isFull ? 'full' : ''}">${isFull ? 'Đã đủ chỗ' : `Còn ${available} chỗ`}</span>${course.registered ? '<span class="registered-pill">✓ Đã đăng ký</span>' : course.waitlisted ? '<span class="registered-pill">◷ Đang trong danh sách chờ</span>' : ''}</div>
-      </div><div class="course-action"><button class="details-button" type="button" data-details="${escapeHtml(course.id)}">Chi tiết</button>${action}</div>
-    </article>`;
+      : `Điều kiện: ${escapeHtml(course.prerequisite || 'Không có')}`;
+
+    return `
+      <article class="reg-course-card ${course.registered ? 'is-registered' : ''}" style="--card-i:${Math.min(idx, 12)}">
+        <div class="reg-course-symbol ${escapeHtml(course.color || 'lavender')}">${escapeHtml(monogram(course.code))}</div>
+        <div class="reg-course-main">
+          <div class="reg-course-head">
+            <h3>${escapeHtml(course.name)}</h3>
+            <span class="reg-code-tag">${escapeHtml(course.code)}</span>
+          </div>
+          <div class="reg-course-meta">
+            <span>${clockSvg}${escapeHtml(course.schedule)}</span>
+            <span>${userSvg}${course.lecturerCode
+              ? `<button type="button" class="lec-inline-link" data-open-lecturer="${escapeHtml(course.lecturerCode)}" title="Xem hồ sơ giảng viên">${escapeHtml(course.instructor)}</button>`
+              : escapeHtml(course.instructor)}</span>
+            <span>${pinSvg}${escapeHtml(course.room)}</span>
+          </div>
+          <div class="reg-course-tags">
+            <span class="reg-pill is-credits">${course.credits} tín chỉ</span>
+            <span class="reg-pill is-seats ${seatClass}">${isFull ? 'Đã đủ chỗ' : `Còn ${available}/${course.capacity} chỗ`}</span>
+            <span class="reg-pill is-prereq">${conditionText}</span>
+            ${course.registered ? '<span class="reg-pill is-enrolled">✓ Đã đăng ký</span>' : course.waitlisted ? `<span class="reg-pill is-waitlist">◷ Hàng chờ #${course.waitlistPosition}</span>` : ''}
+          </div>
+        </div>
+        <div class="reg-course-actions">
+          ${action}
+          <button class="reg-card-btn" type="button" data-details="${escapeHtml(course.id)}">Chi tiết</button>
+        </div>
+      </article>`;
   }).join('');
+
+  if (crossfade && !prefersReducedMotion()) {
+    list.classList.remove('is-updating');
+    void list.offsetWidth;
+    list.classList.add('is-updating');
+  }
 }
 
 function renderRegistered() {
   const container = $('#registeredList');
-  container.innerHTML = state.registered.length ? state.registered.map(course => `<div class="registered-item"><span class="registered-stripe ${escapeHtml(course.color)}"></span><div><strong>${escapeHtml(course.code)} · ${escapeHtml(course.name)}</strong><small>${escapeHtml(course.schedule)} · ${course.credits} tín chỉ</small></div><button class="remove-course" data-action="drop" data-id="${escapeHtml(course.id)}" title="Hủy học phần" aria-label="Hủy ${escapeHtml(course.code)}">×</button></div>`).join('') : '<div class="dialog-empty">Bạn chưa đăng ký học phần nào.</div>';
+  if (!container) return;
+  container.innerHTML = state.registered.length
+    ? state.registered.map(course => `
+        <div class="reg-cart-item">
+          <span class="ov-enrolled-stripe ${escapeHtml(course.color || 'lavender')}"></span>
+          <div class="reg-cart-item-body">
+            <strong>${escapeHtml(course.code)} · ${escapeHtml(course.name)}</strong>
+            <small>${escapeHtml(course.schedule)} · ${course.credits} tín chỉ</small>
+          </div>
+          <button class="reg-cart-drop" type="button" data-action="drop" data-id="${escapeHtml(course.id)}" title="Hủy học phần" aria-label="Hủy ${escapeHtml(course.code)}">×</button>
+        </div>`).join('')
+    : '<div class="ov-empty-box"><strong>Chưa có lớp đăng ký</strong><p>Chọn một lớp ở danh sách bên trái để đăng ký ngay.</p></div>';
 }
 
-async function changeEnrollment(action, courseId) {
+async function changeEnrollment(action, courseId, triggerBtn = null) {
   if (action === 'drop' && !window.confirm('Bạn có chắc muốn hủy đăng ký lớp học phần này?')) return;
+  if (triggerBtn) triggerBtn.classList.add('is-busy');
   try {
     const result = await apiPost(`/api/${action}`, { courseId });
     showToast(result.message || 'Đã cập nhật đăng ký.');
-    if (result.success) await loadDashboard();
-  } catch(error) { showToast(error.message||'Không kết nối được máy chủ. Vui lòng thử lại.'); }
+    if (result.success) {
+      await loadDashboard();
+      scheduleController.refresh();
+      historyController.refresh();
+      curriculumController.refresh();
+      assistantController.refreshContext();
+    }
+  } catch (error) {
+    showToast(error.message || 'Không kết nối được máy chủ. Vui lòng thử lại.');
+  } finally {
+    if (triggerBtn) triggerBtn.classList.remove('is-busy');
+  }
 }
 
 function showToast(message) {
   const toast = $('#toast');
+  if (!toast) return;
   toast.textContent = message;
   toast.classList.add('show');
   clearTimeout(showToast.timer);
   showToast.timer = setTimeout(() => toast.classList.remove('show'), 2800);
 }
 
-function appendMessage(text, sender, metadata = null) {
-  const body = $('#chatBody');
-  const row = document.createElement('div');
-  if (sender === 'user') {
-    row.className = 'user-message-row';
-    row.innerHTML = `<div class="user-message">${escapeHtml(text)}</div>`;
-  } else {
-    row.className = 'bot-message-row';
-    const sources=metadata?.sources?.length?`<div class="chat-sources"><span>Dữ liệu tham chiếu</span>${metadata.sources.map(source=>`<small>${escapeHtml(source)}</small>`).join('')}</div>`:'';
-    row.innerHTML = `<span class="mini-bot">✳</span><div class="message-stack"><div class="bot-message">${escapeHtml(text)}</div>${sources}<small>EduPortal · vừa xong</small></div>`;
-  }
-  body.append(row);
-  body.scrollTop = body.scrollHeight;
-}
-
-async function sendChat(message) {
-  const clean = message.trim();
-  if (!clean || chatBusy) return;
-  if(clean.length>1000){showToast('Câu hỏi tối đa 1.000 ký tự.');return;}
-  chatBusy=true;
-  $('#chatForm').setAttribute('aria-busy','true');
-  $('#chatForm button').disabled=true;
-  $('#clearChat').disabled=true;
-  appendMessage(clean, 'user');
-  const typing = document.createElement('div');
-  typing.className = 'typing';
-  typing.textContent = 'EduPortal đang soạn câu trả lời…';
-  $('#chatBody').append(typing);
-  $('#chatBody').scrollTop = $('#chatBody').scrollHeight;
+function safeHttpUrl(value) {
   try {
-    const result = await apiPost('/api/chat', { message: clean, history: chatHistory.slice(-12) });
-    typing.remove();
-    const reply=result.reply || 'Mình chưa có câu trả lời cho câu hỏi này.';
-    chatHistory.push({role:'user',content:clean},{role:'assistant',content:reply.slice(0,6000)});
-    if(chatHistory.length>12)chatHistory.splice(0,chatHistory.length-12);
-    $('#assistantMode').innerHTML=`<i></i> ${result.aiPowered?'AI trực tuyến + dữ liệu học vụ':result.mode==='FALLBACK'?'Đang tra cứu tại hệ thống':'Tra cứu học vụ tại hệ thống'}`;
-    appendMessage(reply, 'bot',result);
-    if(result.suggestions?.length)$('#assistant .suggestions').innerHTML=result.suggestions.map(question=>`<button type="button" data-question="${escapeHtml(question)}">${escapeHtml(question)}</button>`).join('');
-  } catch (error) {
-    typing.remove();
-    appendMessage(error.message || 'Chưa nhận được câu trả lời. Bạn thử lại nhé.', 'bot');
-  } finally {
-    chatBusy=false;$('#chatForm').removeAttribute('aria-busy');$('#chatForm button').disabled=false;$('#clearChat').disabled=false;
+    const url = new URL(value);
+    return ['http:', 'https:'].includes(url.protocol) ? url.href : null;
+  } catch {
+    return null;
   }
 }
-async function loadChatStatus(){
-  try{const status=await apiGet('/api/chat/status');$('#assistantMode').innerHTML=`<i></i> ${status.aiConfigured?'AI trực tuyến + dữ liệu học vụ':'Tra cứu học vụ tại hệ thống'}`;$('#chatStatusNote').textContent=status.message;}
-  catch{$('#chatStatusNote').textContent='Trợ lý tra cứu học vụ. Bạn có thể gửi câu hỏi để kiểm tra kết nối.';}
+
+let courseModalClosingTimer = null;
+let lastCourseModalTrigger = null;
+
+function closeCourseDialogSmooth() {
+  const dialog = $('#courseDialog');
+  if (!dialog || !dialog.open) return;
+  if (prefersReducedMotion()) {
+    dialog.close();
+    document.body.classList.remove('dash-modal-open');
+    lastCourseModalTrigger?.focus?.();
+    return;
+  }
+  window.clearTimeout(courseModalClosingTimer);
+  dialog.classList.add('is-closing');
+  courseModalClosingTimer = window.setTimeout(() => {
+    dialog.classList.remove('is-closing');
+    if (dialog.open) dialog.close();
+    document.body.classList.remove('dash-modal-open');
+    lastCourseModalTrigger?.focus?.();
+  }, 170);
 }
 
-const formatDateTime = value => value ? new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short', timeStyle: 'short' }).format(new Date(value)) : '—';
-
-async function showCourseDetails(sectionId) {
+async function showCourseDetails(sectionId, triggerEl = null) {
   const dialog = $('#courseDialog');
   const body = $('#courseDialogBody');
+  lastCourseModalTrigger = triggerEl || document.activeElement;
   $('#courseDialogTitle').textContent = 'Đang tải thông tin…';
-  body.innerHTML = '<div class="dialog-empty">Đang lấy dữ liệu lớp học phần.</div>';
-  dialog.showModal();
+  body.innerHTML = '<div class="dialog-empty">Đang lấy dữ liệu lớp học phần…</div>';
+  dialog.classList.remove('is-closing');
+  if (!dialog.open) dialog.showModal();
+  document.body.classList.add('dash-modal-open');
+
   try {
     const course = await apiGet(`/api/courses/${encodeURIComponent(sectionId)}`);
     $('#courseDialogTitle').textContent = `${course.code} · ${course.name}`;
     const syllabusUrl = safeHttpUrl(course.syllabusUrl);
-    body.innerHTML = `<dl class="detail-grid">
-      <div><dt>Mã lớp học phần</dt><dd>${escapeHtml(course.sectionCode)}</dd></div>
-      <div><dt>Số tín chỉ</dt><dd>${course.credits}</dd></div>
-      <div><dt>Giảng viên</dt><dd>${escapeHtml(course.instructor)}</dd></div>
-      <div><dt>Lịch học</dt><dd>${escapeHtml(course.schedule)}</dd></div>
-      <div><dt>Phòng học</dt><dd>${escapeHtml(course.room)}</dd></div>
-      <div><dt>Sĩ số</dt><dd>${course.enrolled} / ${course.capacity} · còn ${Math.max(0, course.capacity - course.enrolled)} chỗ</dd></div>
-      <div><dt>Điều kiện học phần</dt><dd>${escapeHtml(course.prerequisite || 'Không có')}</dd></div>
-      <div><dt>Đề cương môn học</dt><dd>${syllabusUrl ? `<a href="${escapeHtml(syllabusUrl)}" target="_blank" rel="noopener noreferrer">Xem / tải đề cương ↗</a>` : 'Chưa có đề cương'}</dd></div>
-      <div class="detail-grid-wide"><dt>Mô tả môn học</dt><dd>${escapeHtml(course.description || 'Chưa có mô tả.')}</dd></div>
-      <div><dt>Trạng thái của bạn</dt><dd>${course.registered ? 'Đã đăng ký' : course.waitlisted ? `Danh sách chờ #${course.waitlistPosition}` : course.prerequisiteMet ? 'Có thể đăng ký' : escapeHtml(course.unmetConditionMessage || 'Chưa đủ điều kiện học phần')}</dd></div>
-    </dl>${course.meetings?.length?`<div class="history-table-wrap"><table class="history-table"><thead><tr><th>Buổi học và tuần</th><th>Phòng</th></tr></thead><tbody>${courseSessions(course).map(session=>`<tr><td>${escapeHtml(session.schedule)}</td><td>${escapeHtml(session.room)}</td></tr>`).join('')}</tbody></table></div>`:''}`;
+    body.innerHTML = `
+      <dl class="detail-grid">
+        <div><dt>Mã lớp học phần</dt><dd>${escapeHtml(course.sectionCode)}</dd></div>
+        <div><dt>Số tín chỉ</dt><dd>${course.credits}</dd></div>
+        <div><dt>Giảng viên</dt><dd>${course.lecturerCode
+          ? `<button type="button" class="lec-inline-link" data-open-lecturer="${escapeHtml(course.lecturerCode)}" title="Xem hồ sơ giảng viên">${escapeHtml(course.instructor)} ↗</button>`
+          : escapeHtml(course.instructor)}</dd></div>
+        <div><dt>Lịch học</dt><dd>${escapeHtml(course.schedule)}</dd></div>
+        <div><dt>Phòng học</dt><dd>${escapeHtml(course.room)}</dd></div>
+        <div><dt>Sĩ số</dt><dd>${course.enrolled} / ${course.capacity} · còn ${Math.max(0, course.capacity - course.enrolled)} chỗ</dd></div>
+        <div><dt>Điều kiện học phần</dt><dd>${escapeHtml(course.prerequisite || 'Không có')}</dd></div>
+        <div><dt>Đề cương môn học</dt><dd>${syllabusUrl ? `<a href="${escapeHtml(syllabusUrl)}" target="_blank" rel="noopener noreferrer">Xem / tải đề cương ↗</a>` : 'Chưa có đề cương'}</dd></div>
+        <div class="detail-grid-wide"><dt>Mô tả môn học</dt><dd>${escapeHtml(course.description || 'Chưa có mô tả.')}</dd></div>
+        <div><dt>Trạng thái của bạn</dt><dd>${course.registered ? 'Đã đăng ký' : course.waitlisted ? `Danh sách chờ #${course.waitlistPosition}` : course.prerequisiteMet ? 'Có thể đăng ký' : escapeHtml(course.unmetConditionMessage || 'Chưa đủ điều kiện học phần')}</dd></div>
+      </dl>
+      ${course.meetings?.length ? `<div class="history-table-wrap"><table class="history-table"><thead><tr><th>Buổi học và tuần</th><th>Phòng</th></tr></thead><tbody>${courseSessions(course).map(session => `<tr><td>${escapeHtml(session.schedule)}</td><td>${escapeHtml(session.room)}</td></tr>`).join('')}</tbody></table></div>` : ''}`;
   } catch (error) {
     $('#courseDialogTitle').textContent = 'Không tải được thông tin';
     body.innerHTML = `<div class="dialog-empty">${escapeHtml(error.message)}</div>`;
   }
 }
-function safeHttpUrl(value) {
-  try { const url = new URL(value); return ['http:', 'https:'].includes(url.protocol) ? url.href : null; }
-  catch { return null; }
-}
 
-let enrollmentHistory = [];
-function renderEnrollmentHistory() {
-  const body = $('#historyDialogBody');
-  const semester = $('#historySemesterFilter').value;
-  const status = $('#historyStatusFilter').value;
-  const shown = enrollmentHistory.filter(item => (!semester || item.semesterCode === semester) && (!status || item.status === status));
-  body.querySelector('#historyRows').innerHTML = shown.length ? shown.map(item => `<tr><td><strong>${escapeHtml(item.courseCode)} · ${escapeHtml(item.courseName)}</strong><small>${item.credits} tín chỉ · ${escapeHtml(item.semesterName)}</small></td><td>${escapeHtml(item.sectionCode)}</td><td>${escapeHtml(item.schedule)}</td><td><span class="history-status ${item.status === 'ENROLLED' ? 'is-active' : ''}">${({ENROLLED:'Đang đăng ký',PENDING:'Chờ xác nhận',CANCELLED:'Đã hủy'})[item.status]||escapeHtml(item.status)}</span></td><td>${item.enrollmentDateOnly?new Date(item.enrolledAt).toLocaleDateString('vi-VN'):formatDateTime(item.enrolledAt)}</td></tr>`).join('') : `<tr><td colspan="5" class="dialog-empty">Không có kết quả phù hợp.</td></tr>`;
-}
+/* ==========================================================================
+   SPA VIEW NAVIGATION (ZERO PAGE RELOAD, PERMANENT SIDEBAR + TOPBAR)
+   ========================================================================== */
 
-async function showEnrollmentHistory() {
-  const dialog = $('#historyDialog');
-  const body = $('#historyDialogBody');
-  body.innerHTML = '<div class="dialog-empty">Đang tải lịch sử đăng ký.</div>';
-  dialog.showModal();
-  try {
-    enrollmentHistory = await apiGet('/api/enrollments/history');
-    const semesters = [...new Map(enrollmentHistory.map(item => [item.semesterCode, item.semesterName])).entries()];
-    body.innerHTML = `
-      <div class="dialog-filter-card">
-        <div class="dialog-filter-grid cols-2">
-          <div class="dialog-filter-field">
-            <label class="dialog-filter-label" for="historySemesterFilter">Học kỳ</label>
-            <div class="dialog-control-wrap">
-              <span class="dialog-control-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
-              </span>
-              <select id="historySemesterFilter">
-                <option value="">Tất cả học kỳ</option>
-                ${semesters.map(([code,name])=>`<option value="${escapeHtml(code)}">${escapeHtml(name)}</option>`).join('')}
-              </select>
-              <span class="dialog-control-chevron" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-              </span>
-            </div>
-          </div>
-          <div class="dialog-filter-field">
-            <label class="dialog-filter-label" for="historyStatusFilter">Trạng thái đăng ký</label>
-            <div class="dialog-control-wrap">
-              <span class="dialog-control-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2H2v10l9.29 9.29c.94.94 2.48.94 3.42 0l6.58-6.58c.94-.94.94-2.48 0-3.42L12 2Z"/><circle cx="7" cy="7" r=".5" fill="currentColor"/></svg>
-              </span>
-              <select id="historyStatusFilter">
-                <option value="">Tất cả trạng thái</option>
-                <option value="ENROLLED">Đang đăng ký</option>
-                <option value="PENDING">Chờ xác nhận</option>
-                <option value="CANCELLED">Đã hủy</option>
-              </select>
-              <span class="dialog-control-chevron" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="history-table-wrap">
-        <table class="history-table">
-          <thead><tr><th>Môn học</th><th>Lớp</th><th>Lịch học</th><th>Trạng thái</th><th>Thời gian</th></tr></thead>
-          <tbody id="historyRows"></tbody>
-        </table>
-      </div>`;
-    $('#historySemesterFilter').addEventListener('change', renderEnrollmentHistory);
-    $('#historyStatusFilter').addEventListener('change', renderEnrollmentHistory);
-    renderEnrollmentHistory();
-  } catch (error) {
-    body.innerHTML = `<div class="dialog-empty">${escapeHtml(error.message)}</div>`;
-  }
-}
+const overviewViewSection = $('#overviewViewSection');
+const coursesViewSection = $('#coursesViewSection');
+const scheduleViewSection = $('#scheduleViewSection');
+const historyViewSection = $('#historyViewSection');
+const transcriptViewSection = $('#transcriptViewSection');
+const curriculumViewSection = $('#curriculumViewSection');
+const lecturersViewSection = $('#lecturersViewSection');
+const assistantViewSection = $('#assistantViewSection');
+const topbarCrumb = $('#topbarCrumb');
 
-let transcriptData = null;
-function renderTranscriptRows() {
-  if (!transcriptData) return;
-  const semester = $('#transcriptSemesterFilter')?.value || '';
-  const outcome = $('#transcriptOutcomeFilter')?.value || '';
-  const query = ($('#transcriptSearchInput')?.value || '').trim().toLocaleLowerCase('vi');
-  const shown = transcriptData.results.filter(item =>
-    (!semester || item.semesterCode === semester) &&
-    (!outcome || (outcome === 'PASSED' ? item.passed : !item.passed)) &&
-    (!query || `${item.courseCode} ${item.courseName} ${item.semesterName}`.toLocaleLowerCase('vi').includes(query))
-  );
-  $('#transcriptRows').innerHTML = shown.length
-    ? shown.map(item => `<tr>
-        <td><strong>${escapeHtml(item.semesterName)}</strong><small>${escapeHtml(item.semesterCode)}</small></td>
-        <td><strong>${escapeHtml(item.courseCode)} · ${escapeHtml(item.courseName)}</strong></td>
-        <td>${item.credits}</td>
-        <td><strong>${item.grade !== null && item.grade !== undefined ? Number(item.grade).toFixed(2) : '—'}</strong></td>
-        <td>${escapeHtml(item.letterGrade || '—')}</td>
-        <td><span class="history-status ${item.passed ? 'is-active' : 'is-failed'}">${escapeHtml(item.outcome)}</span>${item.retakenAndPassed ? '<small>Đã học lại Đạt</small>' : ''}</td>
-      </tr>`).join('')
-    : '<tr><td colspan="6" class="dialog-empty">Không có kết quả học tập phù hợp bộ lọc.</td></tr>';
-}
-
-async function showTranscript() {
-  const dialog = $('#transcriptDialog');
-  const body = $('#transcriptDialogBody');
-  body.innerHTML = '<div class="dialog-empty">Đang tải bảng điểm học tập…</div>';
-  dialog.showModal();
-  try {
-    transcriptData = await apiGet('/api/student/transcript');
-    const semesters = [...new Map(transcriptData.results.map(item => [item.semesterCode, item.semesterName])).entries()];
-    const avgLabel = transcriptData.weightedAverageGrade10 !== null && transcriptData.weightedAverageGrade10 !== undefined
-      ? Number(transcriptData.weightedAverageGrade10).toFixed(2)
-      : '—';
-    body.innerHTML = `
-      <div class="transcript-summary">
-        <article class="transcript-stat"><span>Tín chỉ tích lũy</span><strong>${transcriptData.accumulatedCredits}</strong><small>Tính 1 lần mỗi môn Đạt</small></article>
-        <article class="transcript-stat"><span>Môn đã hoàn thành</span><strong>${transcriptData.completedCourseCount}</strong><small>${escapeHtml(transcriptData.program || '—')} · ${escapeHtml(transcriptData.cohort || '—')}</small></article>
-        <article class="transcript-stat"><span>Tổng lượt học</span><strong>${transcriptData.totalRecords}</strong><small>Bao gồm cả học lại</small></article>
-        <article class="transcript-stat"><span>Điểm TB hệ 10</span><strong>${avgLabel}</strong><small>Tham khảo theo tín chỉ</small></article>
-      </div>
-      <div class="dialog-filter-card">
-        <div class="dialog-filter-grid cols-3">
-          <div class="dialog-filter-field">
-            <label class="dialog-filter-label" for="transcriptSemesterFilter">Học kỳ</label>
-            <div class="dialog-control-wrap">
-              <span class="dialog-control-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
-              </span>
-              <select id="transcriptSemesterFilter">
-                <option value="">Tất cả học kỳ</option>
-                ${semesters.map(([code, name]) => `<option value="${escapeHtml(code)}">${escapeHtml(name)}</option>`).join('')}
-              </select>
-              <span class="dialog-control-chevron" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-              </span>
-            </div>
-          </div>
-          <div class="dialog-filter-field">
-            <label class="dialog-filter-label" for="transcriptOutcomeFilter">Kết quả</label>
-            <div class="dialog-control-wrap">
-              <span class="dialog-control-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
-              </span>
-              <select id="transcriptOutcomeFilter">
-                <option value="">Tất cả kết quả</option>
-                <option value="PASSED">Đạt</option>
-                <option value="FAILED">Chưa đạt</option>
-              </select>
-              <span class="dialog-control-chevron" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-              </span>
-            </div>
-          </div>
-          <div class="dialog-filter-field">
-            <label class="dialog-filter-label" for="transcriptSearchInput">Tìm môn</label>
-            <div class="dialog-control-wrap">
-              <span class="dialog-control-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-              </span>
-              <input type="search" id="transcriptSearchInput" placeholder="Mã hoặc tên môn học…" autocomplete="off">
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="history-table-wrap">
-        <table class="history-table">
-          <thead><tr><th>Học kỳ</th><th>Học phần</th><th>Tín chỉ</th><th>Điểm hệ 10</th><th>Điểm chữ</th><th>Kết quả</th></tr></thead>
-          <tbody id="transcriptRows"></tbody>
-        </table>
-      </div>
-      <p class="transcript-note">Điểm trung bình hệ 10 được tính tham khảo trên điểm cao nhất của các học phần đã có điểm số trong cơ sở dữ liệu; xếp loại học vụ chính thức áp dụng theo quy chế đào tạo của trường.</p>`;
-    $('#transcriptSemesterFilter').addEventListener('change', renderTranscriptRows);
-    $('#transcriptOutcomeFilter').addEventListener('change', renderTranscriptRows);
-    $('#transcriptSearchInput').addEventListener('input', renderTranscriptRows);
-    renderTranscriptRows();
-  } catch (error) {
-    body.innerHTML = `<div class="dialog-empty">${escapeHtml(error.message)}</div>`;
-  }
-}
-
-async function showCurriculum() {
-  const dialog=$('#curriculumDialog'),body=$('#curriculumDialogBody');
-  body.innerHTML='<div class="dialog-empty">Đang tải khung chương trình.</div>';dialog.showModal();
-  try {
-    const options=await apiGet('/api/student/curricula');
-    if(!options.length){body.innerHTML='<div class="dialog-empty">Chưa có khung chương trình nào đang áp dụng.</div>';return;}
-    const data=await apiGet('/api/student/curriculum');
-    const render=selected=>{
-      const curriculum=selected.curriculum;$('#curriculumTitle').textContent=curriculum.name;
-      const terms=new Map();selected.courses.forEach(item=>{const term=item.suggestedSemester||'Chưa phân kỳ';if(!terms.has(term))terms.set(term,[]);terms.get(term).push(item);});
-      const totalCredits=selected.courses.reduce((sum,item)=>sum+(Number(item.credits)||0),0);
-      const requiredCount=selected.courses.filter(item=>item.requiredCourse).length;
-      body.innerHTML=`<div class="curriculum-picker-card"><label class="curriculum-picker-label" for="curriculumSelector">Chương trình / khóa</label><div class="curriculum-select-wrap"><span class="curriculum-select-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c3 2.5 9 2.5 12 0v-5"/></svg></span><select id="curriculumSelector">${options.map(option=>`<option value="${escapeHtml(option.code)}" ${option.code===curriculum.code?'selected':''}>${escapeHtml(option.name)} · Khóa ${escapeHtml(option.cohort)}</option>`).join('')}</select><span class="curriculum-select-chevron" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></div><div class="curriculum-chips"><span class="curriculum-chip"><b>Ngành</b>${escapeHtml(curriculum.program)}</span><span class="curriculum-chip"><b>Khóa</b>${escapeHtml(curriculum.cohort)}</span><span class="curriculum-chip"><b>Phiên bản</b>${escapeHtml(curriculum.version)}</span><span class="curriculum-chip is-accent"><b>Môn học</b>${selected.courses.length} (${requiredCount} bắt buộc)</span><span class="curriculum-chip is-accent"><b>Tổng tín chỉ</b>${totalCredits}</span></div></div>${[...terms.entries()].map(([term,items])=>`<section class="curriculum-term"><h3>${escapeHtml(term)}</h3><div class="history-table-wrap"><table class="history-table"><thead><tr><th>Mã môn</th><th>Tên môn học</th><th>Tín chỉ</th><th>Loại</th><th></th></tr></thead><tbody>${items.map((item,index)=>`<tr><td>${escapeHtml(item.courseCode)}</td><td><strong>${escapeHtml(item.courseName)}</strong></td><td>${item.credits}</td><td>${item.requiredCourse?'Bắt buộc':'Tự chọn'}</td><td><button type="button" class="details-button" data-curriculum-course="${selected.courses.indexOf(item)}">Chi tiết</button></td></tr>`).join('')}</tbody></table></div></section>`).join('')||'<div class="dialog-empty">Khung chương trình chưa có môn học.</div>'}`;
-      $('#curriculumSelector').addEventListener('change',async event=>{body.innerHTML='<div class="dialog-empty">Đang tải chương trình…</div>';try{render(await apiGet(`/api/student/curriculum?code=${encodeURIComponent(event.target.value)}`));}catch(error){body.innerHTML=`<div class="dialog-empty">${escapeHtml(error.message)}</div>`;}});
-      body.querySelectorAll('[data-curriculum-course]').forEach(button=>button.addEventListener('click',()=>{
-        const item=selected.courses[Number(button.dataset.curriculumCourse)],courseDialog=$('#courseDialog');
-        $('#courseDialogTitle').textContent=`${item.courseCode} · ${item.courseName}`;
-        const syllabus=safeHttpUrl(item.syllabusUrl);
-        $('#courseDialogBody').innerHTML=`<dl class="detail-grid"><div><dt>Số tín chỉ</dt><dd>${item.credits}</dd></div><div><dt>Loại học phần</dt><dd>${item.requiredCourse?'Bắt buộc':'Tự chọn'}</dd></div><div><dt>Học kỳ đề xuất</dt><dd>${escapeHtml(item.suggestedSemester)}</dd></div><div><dt>Tiên quyết</dt><dd>${escapeHtml(item.prerequisite||'Không có')}</dd></div><div class="detail-grid-wide"><dt>Mô tả</dt><dd>${escapeHtml(item.description||'Chưa có mô tả.')}</dd></div><div><dt>Đề cương</dt><dd>${syllabus?`<a href="${escapeHtml(syllabus)}" target="_blank" rel="noopener noreferrer">Xem / tải đề cương ↗</a>`:'Chưa có đề cương'}</dd></div></dl>`;
-        courseDialog.showModal();
-      }));
-    };
-    render(data);
-  } catch(error){$('#curriculumTitle').textContent='Không tải được khung chương trình';body.innerHTML=`<div class="dialog-empty">${escapeHtml(error.message)}</div>`;}
-}
-
-list.addEventListener('click', event => {
-  const detailsButton = event.target.closest('[data-details]');
-  if (detailsButton) { showCourseDetails(detailsButton.dataset.details); return; }
-  const button = event.target.closest('[data-action]');
-  if (button) changeEnrollment(button.dataset.action, button.dataset.id);
-});
-$('#registeredList').addEventListener('click', event => {
-  const button = event.target.closest('[data-action="drop"]');
-  if (button) changeEnrollment('drop', button.dataset.id);
-});
-$('#searchInput').addEventListener('input', event => { state.page=1;state.query = event.target.value; renderCourses(); });
-document.querySelectorAll('.filter-chip').forEach(button => button.addEventListener('click', () => {
-  document.querySelector('.filter-chip.selected')?.classList.remove('selected');
-  button.classList.add('selected');
-  state.filter = button.dataset.filter;
-  state.page=1;
-  renderCourses();
-}));
-$('#departmentFilter').addEventListener('change', event => { state.page=1;state.department = event.target.value; renderCourses(); });
-$('#weekdayFilter').addEventListener('change', event => { state.page=1;state.weekday = event.target.value; renderCourses(); });
-$('#creditFilter').addEventListener('change', event => { state.page=1;state.creditsFilter = event.target.value; renderCourses(); });
-$('#sortFilter').addEventListener('change', event => { state.page=1;state.sort = event.target.value; renderCourses(); });
-$('#filterButton').addEventListener('click', () => $('#filterRow').classList.toggle('hidden'));
-$('#refreshButton').addEventListener('click', () => loadDashboard().then(() => showToast('Danh sách học phần đã được làm mới.')).catch(() => showToast('Không tải được danh sách.')));
-$('#chatForm').addEventListener('submit', event => { event.preventDefault(); sendChat($('#chatInput').value); $('#chatInput').value = ''; });
-$('#assistant .suggestions').addEventListener('click',event=>{const button=event.target.closest('[data-question]');if(button)sendChat(button.dataset.question);});
-$('#clearChat').addEventListener('click',()=>{if(chatBusy)return;chatHistory.length=0;$('#chatBody').replaceChildren();appendMessage('Cuộc trò chuyện mới. Bạn muốn tra cứu lịch học, điểm, điều kiện hay gợi ý môn học?', 'bot');});
-loadChatStatus();
-function openScheduleDialog() {
-  const dialog = $('#scheduleDialog');
-  if (!dialog.open) dialog.showModal();
-  loadStudentSchedule(state.semesterCode);
-}
-$('#scheduleOpen')?.addEventListener('click', openScheduleDialog);
-$('#viewSchedule').addEventListener('click', openScheduleDialog);
-let selectedSchedule;
-async function loadStudentSchedule(semesterCode='') {
-  const target=$('#dialogSchedule');target.innerHTML='<div class="dialog-empty">Đang tải thời khóa biểu…</div>';
-  try{
-    selectedSchedule=await apiGet(`/api/student/schedule${semesterCode?`?semester=${encodeURIComponent(semesterCode)}`:''}`);
-    const weekdays=['Thứ 2','Thứ 3','Thứ 4','Thứ 5','Thứ 6','Thứ 7','Chủ nhật'];const byDay=new Map(weekdays.map(day=>[day,[]]));
-    selectedSchedule.courses.flatMap(courseSessions).forEach(course=>{const day=weekdays.find(value=>course.schedule.startsWith(value));if(day)byDay.get(day).push(course);});
-    const totalCredits=selectedSchedule.courses.reduce((sum,course)=>sum+(course.credits||0),0);
-    target.innerHTML=`
-      <div class="dialog-filter-card">
-        <div class="dialog-filter-grid cols-2">
-          <div class="dialog-filter-field">
-            <label class="dialog-filter-label" for="scheduleSemester">Học kỳ</label>
-            <div class="dialog-control-wrap">
-              <span class="dialog-control-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
-              </span>
-              <select id="scheduleSemester">${selectedSchedule.semesters.map(semester=>`<option value="${escapeHtml(semester.code)}" ${semester.code===selectedSchedule.semesterCode?'selected':''}>${escapeHtml(semester.name)}</option>`).join('')}</select>
-              <span class="dialog-control-chevron" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-              </span>
-            </div>
-          </div>
-          <div class="dialog-filter-field">
-            <span class="dialog-filter-label">Tổng quan lịch học</span>
-            <div class="curriculum-chips" style="margin-top:4px;">
-              <span class="curriculum-chip is-accent"><b>Học kỳ</b> ${escapeHtml(selectedSchedule.semesterName)}</span>
-              <span class="curriculum-chip"><b>Số lớp</b> ${selectedSchedule.courses.length}</span>
-              <span class="curriculum-chip"><b>Tín chỉ</b> ${totalCredits}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      ${selectedSchedule.courses.length?`<div class="schedule-grid">${weekdays.map(day=>`<section class="schedule-day"><h3>${day}</h3>${byDay.get(day).length?byDay.get(day).map(course=>{const time=course.schedule.split(' · ').slice(1).join(' · ');return `<article class="schedule-event ${escapeHtml(course.color)}"><strong>${escapeHtml(time||'Thời gian chưa cập nhật')}</strong><span>${escapeHtml(course.code)} · ${escapeHtml(course.sectionCode)}</span><small>${escapeHtml(course.name)}</small><small>${escapeHtml(course.instructor)}</small><small>${escapeHtml(course.room)}</small></article>`;}).join(''):'<p class="schedule-free">Không có lớp</p>'}</section>`).join('')}</div>`:'<div class="dialog-empty">Không có học phần trong thời khóa biểu ở học kỳ này.</div>'}`;
-    $('#scheduleSemester').addEventListener('change',event=>loadStudentSchedule(event.target.value));
-  }catch(error){target.innerHTML=`<div class="dialog-empty">${escapeHtml(error.message)}</div>`;}
-}
-$('#exportSchedule').addEventListener('click', () => {
-  const columns = [['code','Mã môn'],['name','Tên môn học'],['sectionCode','Mã lớp học phần'],['credits','Tín chỉ'],['instructor','Giảng viên'],['schedule','Lịch học'],['room','Phòng học']];
-  if(!selectedSchedule?.courses)return showToast('Hãy mở thời khóa biểu trước khi xuất.');
-  const rows = selectedSchedule.courses.flatMap(courseSessions);
-  const cell = value => `"${String(value ?? '').replaceAll('"','""')}"`;
-  const csv = '\ufeff' + [columns.map(([,label])=>cell(label)).join(','), ...rows.map(row=>columns.map(([key])=>cell(row[key])).join(','))].join('\r\n');
-  const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));const link=document.createElement('a');link.href=url;link.download=`thoi-khoa-bieu-${selectedSchedule.semesterCode}.csv`;link.click();URL.revokeObjectURL(url);
-});
-$('#closeDialog').addEventListener('click', () => $('#scheduleDialog').close());
-$('#closeCourseDialog').addEventListener('click', () => $('#courseDialog').close());
-$('#closeHistoryDialog').addEventListener('click', () => $('#historyDialog').close());
-$('#closeTranscriptDialog').addEventListener('click', () => $('#transcriptDialog').close());
-$('#historyOpen').addEventListener('click', showEnrollmentHistory);
-$('#transcriptOpen').addEventListener('click', showTranscript);
-$('#curriculumOpen').addEventListener('click', showCurriculum);
-$('#exportTranscript').addEventListener('click', () => {
-  if (!transcriptData?.results?.length) return showToast('Chưa có dữ liệu bảng điểm để xuất.');
-  const columns = [['semesterCode', 'Mã học kỳ'], ['semesterName', 'Học kỳ'], ['courseCode', 'Mã môn'], ['courseName', 'Tên môn học'], ['credits', 'Tín chỉ'], ['grade', 'Điểm hệ 10'], ['letterGrade', 'Điểm chữ'], ['outcome', 'Kết quả']];
-  const cell = value => `"${String(value ?? '').replaceAll('"', '""')}"`;
-  const csv = '\ufeff' + [columns.map(([, label]) => cell(label)).join(','), ...transcriptData.results.map(row => columns.map(([key]) => cell(row[key])).join(','))].join('\r\n');
-  const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = `bang-diem-${transcriptData.studentCode || 'sinh-vien'}.csv`;
-  link.click();
-  URL.revokeObjectURL(url);
-});
-const accountMenu=$('#accountMenu'),accountMenuToggle=$('#accountMenuToggle'),accountMenuPanel=$('#accountMenuPanel');
-function setAccountMenu(open){accountMenuPanel.hidden=!open;accountMenuToggle.setAttribute('aria-expanded',String(open));}
-accountMenuToggle.addEventListener('click',()=>setAccountMenu(accountMenuPanel.hidden));
-accountMenuToggle.addEventListener('keydown',event=>{if(event.key==='ArrowDown'){event.preventDefault();setAccountMenu(true);accountMenuPanel.querySelector('a').focus();}});
-document.addEventListener('pointerdown',event=>{if(!accountMenu.contains(event.target))setAccountMenu(false);});
-document.addEventListener('focusin',event=>{if(!accountMenu.contains(event.target))setAccountMenu(false);});
-document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!accountMenuPanel.hidden){setAccountMenu(false);accountMenuToggle.focus();}});
-$('#studentLogoutButton').addEventListener('click',async()=>{try{await apiPost('/api/auth/logout',{});}catch{}location.replace('/login.html');});
-$('#scheduleDialog').addEventListener('click', event => { if (event.target === $('#scheduleDialog')) $('#scheduleDialog').close(); });
-$('#courseDialog').addEventListener('click', event => { if (event.target === $('#courseDialog')) $('#courseDialog').close(); });
-$('#historyDialog').addEventListener('click', event => { if (event.target === $('#historyDialog')) $('#historyDialog').close(); });
-$('#transcriptDialog').addEventListener('click', event => { if (event.target === $('#transcriptDialog')) $('#transcriptDialog').close(); });
-$('#closeCurriculumDialog').addEventListener('click',()=>$('#curriculumDialog').close());
-$('#curriculumDialog').addEventListener('click',event=>{if(event.target===$('#curriculumDialog'))$('#curriculumDialog').close();});
-document.addEventListener('keydown', event => { if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); $('#searchInput').focus(); } });
-
-// Sidebar navigation active state synchronization
 const navItems = Array.from(document.querySelectorAll('.main-nav .nav-item'));
-const sectionNavs = [
-  { id: 'overview', el: $('#overview'), link: document.querySelector('.main-nav a[href="#overview"]') },
-  { id: 'courses', el: $('#courses'), link: document.querySelector('.main-nav a[href="#courses"]') },
-  { id: 'assistant', el: $('#assistant'), link: document.querySelector('.main-nav a[href="#assistant"]') }
-];
+const overviewNavLink = document.querySelector('.main-nav a[href="#overview"]');
+const coursesNavLink = document.querySelector('.main-nav a[href="#courses"]');
 
 function setActiveNav(targetEl) {
   if (!targetEl) return;
@@ -543,87 +597,479 @@ function setActiveNav(targetEl) {
   targetEl.classList.add('active');
 }
 
-// 1. Click on section links: smoothly scroll and set active immediately
-sectionNavs.forEach(({ link, el }) => {
-  if (!link) return;
-  link.addEventListener('click', (e) => {
-    e.preventDefault();
-    setActiveNav(link);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      const href = link.getAttribute('href');
-      if (href) history.replaceState(null, '', href);
-    }
+function hideAllViews() {
+  overviewViewSection?.classList.add('hidden');
+  coursesViewSection?.classList.add('hidden');
+  scheduleViewSection?.classList.add('hidden');
+  historyViewSection?.classList.add('hidden');
+  transcriptViewSection?.classList.add('hidden');
+  curriculumViewSection?.classList.add('hidden');
+  lecturersViewSection?.classList.add('hidden');
+  assistantViewSection?.classList.add('hidden');
+}
+
+function showOverviewView() {
+  if (!overviewViewSection) return;
+  hideAllViews();
+  overviewViewSection.classList.remove('hidden');
+  state.activeView = 'overview';
+  if (topbarCrumb) topbarCrumb.textContent = 'Tổng quan';
+  setActiveNav(overviewNavLink);
+  history.replaceState(null, '', '#overview');
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  triggerSectionEntrance(overviewViewSection);
+}
+
+function showCoursesView() {
+  if (!coursesViewSection) return;
+  hideAllViews();
+  coursesViewSection.classList.remove('hidden');
+  state.activeView = 'courses';
+  if (topbarCrumb) topbarCrumb.textContent = 'Đăng ký học phần';
+  setActiveNav(coursesNavLink);
+  history.replaceState(null, '', '#courses');
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  triggerSectionEntrance(coursesViewSection);
+}
+
+function showScheduleView() {
+  if (!scheduleViewSection) return;
+  hideAllViews();
+  scheduleViewSection.classList.remove('hidden');
+  state.activeView = 'schedule';
+  if (topbarCrumb) topbarCrumb.textContent = 'Thời khóa biểu';
+  setActiveNav($('#scheduleOpen'));
+  history.replaceState(null, '', '#schedule-view');
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  scheduleController.open(state.semesterCode);
+}
+
+function showHistoryView() {
+  if (!historyViewSection) return;
+  hideAllViews();
+  historyViewSection.classList.remove('hidden');
+  state.activeView = 'history';
+  if (topbarCrumb) topbarCrumb.textContent = 'Lịch sử đăng ký';
+  setActiveNav($('#historyOpen'));
+  history.replaceState(null, '', '#history-view');
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  historyController.open();
+}
+
+function showTranscriptView() {
+  if (!transcriptViewSection) return;
+  hideAllViews();
+  transcriptViewSection.classList.remove('hidden');
+  state.activeView = 'transcript';
+  if (topbarCrumb) topbarCrumb.textContent = 'Kết quả học tập';
+  setActiveNav($('#transcriptOpen'));
+  history.replaceState(null, '', '#transcript-view');
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  transcriptController.open();
+}
+
+function showCurriculumView() {
+  if (!curriculumViewSection) return;
+  hideAllViews();
+  curriculumViewSection.classList.remove('hidden');
+  state.activeView = 'curriculum';
+  if (topbarCrumb) topbarCrumb.textContent = 'Khung chương trình';
+  setActiveNav($('#curriculumOpen'));
+  history.replaceState(null, '', '#curriculum-view');
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  curriculumController.open();
+}
+
+function showLecturersView() {
+  if (!lecturersViewSection) return;
+  hideAllViews();
+  lecturersViewSection.classList.remove('hidden');
+  state.activeView = 'lecturers';
+  if (topbarCrumb) topbarCrumb.textContent = 'Đội ngũ giảng viên';
+  setActiveNav($('#lecturersOpen'));
+  history.replaceState(null, '', '#lecturers-view');
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  lecturersController.open();
+}
+
+function showAssistantView() {
+  if (!assistantViewSection) return;
+  hideAllViews();
+  assistantViewSection.classList.remove('hidden');
+  state.activeView = 'assistant';
+  if (topbarCrumb) topbarCrumb.textContent = 'Trợ lý AI';
+  setActiveNav($('#assistantOpen'));
+  history.replaceState(null, '', '#assistant-view');
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  assistantController.open();
+}
+
+function navigateToTarget(target) {
+  if (target === 'courses') showCoursesView();
+  else if (target === 'schedule') showScheduleView();
+  else if (target === 'history') showHistoryView();
+  else if (target === 'transcript') showTranscriptView();
+  else if (target === 'curriculum') showCurriculumView();
+  else if (target === 'lecturers') showLecturersView();
+  else if (target === 'assistant') showAssistantView();
+  else showOverviewView();
+}
+
+/* ==========================================================================
+   CONTROLLERS FOR EMBEDDED SUB-VIEWS
+   ========================================================================== */
+
+const scheduleController = createScheduleController({
+  onToast: showToast,
+  onGoToCourses: () => showCoursesView(),
+  getStudent: () => ({
+    fullName: state.student?.name,
+    studentCode: state.student?.id
+  })
+});
+
+const historyController = createHistoryController({
+  onToast: showToast,
+  onGoToCourses: () => showCoursesView(),
+  onOpenCourseDetails: sectionId => showCourseDetails(sectionId)
+});
+
+const transcriptController = createTranscriptController({
+  onToast: showToast
+});
+
+const curriculumController = createCurriculumController({
+  onToast: showToast,
+  getEnrolledCourseCodes: () => (state.registered || []).map(c => c.code)
+});
+
+const lecturersController = createLecturersController({
+  onToast: showToast,
+  onOpenCourseDetails: sectionId => showCourseDetails(sectionId)
+});
+
+const assistantController = createAssistantController({
+  onToast: showToast,
+  getContext: () => ({
+    studentName: state.student?.name,
+    initials: state.student?.name ? monogram(state.student.name) : 'SV',
+    semesterName: state.semesterName,
+    credits: state.credits,
+    maxCredits: state.maxCredits,
+    registeredCount: state.registered?.length || 0,
+    registrationOpen: state.registrationOpen
+  }),
+  onNavigate: target => navigateToTarget(target)
+});
+
+/* ==========================================================================
+   EVENT BINDINGS
+   ========================================================================== */
+
+// Sidebar primary links
+overviewNavLink?.addEventListener('click', event => {
+  event.preventDefault();
+  showOverviewView();
+});
+
+coursesNavLink?.addEventListener('click', event => {
+  event.preventDefault();
+  showCoursesView();
+});
+
+$('#scheduleOpen')?.addEventListener('click', showScheduleView);
+$('#historyOpen')?.addEventListener('click', showHistoryView);
+$('#transcriptOpen')?.addEventListener('click', showTranscriptView);
+$('#curriculumOpen')?.addEventListener('click', showCurriculumView);
+$('#lecturersOpen')?.addEventListener('click', showLecturersView);
+$('#assistantOpen')?.addEventListener('click', showAssistantView);
+
+document.querySelector('.brand[href="#top"]')?.addEventListener('click', event => {
+  event.preventDefault();
+  showOverviewView();
+});
+
+document.querySelector('.help-card a[href="#assistant"]')?.addEventListener('click', event => {
+  event.preventDefault();
+  showAssistantView();
+});
+
+// Cross-view back / CTA buttons
+$('#ovGoCoursesBtn')?.addEventListener('click', showCoursesView);
+$('#ovManageCoursesBtn')?.addEventListener('click', showCoursesView);
+$('#ovGoScheduleBtn')?.addEventListener('click', showScheduleView);
+$('#ovOpenScheduleLink')?.addEventListener('click', showScheduleView);
+$('#regGoScheduleBtn')?.addEventListener('click', showScheduleView);
+$('#regBackToOverviewBtn')?.addEventListener('click', showOverviewView);
+$('#viewSchedule')?.addEventListener('click', showScheduleView);
+$('#btnBackToOverview')?.addEventListener('click', showCoursesView);
+$('#histBackToOverviewBtn')?.addEventListener('click', showOverviewView);
+$('#trBackToOverviewBtn')?.addEventListener('click', showOverviewView);
+$('#curBackToOverviewBtn')?.addEventListener('click', showOverviewView);
+$('#lecBackToOverviewBtn')?.addEventListener('click', showOverviewView);
+$('#aiBackToOverviewBtn')?.addEventListener('click', showOverviewView);
+
+document.addEventListener('click', event => {
+  const lecBtn = event.target.closest('[data-open-lecturer]');
+  if (lecBtn) {
+    event.preventDefault();
+    event.stopPropagation();
+    lecturersController.openProfile(lecBtn.dataset.openLecturer, lecBtn);
+  }
+});
+
+document.querySelectorAll('[data-ov-nav]').forEach(btn => {
+  btn.addEventListener('click', () => navigateToTarget(btn.dataset.ovNav));
+});
+
+// Overview enrolled list delegation (Details / Drop / Empty CTA)
+$('#ovRegisteredList')?.addEventListener('click', event => {
+  const goBtn = event.target.closest('[data-ov-empty-go]');
+  if (goBtn) { navigateToTarget(goBtn.dataset.ovEmptyGo); return; }
+  const detailsBtn = event.target.closest('[data-details]');
+  if (detailsBtn) { showCourseDetails(detailsBtn.dataset.details, detailsBtn); return; }
+  const actionBtn = event.target.closest('[data-action]');
+  if (actionBtn) changeEnrollment(actionBtn.dataset.action, actionBtn.dataset.id, actionBtn);
+});
+
+// Course catalog & cart delegation
+list?.addEventListener('click', event => {
+  const detailsBtn = event.target.closest('[data-details]');
+  if (detailsBtn) { showCourseDetails(detailsBtn.dataset.details, detailsBtn); return; }
+  const actionBtn = event.target.closest('[data-action]');
+  if (actionBtn) changeEnrollment(actionBtn.dataset.action, actionBtn.dataset.id, actionBtn);
+});
+
+$('#registeredList')?.addEventListener('click', event => {
+  const btn = event.target.closest('[data-action="drop"]');
+  if (btn) changeEnrollment('drop', btn.dataset.id, btn);
+});
+
+// Course search & filters
+$('#searchInput')?.addEventListener('input', event => {
+  state.page = 1;
+  state.query = event.target.value;
+  syncRegistrationToolbarState();
+  renderCourses({ crossfade: true });
+});
+
+$('#regSearchClearBtn')?.addEventListener('click', () => {
+  const input = $('#searchInput');
+  if (input) {
+    input.value = '';
+    input.focus();
+  }
+  state.page = 1;
+  state.query = '';
+  syncRegistrationToolbarState();
+  renderCourses({ crossfade: true });
+});
+
+document.querySelectorAll('.filter-chip').forEach(button => {
+  button.addEventListener('click', () => {
+    document.querySelector('.filter-chip.selected')?.classList.remove('selected');
+    button.classList.add('selected');
+    state.filter = button.dataset.filter;
+    state.page = 1;
+    syncRegistrationToolbarState();
+    renderCourses({ crossfade: true });
   });
 });
 
-// 2. Click on modal dialog buttons: set active state
-const modalNavButtons = [
-  { btn: $('#scheduleOpen'), dialog: $('#scheduleDialog') },
-  { btn: $('#historyOpen'), dialog: $('#historyDialog') },
-  { btn: $('#transcriptOpen'), dialog: $('#transcriptDialog') },
-  { btn: $('#curriculumOpen'), dialog: $('#curriculumDialog') }
-];
+$('#departmentFilter')?.addEventListener('change', event => {
+  state.page = 1;
+  state.department = event.target.value;
+  syncRegistrationToolbarState();
+  renderCourses({ crossfade: true });
+});
 
-modalNavButtons.forEach(({ btn, dialog }) => {
-  if (!btn) return;
-  btn.addEventListener('click', () => {
-    setActiveNav(btn);
-  });
-  if (dialog) {
-    dialog.addEventListener('close', () => {
-      syncNavOnScroll();
+$('#weekdayFilter')?.addEventListener('change', event => {
+  state.page = 1;
+  state.weekday = event.target.value;
+  syncRegistrationToolbarState();
+  renderCourses({ crossfade: true });
+});
+
+$('#creditFilter')?.addEventListener('change', event => {
+  state.page = 1;
+  state.creditsFilter = event.target.value;
+  syncRegistrationToolbarState();
+  renderCourses({ crossfade: true });
+});
+
+$('#sortFilter')?.addEventListener('change', event => {
+  state.page = 1;
+  state.sort = event.target.value;
+  syncRegistrationToolbarState();
+  renderCourses({ crossfade: true });
+});
+
+let advCloseTimer = null;
+$('#filterButton')?.addEventListener('click', () => {
+  const panel = $('#filterRow');
+  const btn = $('#filterButton');
+  if (!panel) return;
+  window.clearTimeout(advCloseTimer);
+  if (panel.classList.contains('hidden')) {
+    panel.classList.remove('hidden', 'is-closing');
+    state.advOpen = true;
+    btn?.setAttribute('aria-expanded', 'true');
+  } else if (prefersReducedMotion()) {
+    panel.classList.add('hidden');
+    state.advOpen = false;
+    btn?.setAttribute('aria-expanded', 'false');
+  } else {
+    panel.classList.add('is-closing');
+    state.advOpen = false;
+    btn?.setAttribute('aria-expanded', 'false');
+    advCloseTimer = window.setTimeout(() => {
+      panel.classList.add('hidden');
+      panel.classList.remove('is-closing');
+    }, 150);
+  }
+});
+
+$('#regResetAllBtn')?.addEventListener('click', resetRegistrationFilters);
+$('#regEmptyResetBtn')?.addEventListener('click', resetRegistrationFilters);
+
+$('#refreshButton')?.addEventListener('click', async () => {
+  const btn = $('#refreshButton');
+  btn?.classList.add('is-spinning');
+  try {
+    await loadDashboard();
+    showToast('Danh sách học phần đã được làm mới.');
+    btn?.classList.remove('is-spinning');
+    btn?.classList.add('is-success');
+    window.setTimeout(() => btn?.classList.remove('is-success'), 1400);
+  } catch {
+    btn?.classList.remove('is-spinning');
+    showToast('Không tải được danh sách.');
+  }
+});
+
+// Course Detail Dialog smooth close
+$('#closeCourseDialog')?.addEventListener('click', closeCourseDialogSmooth);
+$('#courseDialog')?.addEventListener('click', event => {
+  if (event.target === $('#courseDialog')) closeCourseDialogSmooth();
+});
+$('#courseDialog')?.addEventListener('cancel', event => {
+  event.preventDefault();
+  closeCourseDialogSmooth();
+});
+
+// Account menu & Logout
+const accountMenu = $('#accountMenu');
+const accountMenuToggle = $('#accountMenuToggle');
+const accountMenuPanel = $('#accountMenuPanel');
+function setAccountMenu(open) {
+  if (!accountMenuPanel || !accountMenuToggle) return;
+  accountMenuPanel.hidden = !open;
+  accountMenuToggle.setAttribute('aria-expanded', String(open));
+}
+accountMenuToggle?.addEventListener('click', () => setAccountMenu(accountMenuPanel.hidden));
+accountMenuToggle?.addEventListener('keydown', event => {
+  if (event.key === 'ArrowDown') {
+    event.preventDefault();
+    setAccountMenu(true);
+    accountMenuPanel.querySelector('a')?.focus();
+  }
+});
+document.addEventListener('pointerdown', event => { if (accountMenu && !accountMenu.contains(event.target)) setAccountMenu(false); });
+document.addEventListener('focusin', event => { if (accountMenu && !accountMenu.contains(event.target)) setAccountMenu(false); });
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && accountMenuPanel && !accountMenuPanel.hidden) {
+    setAccountMenu(false);
+    accountMenuToggle?.focus();
+  }
+});
+
+const futureShell = initFutureShell({
+  sidebarSelector: '.sidebar',
+  navSelector: '.main-nav .nav-item',
+  getCommands: () => [
+    { group: 'Điều hướng sinh viên', title: 'Tổng quan học tập', subtitle: 'Bảng điều khiển tín chỉ, hạn đăng ký và lịch tuần', tag: 'HOME', action: showOverviewView },
+    { group: 'Điều hướng sinh viên', title: 'Đăng ký học phần', subtitle: 'Tìm kiếm, lọc và đăng ký lớp học kỳ hiện tại', tag: 'REG', action: () => { showCoursesView(); requestAnimationFrame(() => $('#searchInput')?.focus()); } },
+    { group: 'Điều hướng sinh viên', title: 'Thời khóa biểu thông minh', subtitle: 'Xem lịch tuần, lịch trình và xuất PDF/CSV', tag: 'CAL', action: showScheduleView },
+    { group: 'Điều hướng sinh viên', title: 'Lịch sử đăng ký', subtitle: 'Tra cứu toàn bộ thao tác đăng ký và hủy lớp', tag: 'HIST', action: showHistoryView },
+    { group: 'Điều hướng sinh viên', title: 'Kết quả học tập', subtitle: 'Bảng điểm tích lũy, GPA hệ 10 và tín chỉ đạt', tag: 'GPA', action: showTranscriptView },
+    { group: 'Điều hướng sinh viên', title: 'Khung chương trình', subtitle: 'Lộ trình học phần và điều kiện tiên quyết', tag: 'ROADMAP', action: showCurriculumView },
+    { group: 'Điều hướng sinh viên', title: 'Đội ngũ giảng viên', subtitle: 'Tra cứu hồ sơ, chuyên môn và giờ tiếp sinh viên', tag: 'FACULTY', action: showLecturersView },
+    { group: 'Điều hướng sinh viên', title: 'Trợ lý AI học vụ', subtitle: 'Hỏi đáp học vụ trực tiếp theo dữ liệu cá nhân', tag: 'AI', action: showAssistantView },
+    { group: 'Thao tác nhanh', title: 'Làm mới danh sách học phần', subtitle: 'Tải lại sĩ số và trạng thái lớp mới nhất', tag: 'SYNC', action: () => loadDashboard().then(() => showToast('Đã đồng bộ dữ liệu học vụ mới nhất.')) },
+    { group: 'Thao tác nhanh', title: 'Đổi mật khẩu tài khoản', subtitle: 'Mở trang cập nhật mật khẩu bảo mật', tag: 'SEC', action: () => location.assign('/change-password.html') }
+  ]
+});
+
+function syncFutureNotifications() {
+  const items = [];
+  if (state.registrationOpen) {
+    items.push({
+      tone: 'success',
+      title: 'Cổng đăng ký học phần đang mở',
+      body: state.registrationAlwaysOpen
+        ? `${state.semesterName} · Đang mở đăng ký liên tục.`
+        : `${state.semesterName} · Hạn đăng ký: ${formatDate(state.registrationCloseAt)}.`,
+      action: showCoursesView
+    });
+  } else {
+    items.push({
+      tone: 'danger',
+      title: 'Cổng đăng ký học phần đang đóng',
+      body: `${state.semesterName} · Thời gian: ${formatDate(state.registrationOpenAt)} – ${formatDate(state.registrationCloseAt)}.`,
+      action: showOverviewView
     });
   }
-});
 
-// Also when opening schedule from registered list button
-$('#viewSchedule')?.addEventListener('click', () => {
-  const schedBtn = $('#scheduleOpen');
-  if (schedBtn) setActiveNav(schedBtn);
-});
+  const ratio = state.maxCredits > 0 ? state.credits / state.maxCredits : 0;
+  items.push({
+    tone: ratio >= 0.85 ? 'warning' : 'info',
+    title: `Đã đăng ký ${state.credits} / ${state.maxCredits} tín chỉ`,
+    body: `${state.registered.length} lớp học phần chính thức trong học kỳ hiện tại.`,
+    action: showScheduleView
+  });
 
-// 3. Scrollspy: auto-update active nav as user scrolls through sections
-function syncNavOnScroll() {
-  const isAnyModalOpen = [
-    $('#scheduleDialog'),
-    $('#historyDialog'),
-    $('#transcriptDialog'),
-    $('#curriculumDialog'),
-    $('#courseDialog')
-  ].some(d => d && d.open);
-  if (isAnyModalOpen) return;
-
-  const scrollY = window.scrollY || window.pageYOffset;
-  const triggerOffset = scrollY + 180;
-
-  let current = sectionNavs[0];
-  for (const item of sectionNavs) {
-    if (item.el) {
-      const top = item.el.getBoundingClientRect().top + scrollY;
-      if (top <= triggerOffset) {
-        current = item;
-      }
-    }
+  if (state.courses.length) {
+    const avail = state.courses.filter(c => (c.capacity - c.enrolled) > 0).length;
+    items.push({
+      tone: 'info',
+      title: `${avail} / ${state.courses.length} lớp còn chỗ trống`,
+      body: 'Mở Trung tâm Đăng ký học phần để lọc theo khoa, ngày học và điều kiện.',
+      action: showCoursesView
+    });
   }
-  if (current && current.link) {
-    setActiveNav(current.link);
-  }
+  futureShell.updateNotifications(items);
 }
 
-let scrollRaf;
-window.addEventListener('scroll', () => {
-  if (scrollRaf) cancelAnimationFrame(scrollRaf);
-  scrollRaf = requestAnimationFrame(syncNavOnScroll);
-}, { passive: true });
+$('#studentLogoutButton')?.addEventListener('click', async () => {
+  try { await apiPost('/api/auth/logout', {}); } catch { /* ignore */ }
+  location.replace('/login.html');
+});
 
-// Initial sync on page load
-if (location.hash) {
-  const match = document.querySelector(`.main-nav a[href="${location.hash}"]`);
-  if (match) setActiveNav(match);
-  else syncNavOnScroll();
-} else {
-  syncNavOnScroll();
-}
+// Keep legacy modal close handlers safe if any element remains in DOM
+$('#closeDialog')?.addEventListener('click', () => $('#scheduleDialog')?.close());
+$('#closeHistoryDialog')?.addEventListener('click', () => $('#historyDialog')?.close());
+$('#closeTranscriptDialog')?.addEventListener('click', () => $('#transcriptDialog')?.close());
+$('#closeCurriculumDialog')?.addEventListener('click', () => $('#curriculumDialog')?.close());
 
-loadDashboard().catch(error => { showToast(error.message); list.innerHTML = '<div class="empty-state"><strong>Không kết nối được máy chủ</strong><p>Hãy chạy ứng dụng Java rồi tải lại trang.</p></div>'; });
+/* ==========================================================================
+   INITIAL BOOTSTRAP (Default to Tổng quan)
+   ========================================================================== */
+
+loadDashboard().then(() => {
+  assistantController.refreshContext();
+  const openTarget = new URLSearchParams(location.search).get('open');
+  if (location.hash === '#courses') { showCoursesView(); }
+  else if (location.hash === '#schedule-view') { showScheduleView(); }
+  else if (location.hash === '#history-view' || openTarget === 'history') { showHistoryView(); }
+  else if (location.hash === '#transcript-view' || openTarget === 'transcript') { showTranscriptView(); }
+  else if (location.hash === '#curriculum-view' || openTarget === 'curriculum') { showCurriculumView(); }
+  else if (location.hash === '#lecturers-view' || openTarget === 'lecturers') { showLecturersView(); }
+  else if (location.hash === '#assistant-view' || openTarget === 'assistant') { showAssistantView(); }
+  else { showOverviewView(); }
+  if (openTarget) history.replaceState(null, '', '/');
+}).catch(error => {
+  showToast(error.message || 'Không kết nối được máy chủ.');
+  if (list) {
+    list.innerHTML = '<div class="ov-empty-box"><strong>Không kết nối được máy chủ</strong><p>Hãy kiểm tra máy chủ và tải lại trang.</p></div>';
+  }
+});

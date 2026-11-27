@@ -26,18 +26,32 @@ public class WorkspaceService {
     private final AuthService authService;
     private final RegistrationPeriodRepository registrationPeriods;
     private final UserAccountRepository accounts;
+    private final AuditService audit;
 
+    @org.springframework.beans.factory.annotation.Autowired
     public WorkspaceService(LecturerRepository lecturerRepository, StudentRepository studentRepository,
                               CourseRepository courseRepository, CourseSectionRepository sectionRepository,
                               EnrollmentRepository enrollmentRepository, SemesterRepository semesterRepository,
                               WaitlistRepository waitlistRepository, AuthService authService,
-                              RegistrationPeriodRepository registrationPeriods,UserAccountRepository accounts) {
+                              RegistrationPeriodRepository registrationPeriods, UserAccountRepository accounts,
+                              AuditService audit) {
         this.lecturerRepository = lecturerRepository; this.studentRepository = studentRepository;
         this.courseRepository = courseRepository; this.sectionRepository = sectionRepository;
         this.enrollmentRepository = enrollmentRepository; this.semesterRepository = semesterRepository;
         this.waitlistRepository = waitlistRepository;
         this.authService = authService;
-        this.registrationPeriods=registrationPeriods;this.accounts=accounts;
+        this.registrationPeriods = registrationPeriods; this.accounts = accounts;
+        this.audit = audit;
+    }
+
+    public WorkspaceService(LecturerRepository lecturerRepository, StudentRepository studentRepository,
+                              CourseRepository courseRepository, CourseSectionRepository sectionRepository,
+                              EnrollmentRepository enrollmentRepository, SemesterRepository semesterRepository,
+                              WaitlistRepository waitlistRepository, AuthService authService,
+                              RegistrationPeriodRepository registrationPeriods, UserAccountRepository accounts) {
+        this(lecturerRepository, studentRepository, courseRepository, sectionRepository,
+                enrollmentRepository, semesterRepository, waitlistRepository, authService,
+                registrationPeriods, accounts, null);
     }
 
     @Transactional(readOnly = true)
@@ -80,6 +94,75 @@ public class WorkspaceService {
     public List<SemesterManagementDto> lecturerSemesters() {
         authService.currentLecturer();
         return semesterRepository.findAllByOrderByStartsAtDesc().stream().map(SemesterManagementDto::from).toList();
+    }
+
+    @Transactional(readOnly = true)
+    public LecturerPublicProfileDto lecturerOwnProfile() {
+        var lecturer = authService.currentLecturer();
+        return LecturerPublicProfileDto.forSelf(lecturer, lecturerTeachingSections(lecturer.getId()));
+    }
+
+    @Transactional
+    public LecturerPublicProfileDto updateLecturerOwnProfile(LecturerProfileUpdateRequest req) {
+        if (req == null) throw new IllegalArgumentException("Thiếu dữ liệu cập nhật hồ sơ.");
+        var lecturer = authService.currentLecturer();
+
+        validateMaxLen(req.bio(), 1200, "Giới thiệu bản thân");
+        validateMaxLen(req.researchInterests(), 500, "Hướng nghiên cứu / chuyên môn");
+        validateMaxLen(req.officeLocation(), 160, "Phòng làm việc");
+        validateMaxLen(req.officeHours(), 240, "Giờ tiếp sinh viên");
+        validateMaxLen(req.websiteUrl(), 300, "Liên kết học thuật");
+        validateMaxLen(req.email(), 160, "Email liên hệ");
+        validateMaxLen(req.phone(), 30, "Số điện thoại");
+
+        if (req.websiteUrl() != null && !req.websiteUrl().isBlank()) {
+            String trimmedUrl = req.websiteUrl().trim();
+            try {
+                var uri = java.net.URI.create(trimmedUrl);
+                String scheme = uri.getScheme();
+                if (scheme == null || (!scheme.equalsIgnoreCase("http") && !scheme.equalsIgnoreCase("https"))) {
+                    throw new IllegalArgumentException("Liên kết học thuật phải bắt đầu bằng http:// hoặc https://.");
+                }
+            } catch (IllegalArgumentException ex) {
+                throw new IllegalArgumentException("Liên kết học thuật không hợp lệ (phải bắt đầu bằng http:// hoặc https://).");
+            }
+        }
+
+        lecturer.updatePublicProfile(
+                req.bio(),
+                req.researchInterests(),
+                req.officeLocation(),
+                req.officeHours(),
+                req.websiteUrl(),
+                req.email(),
+                req.phone(),
+                Boolean.TRUE.equals(req.showPhoneToStudents())
+        );
+        lecturerRepository.save(lecturer);
+        if (audit != null) audit.record("LECTURER_PROFILE_UPDATED", lecturer.getLecturerCode(), "Cập nhật hồ sơ công khai giảng viên");
+        return LecturerPublicProfileDto.forSelf(lecturer, lecturerTeachingSections(lecturer.getId()));
+    }
+
+    private List<LecturerPublicProfileDto.TeachingSectionDto> lecturerTeachingSections(Long lecturerId) {
+        Semester semester;
+        try {
+            semester = currentSemester();
+        } catch (IllegalStateException ex) {
+            return List.of();
+        }
+        var counts = enrollmentRepository.activeCountsBySection().stream()
+                .collect(java.util.stream.Collectors.toMap(r -> (String) r[0], r -> ((Number) r[1]).longValue()));
+        return sectionRepository.findAllBySemester_CodeOrderBySectionCode(semester.getCode()).stream()
+                .filter(s -> s.getLecturer() != null && s.getLecturer().getId().equals(lecturerId))
+                .map(s -> LecturerPublicProfileDto.TeachingSectionDto.from(
+                        s, s.totalEnrolled(counts.getOrDefault(s.getId(), 0L))))
+                .toList();
+    }
+
+    private static void validateMaxLen(String value, int max, String fieldLabel) {
+        if (value != null && value.trim().length() > max) {
+            throw new IllegalArgumentException(fieldLabel + " tối đa " + max + " ký tự.");
+        }
     }
 
     @Transactional(readOnly = true)

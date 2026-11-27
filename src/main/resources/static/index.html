@@ -3,25 +3,44 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f7f8fc">
-  <title>EduPortal — Đăng ký học phần</title>
+  <meta name="theme-color" content="#080E1B">
+  <title>EduPortal — Future Campus · Cổng Sinh Viên</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/student.css?v=20261109c">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/student.css?v=20261125m">
   <link rel="stylesheet" href="/assets/css/student-features.css?v=20261115b">
   <link rel="stylesheet" href="/assets/css/theme.css?v=20261125a">
-  <script src="/assets/js/core/theme.js?v=20261125a"></script>
+  <link rel="stylesheet" href="/assets/css/dashboard-embedded.css?v=20261125k">
+  <link rel="stylesheet" href="/assets/css/schedule-embedded.css?v=20261125i">
+  <link rel="stylesheet" href="/assets/css/history-embedded.css?v=20261125h">
+  <link rel="stylesheet" href="/assets/css/transcript-embedded.css?v=20261125j">
+  <link rel="stylesheet" href="/assets/css/curriculum-embedded.css?v=20261125f">
+  <link rel="stylesheet" href="/assets/css/lecturers-embedded.css?v=20261125l">
+  <link rel="stylesheet" href="/assets/css/assistant-embedded.css?v=20261127sl">
+  <link rel="stylesheet" href="/assets/css/sling-button.css?v=20261127sl">
+  <link rel="stylesheet" href="/assets/css/future-campus.css?v=20261125sg">
+  <link rel="stylesheet" href="/assets/css/future-effects.css?v=20261125fe">
+  <link rel="stylesheet" href="/assets/css/gooey-nav.css?v=20261127gn">
+  <script src="/assets/js/core/theme.js?v=20261125fc"></script>
+  <script src="/assets/js/core/shape-grid.js?v=20261125sg" defer></script>
+  <script src="/assets/js/core/future-effects.js?v=20261125fe" defer></script>
 </head>
 <body>
+  <div class="fc-sidebar-backdrop" id="fcSidebarBackdrop" aria-hidden="true"></div>
   <div class="app-shell">
     <aside class="sidebar">
-      <a class="brand" href="#top" aria-label="EduPortal trang chủ">
-        <span class="brand-mark"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5.5 9.5 16 5l10.5 4.5L16 14 5.5 9.5Z"/><path d="M9 11.2v7.1c3.8 3.1 10.2 3.1 14 0v-7.1M26.5 10v8"/><circle cx="26.5" cy="20.5" r="1.5"/></svg></span>
-        <span class="brand-copy"><strong>Edu<span>Portal</span></strong><small>STUDENT PORTAL</small></span>
-      </a>
+      <div class="fc-sidebar-head">
+        <a class="brand" href="#top" aria-label="EduPortal trang chủ">
+          <span class="brand-mark"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5.5 9.5 16 5l10.5 4.5L16 14 5.5 9.5Z"/><path d="M9 11.2v7.1c3.8 3.1 10.2 3.1 14 0v-7.1M26.5 10v8"/><circle cx="26.5" cy="20.5" r="1.5"/></svg></span>
+          <span class="brand-copy"><strong>Edu<span>Portal</span></strong><small>FUTURE CAMPUS</small></span>
+        </a>
+        <button class="fc-collapse-btn" id="fcSidebarCollapseBtn" type="button" aria-label="Thu gọn thanh điều hướng" aria-expanded="true" title="Thu gọn thanh điều hướng">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+      </div>
       <div class="semester-picker"><span class="picker-icon">▦</span><span><small>HỌC KỲ HIỆN TẠI</small><strong id="semesterName">Đang tải học kỳ…</strong></span></div>
-      <p class="nav-label">KHÔNG GIAN HỌC TẬP</p>
+      <p class="nav-label">ĐIỀU KHIỂN & ĐĂNG KÝ</p>
       <nav class="main-nav" aria-label="Điều hướng chính">
         <a class="nav-item active" href="#overview">
           <span class="nav-icon" aria-hidden="true">
@@ -92,7 +111,18 @@
           </span>
           <span>Khung chương trình</span>
         </button>
-        <a class="nav-item" href="#assistant">
+        <button class="nav-item nav-button" id="lecturersOpen" type="button">
+          <span class="nav-icon" aria-hidden="true">
+            <svg class="anim-svg anim-lecturers" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path class="lec-body-main" d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+              <circle class="lec-head-main" cx="9" cy="7" r="4"></circle>
+              <path class="lec-body-sub" d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path class="lec-head-sub" d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+          </span>
+          <span>Giảng viên</span>
+        </button>
+        <button class="nav-item nav-button" id="assistantOpen" type="button">
           <span class="nav-icon" aria-hidden="true">
             <svg class="anim-svg anim-sparkle" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path class="main-star" d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4z"></path>
@@ -102,7 +132,7 @@
           </span>
           <span>Trợ lý AI</span>
           <span class="nav-dot"></span>
-        </a>
+        </button>
       </nav>
       <div class="sidebar-bottom">
         <div class="help-card"><div class="help-ornament">✳</div><strong>Cần hỗ trợ?</strong><p>EduPortal luôn sẵn sàng giải đáp thắc mắc của bạn.</p><a href="#assistant">Trò chuyện ngay <span>↗</span></a></div>
@@ -112,8 +142,31 @@
 
     <main class="main-content" id="top">
       <header class="topbar">
-        <div class="breadcrumb">Cổng sinh viên <span>/</span> <strong>Đăng ký học phần</strong></div>
+        <div class="fc-topbar-left">
+          <button class="fc-mobile-menu-btn" id="fcMobileMenuBtn" type="button" aria-label="Mở menu điều hướng" aria-expanded="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+          </button>
+          <div class="breadcrumb">Cổng sinh viên <span>/</span> <strong id="topbarCrumb">Tổng quan</strong></div>
+        </div>
         <div class="top-actions">
+          <button class="fc-cmd-trigger" id="fcCmdTrigger" type="button" aria-label="Mở bảng lệnh nhanh">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <span>Tìm nhanh &amp; chuyển trang…</span>
+            <kbd class="fc-kbd">Ctrl K</kbd>
+          </button>
+          <div class="fc-notif-wrap" id="fcNotifWrap">
+            <button class="fc-notif-btn" id="fcNotifBtn" type="button" aria-label="Trung tâm thông báo" aria-expanded="false" aria-controls="fcNotifPanel" title="Thông báo học vụ">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+              <span class="fc-notif-dot hidden" id="fcNotifDot"></span>
+            </button>
+            <div class="fc-notif-panel" id="fcNotifPanel" hidden>
+              <div class="fc-notif-head">
+                <strong>Thông báo học vụ</strong>
+                <span id="fcNotifCount">0 mục</span>
+              </div>
+              <div class="fc-notif-list" id="fcNotifList"></div>
+            </div>
+          </div>
           <button class="theme-toggle-btn" type="button" data-theme-toggle aria-label="Chuyển giao diện sáng/tối" title="Chuyển giao diện sáng/tối">
             <span class="theme-icon" aria-hidden="true">
               <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
@@ -135,40 +188,1315 @@
           <button id="studentLogoutButton" class="top-logout-button" type="button">Đăng xuất</button>
         </div>
       </header>
-      <section class="welcome-row" id="overview"><div><p class="eyebrow" id="registrationStatus"><span class="status-pulse"></span> ĐANG TẢI TRẠNG THÁI</p><h1>Chào bạn, <span id="welcomeName">Sinh viên</span> <span class="wave">✦</span></h1><p class="welcome-subtitle">Theo dõi học phần, đăng ký và lịch học của bạn.</p></div><div class="welcome-date"><span class="date-icon">◷</span><span><small>HẠN ĐĂNG KÝ</small><strong id="registrationDeadline">—</strong></span></div></section>
+      <!-- In-Place Student Overview Dashboard (Default Landing View, Zero Page Reload) -->
+      <section id="overviewViewSection" aria-label="Tổng quan học tập">
+        <div class="ov-hero" id="overview">
+          <div class="ov-hero-left">
+            <span class="ov-status-pill" id="registrationStatus">
+              <span class="ov-status-dot"></span>
+              <span>ĐANG TẢI TRẠNG THÁI</span>
+            </span>
+            <div class="ov-hero-title-row">
+              <h1>Chào bạn, <span id="welcomeName">Sinh viên</span></h1>
+              <span class="ov-semester-badge" id="ovSemesterBadge">Đang tải học kỳ…</span>
+            </div>
+            <p class="ov-hero-sub">Theo dõi tín chỉ tích lũy học kỳ, lịch học trong tuần và truy cập nhanh các chức năng học vụ.</p>
+          </div>
 
-      <section class="stat-grid" aria-label="Tổng quan đăng ký">
-        <article class="stat-card"><div class="stat-top"><span class="stat-icon lilac">▤</span><span class="stat-trend">HỌC KỲ NÀY</span></div><p class="stat-value"><span id="creditValue">0</span><small id="creditLimitLabel"> / — tín chỉ</small></p><div class="progress-track"><span id="creditProgress" style="width:0%"></span></div><div class="stat-foot"><span id="courseCount">0 học phần đã đăng ký</span><span class="foot-bullet">●</span></div></article>
-        <article class="stat-card"><div class="stat-top"><span class="stat-icon green">✓</span><span class="stat-trend good" id="registrationStatusCard">ĐANG TẢI</span></div><p class="stat-value stat-text">Đăng ký học phần</p><div class="stat-foot"><span id="registrationDates">—</span><span class="arrow-link">↗</span></div></article>
-        <article class="stat-card"><div class="stat-top"><span class="stat-icon amber">◷</span><span class="stat-trend">LỊCH CỦA BẠN</span></div><p class="stat-value"><span id="weekdayCount">0</span><small> ngày / tuần</small></p><div class="day-dots" id="weekdayDots" aria-label="Ngày học trong tuần"><span>T2</span><span>T3</span><span>T4</span><span>T5</span><span>T6</span><span>T7</span></div></article>
-      </section>
-
-      <section class="content-grid">
-        <div class="courses-panel" id="courses">
-          <div class="section-heading"><div><div class="heading-title"><h2>Học phần đang mở</h2><span class="open-badge"><i></i> ĐANG MỞ</span></div><p>Khám phá và đăng ký các lớp học kỳ này</p></div><button class="filter-button" id="filterButton"><span>☷</span> Bộ lọc <span class="filter-chevron">⌄</span></button></div>
-          <div class="toolbar"><label class="search-box"><span>⌕</span><input type="search" id="searchInput" placeholder="Tìm theo tên, mã học phần..." autocomplete="off"><kbd>Ctrl K</kbd></label><div class="result-count">Hiển thị <strong id="visibleCount">0</strong> học phần</div></div>
-          <div class="filter-row" id="filterRow"><button class="filter-chip selected" data-filter="all">Tất cả</button><button class="filter-chip" data-filter="available">Còn chỗ</button><button class="filter-chip" data-filter="full">Đã đủ chỗ</button><button class="filter-chip" data-filter="registered">Đã đăng ký</button><label class="filter-select-label">Khoa<select id="departmentFilter"><option value="">Tất cả khoa</option></select></label><label class="filter-select-label">Ngày học<select id="weekdayFilter"><option value="">Tất cả ngày</option><option>Thứ 2</option><option>Thứ 3</option><option>Thứ 4</option><option>Thứ 5</option><option>Thứ 6</option><option>Thứ 7</option><option>Chủ nhật</option></select></label><label class="filter-select-label">Tín chỉ<select id="creditFilter"><option value="">Tất cả</option></select></label><label class="filter-select-label">Sắp xếp<select id="sortFilter"><option value="code">Mã học phần</option><option value="name">Tên môn</option><option value="credits">Số tín chỉ</option><option value="seats">Chỗ còn lại</option></select></label></div>
-          <div class="course-list" id="courseList" aria-live="polite"></div>
-          <div class="empty-state hidden" id="emptyState"><span>⌕</span><strong>Chưa tìm thấy học phần</strong><p>Thử tìm bằng một từ khóa khác nhé.</p></div>
-          <div class="panel-footer"><span><span class="footer-dot"></span> Dữ liệu hiển thị theo học kỳ hiện tại</span><button id="refreshButton">↻ Làm mới</button></div>
+          <div class="ov-hero-right">
+            <div class="ov-deadline-chip">
+              <span class="ov-deadline-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </span>
+              <span>
+                <small>Hạn đăng ký</small>
+                <strong id="registrationDeadline">—</strong>
+              </span>
+            </div>
+            <button class="dash-btn" id="ovGoScheduleBtn" type="button" data-dash-tooltip="Mở lịch học tuần này">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+              <span>Thời khóa biểu</span>
+            </button>
+            <button class="dash-btn dash-btn-primary" id="ovGoCoursesBtn" type="button">
+              <span>Đăng ký học phần</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </button>
+          </div>
         </div>
 
-        <aside class="right-column">
-          <section class="assistant-card" id="assistant"><div class="assistant-head"><div class="bot-avatar"><span>✳</span><i></i></div><div class="bot-title"><strong>EduPortal</strong><small id="assistantMode"><i></i> Trợ lý học tập theo dữ liệu học vụ</small></div></div><div class="chat-tools"><p id="chatStatusNote">Tra cứu dữ liệu học vụ của bạn. Quy định thử nghiệm sẽ được ghi rõ.</p><button class="chat-clear" id="clearChat" type="button">Xóa hội thoại</button></div><div class="chat-body" id="chatBody" role="log" aria-live="polite" aria-label="Hội thoại với trợ lý"><div class="bot-message-row"><span class="mini-bot">✳</span><div class="message-stack"><div class="bot-message" id="chatGreeting">Xin chào! Mình có thể giúp bạn tra cứu học phần, lịch học và điều kiện đăng ký.</div><small>EduPortal</small></div></div><div class="suggestion-label">GỢI Ý CÂU HỎI</div><div class="suggestions"><button data-question="Lịch học của tôi thế nào?">Lịch học của tôi thế nào?</button><button data-question="Tôi đã đăng ký bao nhiêu tín chỉ?">Tôi đã đăng ký bao nhiêu tín chỉ?</button><button data-question="Gợi ý môn học phù hợp">Gợi ý môn phù hợp</button><button data-question="Tôi còn thiếu môn nào?">Môn còn thiếu</button><button data-question="Xem kết quả học tập">Kết quả học tập</button><button data-question="Khi nào hết hạn đăng ký?">Hạn đăng ký</button></div></div><form id="chatForm" class="chat-compose"><input id="chatInput" type="text" placeholder="Hỏi về môn, điểm, lịch học…" maxlength="1000" autocomplete="off" aria-label="Tin nhắn"><button type="submit" aria-label="Gửi tin nhắn">↑</button></form><div class="chat-caption"><span>Phản hồi dựa trên dữ liệu học vụ của bạn</span></div></section>
+        <section class="ov-stats-grid" aria-label="Thống kê tổng quan">
+          <article class="ov-stat-card">
+            <div class="ov-stat-head">
+              <span class="ov-stat-label">Tín chỉ học kỳ này</span>
+              <span class="ov-stat-icon is-blue" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>
+              </span>
+            </div>
+            <div class="ov-stat-value"><span id="creditValue">0</span><small id="creditLimitLabel">/ — tín chỉ</small></div>
+            <div class="ov-progress-track"><span id="creditProgress" style="width:0%"></span></div>
+            <span class="ov-stat-sub" id="courseCount">0 học phần đã đăng ký</span>
+          </article>
 
-          <section class="registered-card" id="schedule"><div class="registered-heading"><div><h3>Lớp đã đăng ký</h3><p id="registeredSemester">Đang tải học kỳ…</p></div><span class="registered-number" id="registeredCount">0</span></div><div class="registered-list" id="registeredList"></div><button class="view-schedule" id="viewSchedule">Xem thời khóa biểu <span>↗</span></button></section>
-          <section class="tip-card"><span class="tip-icon">✦</span><div><strong>Lưu ý đăng ký</strong><p id="dropPolicy">Thời hạn hủy đăng ký được áp dụng theo quy định học vụ.</p></div></section>
-        </aside>
+          <article class="ov-stat-card">
+            <div class="ov-stat-head">
+              <span class="ov-stat-label">Trạng thái đăng ký</span>
+              <span class="ov-stat-icon is-green" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              </span>
+            </div>
+            <div class="ov-stat-value is-text" id="registrationStatusCard">Đang tải…</div>
+            <span class="ov-stat-sub" id="registrationDates">—</span>
+          </article>
+
+          <article class="ov-stat-card">
+            <div class="ov-stat-head">
+              <span class="ov-stat-label">Ngày học trong tuần</span>
+              <span class="ov-stat-icon is-amber" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+              </span>
+            </div>
+            <div class="ov-stat-value"><span id="weekdayCount">0</span><small>ngày / tuần</small></div>
+            <div class="ov-day-dots" id="weekdayDots" aria-label="Ngày học trong tuần"><span>T2</span><span>T3</span><span>T4</span><span>T5</span><span>T6</span><span>T7</span><span>CN</span></div>
+          </article>
+
+          <article class="ov-stat-card">
+            <div class="ov-stat-head">
+              <span class="ov-stat-label">Học phần đang mở</span>
+              <span class="ov-stat-icon is-indigo" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+              </span>
+            </div>
+            <div class="ov-stat-value"><span id="ovOpenCoursesCount">0</span><small>lớp mở</small></div>
+            <span class="ov-stat-sub" id="ovAvailableCoursesSub">Đang tải danh sách lớp…</span>
+          </article>
+        </section>
+
+        <section class="ov-bento-grid">
+          <div class="ov-bento-main">
+            <article class="ov-card">
+              <div class="ov-card-head">
+                <div>
+                  <h2>Lớp đã đăng ký học kỳ này</h2>
+                  <p id="ovRegisteredSemester">Đang tải học kỳ…</p>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span class="ov-count-badge" id="ovRegisteredCount">0</span>
+                  <button class="ov-link-btn" id="ovManageCoursesBtn" type="button">Đăng ký thêm →</button>
+                </div>
+              </div>
+              <div class="ov-enrolled-list" id="ovRegisteredList"></div>
+            </article>
+
+            <article class="ov-card">
+              <div class="ov-card-head">
+                <div>
+                  <h2>Phân bổ lịch học trong tuần</h2>
+                  <p>Tóm tắt nhanh các ngày có lớp học phần đã đăng ký</p>
+                </div>
+                <button class="ov-link-btn" id="ovOpenScheduleLink" type="button">Xem chi tiết TKB ↗</button>
+              </div>
+              <div class="ov-week-grid" id="ovWeekPreview"></div>
+            </article>
+          </div>
+
+          <aside class="ov-bento-side">
+            <article class="ov-card">
+              <div class="ov-card-head">
+                <div>
+                  <h2>Truy cập nhanh</h2>
+                  <p>Chuyển tức thì tới các chức năng học vụ</p>
+                </div>
+              </div>
+              <div class="ov-shortcut-grid">
+                <button class="ov-shortcut" type="button" data-ov-nav="courses">
+                  <span class="ov-shortcut-icon is-blue" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg></span>
+                  <span class="ov-shortcut-copy"><strong>Đăng ký học phần</strong><small>Tìm kiếm, lọc lớp và đăng ký trực tuyến</small></span>
+                  <span class="ov-shortcut-arrow" aria-hidden="true">→</span>
+                </button>
+                <button class="ov-shortcut" type="button" data-ov-nav="schedule">
+                  <span class="ov-shortcut-icon is-indigo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>
+                  <span class="ov-shortcut-copy"><strong>Thời khóa biểu</strong><small>Xem lịch tuần, lịch trình và xuất PDF/CSV</small></span>
+                  <span class="ov-shortcut-arrow" aria-hidden="true">→</span>
+                </button>
+                <button class="ov-shortcut" type="button" data-ov-nav="history">
+                  <span class="ov-shortcut-icon is-amber" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+                  <span class="ov-shortcut-copy"><strong>Lịch sử đăng ký</strong><small>Tra cứu trạng thái và thời điểm đăng ký</small></span>
+                  <span class="ov-shortcut-arrow" aria-hidden="true">→</span>
+                </button>
+                <button class="ov-shortcut" type="button" data-ov-nav="transcript">
+                  <span class="ov-shortcut-icon is-green" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></span>
+                  <span class="ov-shortcut-copy"><strong>Kết quả học tập</strong><small>Bảng điểm tích lũy, GPA và số tín chỉ đạt</small></span>
+                  <span class="ov-shortcut-arrow" aria-hidden="true">→</span>
+                </button>
+                <button class="ov-shortcut" type="button" data-ov-nav="curriculum">
+                  <span class="ov-shortcut-icon is-blue" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="9" r="3"/><circle cx="9" cy="18" r="3"/><path d="M8.7 7.1 15 8.5M8.5 15.6 15.6 10.7M6.7 8.9l1.5 6.2"/></svg></span>
+                  <span class="ov-shortcut-copy"><strong>Khung chương trình</strong><small>Lộ trình môn học và điều kiện tiên quyết</small></span>
+                  <span class="ov-shortcut-arrow" aria-hidden="true">→</span>
+                </button>
+                <button class="ov-shortcut" type="button" data-ov-nav="lecturers">
+                  <span class="ov-shortcut-icon is-indigo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+                  <span class="ov-shortcut-copy"><strong>Đội ngũ giảng viên</strong><small>Xem hồ sơ, hướng nghiên cứu và giờ tiếp sinh viên</small></span>
+                  <span class="ov-shortcut-arrow" aria-hidden="true">→</span>
+                </button>
+              </div>
+            </article>
+
+            <article class="ov-policy-card">
+              <span class="ov-policy-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+              </span>
+              <div>
+                <strong>Lưu ý quy chế đăng ký</strong>
+                <p id="dropPolicy">Thời hạn hủy đăng ký được áp dụng theo quy định học vụ.</p>
+              </div>
+            </article>
+          </aside>
+        </section>
+      </section>
+
+      <!-- In-Place Course Registration Workspace (Zero Page Reload, No Duplicate AI Chat) -->
+      <section id="coursesViewSection" class="hidden" aria-label="Đăng ký học phần">
+        <div class="reg-hero" id="courses">
+          <div class="reg-hero-left">
+            <span class="reg-hero-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            </span>
+            <div>
+              <div class="reg-hero-title-row">
+                <h1>Đăng ký học phần</h1>
+                <span class="open-badge"><i></i> ĐANG MỞ</span>
+                <span class="ov-semester-badge" id="regSemesterBadge">Đang tải học kỳ…</span>
+              </div>
+              <p class="reg-hero-sub">Tìm kiếm, lọc theo khoa, ngày học và đăng ký trực tiếp các lớp học phần mở trong học kỳ.</p>
+            </div>
+          </div>
+
+          <div class="reg-hero-actions">
+            <button class="dash-btn" id="refreshButton" type="button" data-dash-tooltip="Tải lại sĩ số và danh sách lớp">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>
+              <span>Làm mới</span>
+            </button>
+            <button class="dash-btn" id="regGoScheduleBtn" type="button" data-dash-tooltip="Kiểm tra lịch học đã xếp">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+              <span>Thời khóa biểu</span>
+            </button>
+            <button class="dash-btn" id="regBackToOverviewBtn" type="button" data-dash-tooltip="Quay lại trang Tổng quan">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+              <span>Tổng quan</span>
+            </button>
+          </div>
+        </div>
+
+        <section class="reg-stats-grid" aria-label="Tóm tắt đăng ký học phần">
+          <article class="reg-stat-card">
+            <div class="ov-stat-head">
+              <span class="ov-stat-label">Tín chỉ đã đăng ký</span>
+              <span class="ov-stat-icon is-blue" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></span>
+            </div>
+            <div class="ov-stat-value"><span id="regStatCredits">0</span><small id="regStatCreditLimit">/ — tín chỉ</small></div>
+            <div class="ov-progress-track"><span id="regStatProgress" style="width:0%"></span></div>
+          </article>
+
+          <article class="reg-stat-card">
+            <div class="ov-stat-head">
+              <span class="ov-stat-label">Tổng lớp mở kỳ này</span>
+              <span class="ov-stat-icon is-indigo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg></span>
+            </div>
+            <div class="ov-stat-value" id="regStatTotal">0</div>
+            <span class="ov-stat-sub">Lớp học phần thuộc đợt hiện tại</span>
+          </article>
+
+          <article class="reg-stat-card">
+            <div class="ov-stat-head">
+              <span class="ov-stat-label">Lớp còn chỗ trống</span>
+              <span class="ov-stat-icon is-green" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></span>
+            </div>
+            <div class="ov-stat-value" id="regStatAvailable">0</div>
+            <span class="ov-stat-sub">Có thể đăng ký ngay</span>
+          </article>
+
+          <article class="reg-stat-card">
+            <div class="ov-stat-head">
+              <span class="ov-stat-label">Lớp bạn đã đăng ký</span>
+              <span class="ov-stat-icon is-amber" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></span>
+            </div>
+            <div class="ov-stat-value" id="regStatEnrolled">0</div>
+            <span class="ov-stat-sub" id="regStatDeadlineSub">Theo dõi hạn điều chỉnh</span>
+          </article>
+        </section>
+
+        <section class="reg-toolbar" aria-label="Tìm kiếm và lọc lớp học phần">
+          <div class="reg-toolbar-top">
+            <div class="reg-search-wrap" id="regSearchWrap">
+              <label class="sr-only" for="searchInput">Tìm kiếm lớp học phần</label>
+              <svg class="reg-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              <input type="search" id="searchInput" placeholder="Tìm theo tên môn, mã học phần, giảng viên, lịch học..." autocomplete="off">
+              <kbd class="reg-kbd">Ctrl K</kbd>
+              <button class="reg-search-clear" id="regSearchClearBtn" type="button" aria-label="Xóa từ khóa tìm kiếm">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+              </button>
+            </div>
+
+            <div class="reg-chips-row" role="group" aria-label="Lọc nhanh trạng thái lớp">
+              <button class="reg-chip filter-chip selected" type="button" data-filter="all">Tất cả</button>
+              <button class="reg-chip filter-chip" type="button" data-filter="available">Còn chỗ</button>
+              <button class="reg-chip filter-chip" type="button" data-filter="full">Đã đủ chỗ</button>
+              <button class="reg-chip filter-chip" type="button" data-filter="registered">Đã đăng ký</button>
+            </div>
+
+            <div class="reg-toolbar-right">
+              <button class="dash-btn" id="filterButton" type="button" aria-expanded="false" aria-controls="filterRow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+                <span>Lọc nâng cao</span>
+                <span class="reg-filter-count hidden" id="regAdvCount">0</span>
+              </button>
+              <button class="dash-btn hidden" id="regResetAllBtn" type="button">Đặt lại</button>
+            </div>
+          </div>
+
+          <div class="reg-adv-panel hidden" id="filterRow">
+            <label class="reg-field">
+              <span>Khoa / Đơn vị</span>
+              <select id="departmentFilter"><option value="">Tất cả khoa</option></select>
+            </label>
+            <label class="reg-field">
+              <span>Ngày học</span>
+              <select id="weekdayFilter">
+                <option value="">Tất cả ngày</option>
+                <option>Thứ 2</option>
+                <option>Thứ 3</option>
+                <option>Thứ 4</option>
+                <option>Thứ 5</option>
+                <option>Thứ 6</option>
+                <option>Thứ 7</option>
+                <option>Chủ nhật</option>
+              </select>
+            </label>
+            <label class="reg-field">
+              <span>Số tín chỉ</span>
+              <select id="creditFilter"><option value="">Tất cả</option></select>
+            </label>
+            <label class="reg-field">
+              <span>Sắp xếp theo</span>
+              <select id="sortFilter">
+                <option value="code">Mã học phần (A–Z)</option>
+                <option value="name">Tên môn học</option>
+                <option value="credits">Số tín chỉ</option>
+                <option value="seats">Chỗ còn lại</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="reg-toolbar-meta">
+            <span>Hiển thị <strong id="visibleCount">0</strong> học phần phù hợp</span>
+            <span>Nhấn <strong>Chi tiết</strong> để xem đầy đủ lịch học, phòng, điều kiện và đề cương</span>
+          </div>
+        </section>
+
+        <section class="reg-workspace">
+          <div class="reg-catalog-col">
+            <div class="reg-course-list" id="courseList" aria-live="polite"></div>
+            <div class="ov-empty-box hidden" id="emptyState">
+              <strong>Chưa tìm thấy học phần phù hợp</strong>
+              <p>Hãy thử đổi từ khóa tìm kiếm hoặc đặt lại các bộ lọc nâng cao.</p>
+              <button class="dash-btn" id="regEmptyResetBtn" type="button">Đặt lại bộ lọc</button>
+            </div>
+            <div class="reg-panel-footer">
+              <span class="reg-panel-footer-status"><i></i> Dữ liệu sĩ số cập nhật theo học kỳ hiện tại</span>
+              <span>Hỗ trợ lọc nhanh bằng phím tắt Ctrl + K</span>
+            </div>
+          </div>
+
+          <aside class="reg-cart-col">
+            <section class="reg-cart-card" id="schedule">
+              <div class="reg-cart-head">
+                <div>
+                  <h3>Lớp đã đăng ký</h3>
+                  <p id="registeredSemester">Đang tải học kỳ…</p>
+                </div>
+                <span class="ov-count-badge" id="registeredCount">00</span>
+              </div>
+
+              <div class="reg-cart-gauge">
+                <div class="reg-cart-gauge-row">
+                  <span>Hạn mức tín chỉ</span>
+                  <strong id="regCartCreditsText">0 / — TC</strong>
+                </div>
+                <div class="ov-progress-track"><span id="regCartProgress" style="width:0%"></span></div>
+              </div>
+
+              <div class="reg-cart-list" id="registeredList"></div>
+
+              <button class="dash-btn dash-btn-primary" id="viewSchedule" type="button">
+                <span>Xem thời khóa biểu</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17 17 7M7 7h10v10"/></svg>
+              </button>
+            </section>
+
+            <section class="ov-policy-card">
+              <span class="ov-policy-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+              </span>
+              <div>
+                <strong>Lưu ý hủy học phần</strong>
+                <p id="regDropPolicy">Thời hạn hủy đăng ký được áp dụng theo quy định học vụ.</p>
+              </div>
+            </section>
+          </aside>
+        </section>
+      </section>
+
+      <!-- In-Place Student Schedule Dashboard (Zero Page Reload, Same Palette) -->
+      <section id="scheduleViewSection" class="hidden" aria-label="Thời khóa biểu sinh viên">
+        <div class="sched-print-header" id="printHeader" aria-hidden="true"></div>
+
+        <div class="sched-hero">
+          <div>
+            <div class="sched-hero-title-row">
+              <h1>Thời khóa biểu</h1>
+              <span class="sched-semester-pill" id="headerSemesterPill">Đang tải học kỳ…</span>
+            </div>
+            <p class="sched-hero-sub">Lịch học theo tuần, theo dõi tiết sắp diễn ra và xuất lịch học cá nhân.</p>
+          </div>
+          <div class="sched-hero-actions">
+            <button class="sched-btn" id="btnBackToOverview" type="button" data-sched-tooltip="Quay lại Đăng ký học phần">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+              <span>Đăng ký học phần</span>
+            </button>
+            <button class="sched-btn" id="btnExportCsv" type="button" data-sched-tooltip="Tải thời khóa biểu dạng CSV">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+              <span>CSV</span>
+            </button>
+            <button class="sched-btn" id="btnExportPdf" type="button" data-sched-tooltip="Xuất thời khóa biểu PDF">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 15h6M9 11h6"/></svg>
+              <span>PDF</span>
+            </button>
+            <button class="sched-btn" id="btnPrint" type="button" data-sched-tooltip="In thời khóa biểu">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+              <span>In</span>
+            </button>
+          </div>
+        </div>
+
+        <section class="sched-stats-grid" aria-label="Thống kê lịch học">
+          <article class="sched-stat-card">
+            <div class="sched-stat-head">
+              <span class="sched-stat-label">Học phần đăng ký</span>
+              <span class="sched-stat-icon is-blue" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg></span>
+            </div>
+            <strong class="sched-stat-value" id="statCourses">—</strong>
+            <span class="sched-stat-sub" id="statCoursesSub">Trong học kỳ đang chọn</span>
+          </article>
+          <article class="sched-stat-card">
+            <div class="sched-stat-head">
+              <span class="sched-stat-label">Tổng số tín chỉ</span>
+              <span class="sched-stat-icon is-indigo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></span>
+            </div>
+            <strong class="sched-stat-value" id="statCredits">—</strong>
+            <span class="sched-stat-sub" id="statCreditsSub">Tín chỉ đăng ký chính thức</span>
+          </article>
+          <article class="sched-stat-card">
+            <div class="sched-stat-head">
+              <span class="sched-stat-label">Số ngày học / tuần</span>
+              <span class="sched-stat-icon is-emerald" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>
+            </div>
+            <strong class="sched-stat-value" id="statDays">—</strong>
+            <span class="sched-stat-sub" id="statDaysSub">Ngày có lịch học</span>
+          </article>
+          <article class="sched-stat-card">
+            <div class="sched-stat-head">
+              <span class="sched-stat-label">Tổng số tiết / tuần</span>
+              <span class="sched-stat-icon is-amber" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+            </div>
+            <strong class="sched-stat-value" id="statPeriods">—</strong>
+            <span class="sched-stat-sub" id="statPeriodsSub">Thời lượng học trong tuần</span>
+          </article>
+        </section>
+
+        <section class="sched-insight-row" aria-label="Lớp sắp diễn ra và cảnh báo">
+          <div class="sched-upcoming-card" id="upcomingClassWidget">
+            <div class="sched-upcoming-skeleton">Đang tính toán lớp học sắp tới…</div>
+          </div>
+          <div class="sched-conflict-banner hidden" id="conflictBanner" role="alert"></div>
+        </section>
+
+        <section class="sched-toolbar" aria-label="Điều khiển thời khóa biểu">
+          <div class="sched-toolbar-row">
+            <div class="sched-select-wrap">
+              <label class="sr-only" for="semesterSelect">Chọn học kỳ</label>
+              <svg class="sched-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+              <select id="semesterSelect" aria-label="Học kỳ"></select>
+            </div>
+
+            <div class="sched-week-nav" role="group" aria-label="Điều hướng tuần">
+              <button class="sched-icon-btn" id="btnPrevWeek" type="button" title="Tuần trước (←)" aria-label="Tuần trước">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+              </button>
+              <button class="sched-btn" id="btnToday" type="button" title="Về tuần hiện tại (T)">Hôm nay</button>
+              <button class="sched-icon-btn" id="btnNextWeek" type="button" title="Tuần sau (→)" aria-label="Tuần sau">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+              </button>
+              <div class="sched-week-label" id="weekRangeLabel">
+                <strong>Tuần hiện tại</strong>
+                <small>—</small>
+              </div>
+            </div>
+
+            <div class="sched-toolbar-right">
+              <div class="sched-view-switcher" role="tablist" aria-label="Chế độ xem">
+                <button class="sched-view-tab active" id="tabWeekView" type="button" role="tab" aria-selected="true" data-view="week">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M9 21V9M15 21V9"/></svg>
+                  <span>Tuần</span>
+                </button>
+                <button class="sched-view-tab" id="tabAgendaView" type="button" role="tab" aria-selected="false" data-view="agenda">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" x2="21" y1="6" y2="6"/><line x1="8" x2="21" y1="12" y2="12"/><line x1="8" x2="21" y1="18" y2="18"/><line x1="3" x2="3.01" y1="6" y2="6"/><line x1="3" x2="3.01" y1="12" y2="12"/><line x1="3" x2="3.01" y1="18" y2="18"/></svg>
+                  <span>Lịch trình</span>
+                </button>
+              </div>
+
+              <div class="sched-filter-dropdown" id="advancedFilterWrap">
+                <button class="sched-btn" id="btnAdvancedFilter" type="button" aria-expanded="false" aria-controls="advancedFilterMenu">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+                  <span>Bộ lọc</span>
+                  <span class="sched-filter-badge hidden" id="activeFilterCount">0</span>
+                </button>
+                <div class="sched-filter-popover" id="advancedFilterMenu" hidden>
+                  <div class="sched-popover-head">
+                    <strong>Bộ lọc nâng cao</strong>
+                    <button type="button" class="sched-link-btn" id="btnResetFilters">Đặt lại</button>
+                  </div>
+                  <div class="sched-popover-body">
+                    <label class="sched-field">
+                      <span>Tìm kiếm nhanh</span>
+                      <input type="search" id="filterSearch" placeholder="Tên môn, mã môn, giảng viên, phòng…">
+                    </label>
+                    <label class="sched-field">
+                      <span>Buổi học</span>
+                      <select id="filterSession">
+                        <option value="">Tất cả buổi</option>
+                        <option value="morning">Buổi sáng (trước 12:00)</option>
+                        <option value="afternoon">Buổi chiều (12:00 – 17:30)</option>
+                        <option value="evening">Buổi tối (sau 17:30)</option>
+                      </select>
+                    </label>
+                    <label class="sched-field">
+                      <span>Giảng viên</span>
+                      <select id="filterLecturer"><option value="">Tất cả giảng viên</option></select>
+                    </label>
+                    <label class="sched-field">
+                      <span>Phòng học</span>
+                      <select id="filterRoom"><option value="">Tất cả phòng học</option></select>
+                    </label>
+                    <label class="sched-checkbox-field">
+                      <input type="checkbox" id="filterOnlyCurrentWeek">
+                      <span>Chỉ hiện lớp có lịch trong tuần đang xem</span>
+                    </label>
+                    <label class="sched-checkbox-field">
+                      <input type="checkbox" id="filterOnlyConflicts">
+                      <span>Chỉ hiện lớp bị trùng lịch</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="sched-course-chips" id="courseFilterChips" role="group" aria-label="Lọc theo học phần"></div>
+        </section>
+
+        <nav class="sched-mobile-days" id="mobileDayTabs" aria-label="Chọn ngày trong tuần"></nav>
+
+        <section class="sched-surface" id="scheduleSurface" aria-live="polite">
+          <div class="sched-loading-state">
+            <div class="sched-spinner" aria-hidden="true"></div>
+            <p>Đang tải thời khóa biểu…</p>
+          </div>
+        </section>
+
+        <div class="sched-print-table-wrap" id="printCourseTable" aria-hidden="true"></div>
+      </section>
+
+      <!-- In-Place Registration History Dashboard (Zero Page Reload, Same Palette) -->
+      <section id="historyViewSection" class="hidden" aria-label="Lịch sử đăng ký học phần">
+        <div class="hist-hero">
+          <div class="hist-hero-left">
+            <span class="hist-hero-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4M12 16h4M8 11h.01M8 16h.01"/></svg>
+            </span>
+            <div>
+              <div class="hist-hero-title-row">
+                <h1>Lịch sử đăng ký</h1>
+                <span class="hist-cat-badge">Hồ sơ học vụ</span>
+              </div>
+              <p class="hist-hero-sub">Theo dõi và quản lý các học phần đã đăng ký</p>
+            </div>
+          </div>
+          <div class="hist-hero-actions">
+            <button class="hist-btn" id="histExportCsvBtn" type="button" data-hist-tooltip="Tải bảng lịch sử dạng CSV">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+              <span>Xuất CSV</span>
+            </button>
+            <button class="hist-btn" id="histBackToOverviewBtn" type="button" data-hist-tooltip="Quay lại trang Tổng quan">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+              <span>Quay lại</span>
+            </button>
+          </div>
+        </div>
+
+        <section class="hist-stats-grid" aria-label="Thống kê lịch sử đăng ký">
+          <article class="hist-stat-card">
+            <div class="hist-stat-head">
+              <span class="hist-stat-label">Tổng đăng ký</span>
+              <span class="hist-stat-icon is-total" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4M12 16h4M8 11h.01M8 16h.01"/></svg>
+              </span>
+            </div>
+            <strong class="hist-stat-value" id="histStatTotal">—</strong>
+            <span class="hist-stat-sub" id="histStatTotalSub">Tổng bản ghi trong lịch sử</span>
+          </article>
+
+          <article class="hist-stat-card">
+            <div class="hist-stat-head">
+              <span class="hist-stat-label">Đang đăng ký</span>
+              <span class="hist-stat-icon is-enrolled" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              </span>
+            </div>
+            <strong class="hist-stat-value" id="histStatEnrolled">—</strong>
+            <span class="hist-stat-sub" id="histStatEnrolledSub">Đăng ký thành công</span>
+          </article>
+
+          <article class="hist-stat-card">
+            <div class="hist-stat-head">
+              <span class="hist-stat-label">Chờ xác nhận</span>
+              <span class="hist-stat-icon is-pending" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </span>
+            </div>
+            <strong class="hist-stat-value" id="histStatPending">—</strong>
+            <span class="hist-stat-sub" id="histStatPendingSub">Đang chờ phòng Đào tạo duyệt</span>
+          </article>
+
+          <article class="hist-stat-card">
+            <div class="hist-stat-head">
+              <span class="hist-stat-label">Đã hủy</span>
+              <span class="hist-stat-icon is-cancelled" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+              </span>
+            </div>
+            <strong class="hist-stat-value" id="histStatCancelled">—</strong>
+            <span class="hist-stat-sub" id="histStatCancelledSub">Các lớp đã hủy đăng ký</span>
+          </article>
+        </section>
+
+        <section class="hist-toolbar" aria-label="Tìm kiếm và lọc lịch sử đăng ký">
+          <div class="hist-toolbar-row">
+            <div class="hist-input-wrap">
+              <label class="sr-only" for="histSearchInput">Tìm kiếm học phần</label>
+              <svg class="hist-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              <input id="histSearchInput" type="search" placeholder="Tìm kiếm theo tên môn học, mã môn hoặc mã lớp..." autocomplete="off">
+              <button class="hist-search-clear" id="histSearchClearBtn" type="button" aria-label="Xóa từ khóa tìm kiếm">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+              </button>
+            </div>
+
+            <div class="hist-input-wrap">
+              <label class="sr-only" for="histSemesterFilter">Lọc theo học kỳ</label>
+              <svg class="hist-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+              <select id="histSemesterFilter" aria-label="Học kỳ">
+                <option value="">Tất cả học kỳ</option>
+              </select>
+            </div>
+
+            <div class="hist-input-wrap">
+              <label class="sr-only" for="histStatusFilter">Lọc theo trạng thái</label>
+              <svg class="hist-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2H2v10l9.29 9.29c.94.94 2.48.94 3.42 0l6.58-6.58c.94-.94.94-2.48 0-3.42L12 2Z"/><circle cx="7" cy="7" r=".5" fill="currentColor"/></svg>
+              <select id="histStatusFilter" aria-label="Trạng thái đăng ký">
+                <option value="">Tất cả trạng thái</option>
+                <option value="ENROLLED">Đang đăng ký</option>
+                <option value="PENDING">Chờ xác nhận</option>
+                <option value="CANCELLED">Đã hủy</option>
+              </select>
+            </div>
+
+            <div class="hist-toolbar-actions">
+              <div class="hist-adv-wrap" id="histAdvWrap">
+                <button class="hist-btn" id="histAdvBtn" type="button" aria-expanded="false" aria-controls="histAdvPopover">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+                  <span>Lọc nâng cao</span>
+                  <span class="hist-filter-count hidden" id="histAdvCount">0</span>
+                </button>
+                <div class="hist-adv-popover" id="histAdvPopover" hidden>
+                  <div class="hist-popover-head">
+                    <strong>Tùy chọn nâng cao</strong>
+                    <button type="button" class="hist-link-btn" id="histAdvResetBtn">Đặt lại</button>
+                  </div>
+                  <div class="hist-popover-fields">
+                    <label class="hist-field">
+                      <span>Số tín chỉ</span>
+                      <select id="histCreditsFilter"><option value="">Tất cả tín chỉ</option></select>
+                    </label>
+                    <label class="hist-field">
+                      <span>Ngày học</span>
+                      <select id="histWeekdayFilter">
+                        <option value="">Tất cả ngày</option>
+                        <option value="Thứ 2">Thứ 2</option>
+                        <option value="Thứ 3">Thứ 3</option>
+                        <option value="Thứ 4">Thứ 4</option>
+                        <option value="Thứ 5">Thứ 5</option>
+                        <option value="Thứ 6">Thứ 6</option>
+                        <option value="Thứ 7">Thứ 7</option>
+                        <option value="Chủ nhật">Chủ nhật</option>
+                      </select>
+                    </label>
+                    <label class="hist-field">
+                      <span>Sắp xếp theo</span>
+                      <select id="histSortFilter">
+                        <option value="newest">Mới đăng ký nhất</option>
+                        <option value="oldest">Cũ nhất trước</option>
+                        <option value="code">Mã học phần (A–Z)</option>
+                        <option value="credits">Số tín chỉ giảm dần</option>
+                      </select>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <button class="hist-btn hidden" id="histResetAllBtn" type="button">Đặt lại</button>
+            </div>
+          </div>
+
+          <div class="hist-toolbar-meta">
+            <span id="histResultSummary">Đang tải dữ liệu…</span>
+            <span>Bấm vào một dòng để xem chi tiết đăng ký</span>
+          </div>
+        </section>
+
+        <section class="hist-surface" id="historySurface" aria-live="polite"></section>
+      </section>
+
+      <!-- In-Place Academic Transcript Dashboard (Zero Page Reload, Same Palette) -->
+      <section id="transcriptViewSection" class="hidden" aria-label="Kết quả học tập">
+        <div class="tr-print-header" id="trPrintHeader" aria-hidden="true"></div>
+
+        <div class="tr-hero">
+          <div class="tr-hero-left">
+            <span class="tr-hero-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            </span>
+            <div>
+              <div class="tr-hero-title-row">
+                <h1>Kết quả học tập</h1>
+                <span class="tr-program-badge" id="trProgramBadge">Hồ sơ học tập</span>
+              </div>
+              <p class="tr-hero-sub">Theo dõi bảng điểm tích lũy, tín chỉ đạt và tiến độ học tập theo từng học kỳ</p>
+            </div>
+          </div>
+          <div class="tr-hero-actions">
+            <button class="tr-btn" id="trExportCsvBtn" type="button" data-tr-tooltip="Tải bảng điểm dạng CSV">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+              <span>Xuất CSV</span>
+            </button>
+            <button class="tr-btn" id="trPrintBtn" type="button" data-tr-tooltip="In hoặc lưu bảng điểm PDF">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+              <span>In / PDF</span>
+            </button>
+            <button class="tr-btn" id="trBackToOverviewBtn" type="button" data-tr-tooltip="Quay lại trang Tổng quan">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+              <span>Quay lại</span>
+            </button>
+          </div>
+        </div>
+
+        <section class="tr-stats-grid" aria-label="Tổng quan kết quả học tập">
+          <article class="tr-stat-card">
+            <div class="tr-stat-head">
+              <span class="tr-stat-label">Tín chỉ tích lũy</span>
+              <span class="tr-stat-icon is-blue" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>
+              </span>
+            </div>
+            <strong class="tr-stat-value" id="trStatCredits">—</strong>
+            <span class="tr-stat-sub" id="trStatCreditsSub">Tính 1 lần mỗi học phần Đạt</span>
+          </article>
+
+          <article class="tr-stat-card">
+            <div class="tr-stat-head">
+              <span class="tr-stat-label">Điểm TB hệ 10</span>
+              <span class="tr-stat-icon is-indigo" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+              </span>
+            </div>
+            <strong class="tr-stat-value" id="trStatAvg10">—</strong>
+            <span class="tr-stat-sub" id="trStatAvg10Sub">Tham khảo theo tín chỉ</span>
+          </article>
+
+          <article class="tr-stat-card">
+            <div class="tr-stat-head">
+              <span class="tr-stat-label">Môn đã hoàn thành</span>
+              <span class="tr-stat-icon is-emerald" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              </span>
+            </div>
+            <strong class="tr-stat-value" id="trStatCompleted">—</strong>
+            <span class="tr-stat-sub" id="trStatCompletedSub">Số học phần đạt yêu cầu</span>
+          </article>
+
+          <article class="tr-stat-card">
+            <div class="tr-stat-head">
+              <span class="tr-stat-label">Tổng lượt học</span>
+              <span class="tr-stat-icon is-amber" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+              </span>
+            </div>
+            <strong class="tr-stat-value" id="trStatRecords">—</strong>
+            <span class="tr-stat-sub" id="trStatRecordsSub">Bao gồm cả học lại</span>
+          </article>
+        </section>
+
+        <section class="tr-semesters-strip hidden" id="trSemesterStrip" aria-label="Tổng hợp theo từng học kỳ"></section>
+
+        <section class="tr-toolbar" aria-label="Tìm kiếm và lọc bảng điểm">
+          <div class="tr-toolbar-row">
+            <div class="tr-input-wrap">
+              <label class="sr-only" for="trSearchInput">Tìm kiếm môn học</label>
+              <svg class="tr-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              <input id="trSearchInput" type="search" placeholder="Tìm kiếm theo tên môn học, mã môn hoặc học kỳ..." autocomplete="off">
+              <button class="tr-search-clear" id="trSearchClearBtn" type="button" aria-label="Xóa từ khóa tìm kiếm">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+              </button>
+            </div>
+
+            <div class="tr-input-wrap">
+              <label class="sr-only" for="trSemesterFilter">Lọc theo học kỳ</label>
+              <svg class="tr-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+              <select id="trSemesterFilter" aria-label="Học kỳ"><option value="">Tất cả học kỳ</option></select>
+            </div>
+
+            <div class="tr-input-wrap">
+              <label class="sr-only" for="trOutcomeFilter">Lọc theo kết quả</label>
+              <svg class="tr-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+              <select id="trOutcomeFilter" aria-label="Kết quả">
+                <option value="">Tất cả kết quả</option>
+                <option value="PASSED">Đạt</option>
+                <option value="FAILED">Chưa đạt</option>
+              </select>
+            </div>
+
+            <div class="tr-toolbar-actions">
+              <div class="tr-adv-wrap" id="trAdvWrap">
+                <button class="tr-btn" id="trAdvBtn" type="button" aria-expanded="false" aria-controls="trAdvPopover">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+                  <span>Lọc nâng cao</span>
+                  <span class="tr-filter-count hidden" id="trAdvCount">0</span>
+                </button>
+                <div class="tr-adv-popover" id="trAdvPopover" hidden>
+                  <div class="tr-popover-head">
+                    <strong>Tùy chọn nâng cao</strong>
+                    <button type="button" class="tr-link-btn" id="trAdvResetBtn">Đặt lại</button>
+                  </div>
+                  <div class="tr-popover-fields">
+                    <label class="tr-field">
+                      <span>Điểm chữ</span>
+                      <select id="trLetterFilter"><option value="">Tất cả điểm chữ</option></select>
+                    </label>
+                    <label class="tr-field">
+                      <span>Số tín chỉ</span>
+                      <select id="trCreditsFilter"><option value="">Tất cả tín chỉ</option></select>
+                    </label>
+                    <label class="tr-field">
+                      <span>Sắp xếp theo</span>
+                      <select id="trSortFilter">
+                        <option value="semesterDesc">Học kỳ mới nhất</option>
+                        <option value="semesterAsc">Học kỳ cũ nhất</option>
+                        <option value="gradeDesc">Điểm cao nhất trước</option>
+                        <option value="gradeAsc">Điểm thấp nhất trước</option>
+                        <option value="code">Mã học phần (A–Z)</option>
+                      </select>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <button class="tr-btn hidden" id="trResetAllBtn" type="button">Đặt lại</button>
+            </div>
+          </div>
+
+          <div class="tr-toolbar-meta">
+            <span id="trResultSummary">Đang tải bảng điểm…</span>
+            <span>Bấm vào thẻ học kỳ hoặc một dòng để lọc / xem chi tiết</span>
+          </div>
+        </section>
+
+        <section class="tr-surface" id="transcriptSurface" aria-live="polite"></section>
+
+        <p class="tr-footnote">Điểm trung bình hệ 10 và quy đổi hệ 4.0 được tính tham khảo trên điểm cao nhất của các học phần đã có điểm số trong cơ sở dữ liệu; xếp loại học vụ chính thức áp dụng theo quy chế đào tạo của trường.</p>
+      </section>
+
+      <!-- In-Place Curriculum Roadmap Dashboard (Zero Page Reload, Same Palette) -->
+      <section id="curriculumViewSection" class="hidden" aria-label="Khung chương trình đào tạo">
+        <div class="cur-print-header" id="curPrintHeader" aria-hidden="true"></div>
+
+        <div class="cur-hero">
+          <div class="cur-hero-left">
+            <span class="cur-hero-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="9" r="3"/><circle cx="9" cy="18" r="3"/><path d="M8.7 7.1 15 8.5M8.5 15.6 15.6 10.7M6.7 8.9l1.5 6.2"/></svg>
+            </span>
+            <div>
+              <div class="cur-hero-title-row">
+                <h1>Khung chương trình</h1>
+                <span class="cur-meta-badge" id="curMetaBadge">Chương trình đào tạo</span>
+              </div>
+              <p class="cur-hero-sub" id="curHeroSubtitle">Lộ trình học phần đề xuất theo từng học kỳ và tiến độ hoàn thành</p>
+            </div>
+          </div>
+          <div class="cur-hero-actions">
+            <button class="cur-btn" id="curExportCsvBtn" type="button" title="Xuất khung chương trình dạng CSV">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+              <span>Xuất CSV</span>
+            </button>
+            <button class="cur-btn" id="curPrintBtn" type="button" title="In hoặc lưu PDF khung chương trình">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+              <span>In / PDF</span>
+            </button>
+            <button class="cur-btn" id="curBackToOverviewBtn" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+              <span>Quay lại</span>
+            </button>
+          </div>
+        </div>
+
+        <section class="cur-stats-grid" aria-label="Thống kê khung chương trình">
+          <article class="cur-stat-card">
+            <div class="cur-stat-head">
+              <span class="cur-stat-label">Tổng học phần</span>
+              <span class="cur-stat-icon is-blue" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+              </span>
+            </div>
+            <strong class="cur-stat-value" id="curStatCourses">—</strong>
+            <span class="cur-stat-sub" id="curStatCoursesSub">Bắt buộc & tự chọn</span>
+          </article>
+
+          <article class="cur-stat-card">
+            <div class="cur-stat-head">
+              <span class="cur-stat-label">Tổng số tín chỉ</span>
+              <span class="cur-stat-icon is-indigo" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>
+              </span>
+            </div>
+            <strong class="cur-stat-value" id="curStatCredits">—</strong>
+            <span class="cur-stat-sub" id="curStatCreditsSub">Tổng khối lượng chương trình</span>
+          </article>
+
+          <article class="cur-stat-card">
+            <div class="cur-stat-head">
+              <span class="cur-stat-label">Số học kỳ lộ trình</span>
+              <span class="cur-stat-icon is-amber" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+              </span>
+            </div>
+            <strong class="cur-stat-value" id="curStatTerms">—</strong>
+            <span class="cur-stat-sub" id="curStatTermsSub">Học kỳ đề xuất</span>
+          </article>
+
+          <article class="cur-stat-card">
+            <div class="cur-stat-head">
+              <span class="cur-stat-label">Tiến độ hoàn thành</span>
+              <span class="cur-stat-icon is-emerald" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              </span>
+            </div>
+            <strong class="cur-stat-value" id="curStatProgress">—</strong>
+            <div class="cur-progress-track"><span id="curStatProgressBar" style="width:0%"></span></div>
+            <span class="cur-stat-sub" id="curStatProgressSub">Đối chiếu theo bảng điểm & lớp đang học</span>
+          </article>
+        </section>
+
+        <section class="cur-toolbar" aria-label="Chọn chương trình và lọc học phần">
+          <div class="cur-program-row">
+            <div class="cur-program-picker">
+              <div class="cur-input-wrap">
+                <label class="sr-only" for="curProgramSelect">Chọn chương trình đào tạo</label>
+                <svg class="cur-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                <select id="curProgramSelect" aria-label="Chương trình đào tạo / khóa"></select>
+              </div>
+            </div>
+            <div class="cur-program-pills" id="curProgramPills"></div>
+          </div>
+
+          <div class="cur-toolbar-row">
+            <div class="cur-input-wrap">
+              <label class="sr-only" for="curSearchInput">Tìm kiếm học phần</label>
+              <svg class="cur-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              <input id="curSearchInput" type="search" placeholder="Tìm kiếm theo tên môn học, mã môn hoặc tiên quyết..." autocomplete="off">
+            </div>
+
+            <div class="cur-input-wrap">
+              <label class="sr-only" for="curTermFilter">Học kỳ đề xuất</label>
+              <svg class="cur-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+              <select id="curTermFilter" aria-label="Học kỳ đề xuất"><option value="">Tất cả học kỳ đề xuất</option></select>
+            </div>
+
+            <div class="cur-input-wrap">
+              <label class="sr-only" for="curTypeFilter">Loại học phần</label>
+              <svg class="cur-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2H2v10l9.29 9.29c.94.94 2.48.94 3.42 0l6.58-6.58c.94-.94.94-2.48 0-3.42L12 2Z"/><circle cx="7" cy="7" r=".5" fill="currentColor"/></svg>
+              <select id="curTypeFilter" aria-label="Loại học phần">
+                <option value="">Tất cả loại môn</option>
+                <option value="REQUIRED">Bắt buộc</option>
+                <option value="ELECTIVE">Tự chọn</option>
+              </select>
+            </div>
+
+            <div class="cur-toolbar-actions">
+              <div class="cur-adv-wrap" id="curAdvWrap">
+                <button class="cur-btn" id="curAdvBtn" type="button" aria-expanded="false" aria-controls="curAdvPopover">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+                  <span>Lọc nâng cao</span>
+                  <span class="cur-filter-count hidden" id="curAdvCount">0</span>
+                </button>
+                <div class="cur-adv-popover" id="curAdvPopover" hidden>
+                  <div class="cur-popover-head">
+                    <strong>Tùy chọn hiển thị</strong>
+                    <button type="button" class="cur-link-btn" id="curAdvResetBtn">Đặt lại</button>
+                  </div>
+                  <div class="cur-popover-fields">
+                    <label class="cur-field">
+                      <span>Tiến độ học tập</span>
+                      <select id="curProgressFilter">
+                        <option value="">Tất cả trạng thái</option>
+                        <option value="COMPLETED">Đã hoàn thành</option>
+                        <option value="ENROLLED">Đang học</option>
+                        <option value="PENDING">Chưa học</option>
+                      </select>
+                    </label>
+                    <label class="cur-field">
+                      <span>Số tín chỉ</span>
+                      <select id="curCreditsFilter"><option value="">Tất cả tín chỉ</option></select>
+                    </label>
+                    <label class="cur-field">
+                      <span>Cách trình bày</span>
+                      <select id="curLayoutFilter">
+                        <option value="grouped">Gom theo học kỳ đề xuất</option>
+                        <option value="flat">Bảng tổng hợp toàn khóa</option>
+                      </select>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <button class="cur-btn hidden" id="curResetAllBtn" type="button">Đặt lại</button>
+            </div>
+          </div>
+
+          <div class="cur-toolbar-meta">
+            <span id="curResultSummary">Đang tải khung chương trình…</span>
+            <span>Bấm vào một học phần để xem điều kiện tiên quyết, mô tả & đề cương</span>
+          </div>
+        </section>
+
+        <section id="curriculumSurface" aria-live="polite"></section>
+      </section>
+
+      <!-- In-Place Lecturers Directory & Profiles (Zero Page Reload, Same Palette) -->
+      <section id="lecturersViewSection" class="hidden" aria-label="Đội ngũ giảng viên">
+        <div class="lec-hero">
+          <div class="lec-hero-left">
+            <span class="lec-hero-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </span>
+            <div>
+              <div class="lec-hero-title-row">
+                <h1>Đội ngũ giảng viên</h1>
+                <span class="lec-badge" id="lecTotalBadge">Đang tải…</span>
+              </div>
+              <p class="lec-hero-sub">Tra cứu hồ sơ giảng viên, chuyên môn giảng dạy, giờ tiếp sinh viên và các học phần đang phụ trách.</p>
+            </div>
+          </div>
+          <div class="lec-hero-actions">
+            <button class="dash-btn" id="lecBackToOverviewBtn" type="button" data-dash-tooltip="Quay lại trang Tổng quan">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+              <span>Quay lại</span>
+            </button>
+          </div>
+        </div>
+
+        <section class="lec-stats-grid" aria-label="Thống kê giảng viên">
+          <article class="lec-stat-card">
+            <div class="lec-stat-head">
+              <span class="lec-stat-label">Tổng giảng viên</span>
+              <span class="lec-stat-icon is-blue" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+            </div>
+            <strong class="lec-stat-value" id="lecStatTotal">—</strong>
+            <span class="lec-stat-sub">Trong danh bạ học vụ</span>
+          </article>
+
+          <article class="lec-stat-card">
+            <div class="lec-stat-head">
+              <span class="lec-stat-label">Đang giảng dạy kỳ này</span>
+              <span class="lec-stat-icon is-green" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></span>
+            </div>
+            <strong class="lec-stat-value" id="lecStatTeaching">—</strong>
+            <span class="lec-stat-sub">Có lớp học phần học kỳ hiện tại</span>
+          </article>
+
+          <article class="lec-stat-card">
+            <div class="lec-stat-head">
+              <span class="lec-stat-label">Khoa / Viện</span>
+              <span class="lec-stat-icon is-indigo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></span>
+            </div>
+            <strong class="lec-stat-value" id="lecStatDepartments">—</strong>
+            <span class="lec-stat-sub">Đơn vị đào tạo</span>
+          </article>
+
+          <article class="lec-stat-card">
+            <div class="lec-stat-head">
+              <span class="lec-stat-label">Bộ môn chuyên ngành</span>
+              <span class="lec-stat-icon is-amber" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></span>
+            </div>
+            <strong class="lec-stat-value" id="lecStatGroups">—</strong>
+            <span class="lec-stat-sub">Nhóm chuyên môn nghiên cứu</span>
+          </article>
+        </section>
+
+        <section class="lec-toolbar" aria-label="Tìm kiếm và lọc giảng viên">
+          <div class="lec-toolbar-row">
+            <div class="lec-input-wrap">
+              <label class="sr-only" for="lecSearchInput">Tìm kiếm giảng viên</label>
+              <svg class="lec-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              <input id="lecSearchInput" type="search" placeholder="Tìm theo tên, mã GV, khoa, bộ môn, hướng nghiên cứu..." autocomplete="off">
+              <button class="lec-search-clear" id="lecSearchClearBtn" type="button" aria-label="Xóa từ khóa">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+              </button>
+            </div>
+
+            <div class="lec-input-wrap">
+              <label class="sr-only" for="lecDepartmentFilter">Lọc theo khoa</label>
+              <svg class="lec-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+              <select id="lecDepartmentFilter" aria-label="Khoa / Viện"><option value="">Tất cả khoa / viện</option></select>
+            </div>
+
+            <div class="lec-input-wrap">
+              <label class="sr-only" for="lecGroupFilter">Lọc theo bộ môn</label>
+              <svg class="lec-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>
+              <select id="lecGroupFilter" aria-label="Bộ môn"><option value="">Tất cả bộ môn</option></select>
+            </div>
+
+            <div class="lec-toolbar-actions">
+              <button class="reg-chip" id="lecOnlyTeachingToggle" type="button">Đang dạy kỳ này</button>
+              <button class="dash-btn hidden" id="lecResetBtn" type="button">Đặt lại</button>
+            </div>
+          </div>
+
+          <div class="lec-toolbar-meta">
+            <span id="lecResultSummary">Đang tải danh bạ giảng viên…</span>
+            <span>Bấm vào thẻ giảng viên để xem đầy đủ hồ sơ, giờ tiếp sinh viên và lớp phụ trách</span>
+          </div>
+        </section>
+
+        <section class="lec-grid-surface" id="lecturersSurface" aria-live="polite"></section>
+      </section>
+
+      <!-- In-Place AI Academic Assistant Workspace (Zero Page Reload, Same Palette) -->
+      <section id="assistantViewSection" class="hidden" aria-label="Trợ lý AI học vụ">
+        <div class="ai-hero">
+          <div class="ai-hero-left">
+            <span class="fc-ai-orb" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3L12 3Z"/></svg>
+            </span>
+            <div>
+              <div class="ai-hero-title-row">
+                <h1>Trợ lý AI</h1>
+                <span class="ai-mode-pill is-local" id="aiModePill"><span class="ai-mode-dot"></span><span>Đang kiểm tra trạng thái…</span></span>
+              </div>
+              <p class="ai-hero-sub">Hỏi đáp thông minh đối chiếu trực tiếp từ lịch học, bảng điểm, điều kiện tiên quyết và khung chương trình của bạn</p>
+            </div>
+          </div>
+          <div class="ai-hero-actions">
+            <button class="ai-btn" id="aiClearBtn" type="button" title="Bắt đầu cuộc trò chuyện mới">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+              <span>Cuộc trò chuyện mới</span>
+            </button>
+            <button class="ai-btn" id="aiExportBtn" type="button" title="Tải xuống nội dung hội thoại">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+              <span>Xuất hội thoại</span>
+            </button>
+            <button class="ai-btn" id="aiBackToOverviewBtn" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+              <span>Quay lại</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="ai-workspace-grid">
+          <div class="ai-chat-panel">
+            <div class="ai-status-strip">
+              <div class="ai-status-strip-left">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg>
+                <span id="aiStatusNote">Đang kết nối dữ liệu học vụ…</span>
+              </div>
+              <span class="ai-msg-count-pill" id="aiMsgCountPill">0 tin nhắn</span>
+            </div>
+
+            <div class="ai-messages" id="aiMessagesContainer" role="log" aria-live="polite" aria-label="Lịch sử hội thoại với Trợ lý AI"></div>
+
+            <div class="ai-suggestions-bar" id="aiSuggestionsBar" aria-label="Câu hỏi gợi ý"></div>
+
+            <form class="ai-composer" id="aiComposerForm">
+              <div class="ai-composer-box">
+                <textarea id="aiPromptInput" rows="1" maxlength="1000" placeholder="Nhập câu hỏi về lịch học, tín chỉ, môn tiên quyết, bảng điểm…" aria-label="Câu hỏi gửi Trợ lý AI"></textarea>
+                <div class="ai-send-sling-mount" id="aiSendSlingMount">
+                  <button class="ai-send-btn" id="aiSendBtn" type="submit" aria-label="Gửi câu hỏi" title="Gửi (Enter)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="ai-composer-foot">
+                <span>Enter để gửi · Kéo nút gửi như ná cao su hoặc bấm để bắn · Shift + Enter xuống dòng</span>
+                <span id="aiCharCount">0 / 1000</span>
+              </div>
+            </form>
+          </div>
+
+          <aside class="ai-side-rail" aria-label="Ngữ cảnh học vụ và gợi ý">
+            <section class="ai-side-card">
+              <div class="ai-side-card-head">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                <span>Ngữ cảnh học vụ của bạn</span>
+              </div>
+              <dl class="ai-context-list" id="aiContextList"></dl>
+              <div class="ai-quick-nav-row">
+                <button type="button" class="ai-mini-link" data-ai-nav="schedule">Thời khóa biểu</button>
+                <button type="button" class="ai-mini-link" data-ai-nav="transcript">Bảng điểm</button>
+                <button type="button" class="ai-mini-link" data-ai-nav="curriculum">Khung CT</button>
+                <button type="button" class="ai-mini-link" data-ai-nav="courses">Đăng ký HP</button>
+              </div>
+            </section>
+
+            <section class="ai-side-card">
+              <div class="ai-side-card-head">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                <span>Thư viện câu hỏi nhanh</span>
+              </div>
+
+              <div class="ai-prompt-group">
+                <span class="ai-prompt-group-label">Lịch học & đăng ký</span>
+                <button type="button" class="ai-prompt-btn" data-ai-prompt="Lịch học của tôi thế nào?">Lịch học của tôi thế nào?</button>
+                <button type="button" class="ai-prompt-btn" data-ai-prompt="Tôi đã đăng ký bao nhiêu tín chỉ?">Tôi đã đăng ký bao nhiêu tín chỉ?</button>
+                <button type="button" class="ai-prompt-btn" data-ai-prompt="Khi nào hết hạn đăng ký?">Khi nào hết hạn đăng ký?</button>
+              </div>
+
+              <div class="ai-prompt-group">
+                <span class="ai-prompt-group-label">Lộ trình & kết quả</span>
+                <button type="button" class="ai-prompt-btn" data-ai-prompt="Xem kết quả học tập">Xem kết quả học tập</button>
+                <button type="button" class="ai-prompt-btn" data-ai-prompt="Tôi còn thiếu môn nào?">Tôi còn thiếu môn nào?</button>
+                <button type="button" class="ai-prompt-btn" data-ai-prompt="Gợi ý môn học phù hợp">Gợi ý môn học phù hợp</button>
+              </div>
+            </section>
+          </aside>
+        </div>
       </section>
       <footer class="page-footer"><span>© <span id="copyrightYear"></span> EduPortal · Cổng đăng ký học phần</span><span>Hỗ trợ học vụ · Liên hệ Ban Đào tạo</span></footer>
     </main>
   </div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <dialog id="scheduleDialog" class="schedule-dialog history-dialog"><div class="dialog-head"><div><span class="eyebrow">HỌC KỲ HIỆN TẠI</span><h2>Thời khóa biểu của bạn</h2></div><div class="dialog-actions"><button id="exportSchedule" class="secondary-button" type="button">Xuất CSV</button><button id="closeDialog" aria-label="Đóng">×</button></div></div><div id="dialogSchedule"></div></dialog>
+  <dialog class="sched-modal" id="courseDetailModal" aria-labelledby="detailModalTitle">
+    <div class="sched-modal-head">
+      <div class="sched-modal-title-wrap">
+        <div class="sched-modal-badges" id="detailModalBadges"></div>
+        <h2 id="detailModalTitle">Chi tiết học phần</h2>
+      </div>
+      <button class="sched-icon-btn" id="closeDetailModal" type="button" aria-label="Đóng hộp thoại">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="sched-modal-body" id="detailModalBody"></div>
+    <div class="sched-modal-foot">
+      <a class="sched-btn hidden" id="detailSyllabusLink" target="_blank" rel="noopener noreferrer">Xem đề cương ↗</a>
+      <button class="sched-btn sched-btn-primary" id="closeDetailModalBtn" type="button">Đóng</button>
+    </div>
+  </dialog>
+  <dialog class="hist-modal" id="registrationDetailModal" aria-labelledby="regDetailTitle">
+    <div class="hist-modal-head">
+      <div>
+        <div class="hist-modal-badges" id="regDetailBadges"></div>
+        <h2 id="regDetailTitle">Chi tiết đăng ký</h2>
+      </div>
+      <button class="sched-icon-btn" id="closeRegDetailModal" type="button" aria-label="Đóng hộp thoại">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="hist-modal-body" id="regDetailBody"></div>
+    <div class="hist-modal-foot">
+      <button class="hist-btn hidden" id="regDetailOpenCourseBtn" type="button">Xem thông tin lớp đầy đủ</button>
+      <button class="hist-btn hist-btn-primary" id="closeRegDetailBtn" type="button">Đóng</button>
+    </div>
+  </dialog>
+  <dialog class="tr-modal" id="transcriptDetailModal" aria-labelledby="trDetailTitle">
+    <div class="tr-modal-head">
+      <div>
+        <div class="tr-modal-badges" id="trDetailBadges"></div>
+        <h2 id="trDetailTitle">Chi tiết kết quả học tập</h2>
+      </div>
+      <button class="sched-icon-btn" id="closeTrDetailModal" type="button" aria-label="Đóng hộp thoại">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="tr-modal-body" id="trDetailBody"></div>
+    <div class="tr-modal-foot">
+      <button class="tr-btn tr-btn-primary" id="closeTrDetailBtn" type="button">Đóng</button>
+    </div>
+  </dialog>
+  <dialog class="cur-modal" id="curriculumDetailModal" aria-labelledby="curDetailTitle">
+    <div class="cur-modal-head">
+      <div>
+        <div class="cur-modal-badges" id="curDetailBadges"></div>
+        <h2 id="curDetailTitle">Chi tiết học phần</h2>
+      </div>
+      <button class="sched-icon-btn" id="closeCurDetailModal" type="button" aria-label="Đóng hộp thoại">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="cur-modal-body" id="curDetailBody"></div>
+    <div class="cur-modal-foot">
+      <a class="cur-btn hidden" id="curDetailSyllabusLink" target="_blank" rel="noopener noreferrer">Xem / tải đề cương ↗</a>
+      <button class="cur-btn cur-btn-primary" id="closeCurDetailBtn" type="button">Đóng</button>
+    </div>
+  </dialog>
+  <dialog id="lecturerProfileModal" aria-labelledby="lecModalTitle">
+    <div class="lec-modal-head">
+      <div class="lec-modal-hero">
+        <span class="lec-modal-avatar" id="lecModalAvatar">GV</span>
+        <div class="lec-modal-head-copy">
+          <div class="lec-modal-badges" id="lecModalBadges"></div>
+          <h2 id="lecModalTitle">Hồ sơ giảng viên</h2>
+          <p class="lec-modal-dept" id="lecModalDept"></p>
+        </div>
+      </div>
+      <button class="sched-icon-btn" id="closeLecModal" type="button" aria-label="Đóng hồ sơ giảng viên">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="lec-modal-body" id="lecModalBody"></div>
+    <div class="lec-modal-foot">
+      <small>Thông tin hiển thị theo hồ sơ công khai của giảng viên</small>
+      <button class="dash-btn dash-btn-primary" id="closeLecModalBtn" type="button">Đóng</button>
+    </div>
+  </dialog>
   <dialog id="courseDialog" class="schedule-dialog"><div class="dialog-head"><div><span class="eyebrow">CHI TIẾT LỚP HỌC PHẦN</span><h2 id="courseDialogTitle">Thông tin lớp</h2></div><button id="closeCourseDialog" aria-label="Đóng">×</button></div><div id="courseDialogBody"></div></dialog>
   <dialog id="historyDialog" class="schedule-dialog history-dialog"><div class="dialog-head"><div><span class="eyebrow">TRA CỨU</span><h2>Lịch sử đăng ký</h2></div><button id="closeHistoryDialog" aria-label="Đóng">×</button></div><div id="historyDialogBody"></div></dialog>
   <dialog id="transcriptDialog" class="schedule-dialog history-dialog"><div class="dialog-head"><div><span class="eyebrow">HỒ SƠ HỌC TẬP</span><h2>Kết quả học tập · Bảng điểm</h2></div><div class="dialog-actions"><button id="exportTranscript" class="secondary-button" type="button">Xuất CSV</button><button id="closeTranscriptDialog" aria-label="Đóng">×</button></div></div><div id="transcriptDialogBody"></div></dialog>
   <dialog id="curriculumDialog" class="schedule-dialog history-dialog"><div class="dialog-head"><div><span class="eyebrow">CHƯƠNG TRÌNH ĐÀO TẠO</span><h2 id="curriculumTitle">Khung chương trình</h2></div><button id="closeCurriculumDialog" aria-label="Đóng">×</button></div><div id="curriculumDialogBody"></div></dialog>
-  <script type="module" src="/assets/js/features/student/dashboard.js?v=20261125a"></script>
+  <dialog id="fcCommandPalette" aria-label="Bảng lệnh điều hướng nhanh">
+    <div class="fc-cmd-input-row">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="fcCmdInput" type="search" placeholder="Nhập tên trang, chức năng hoặc thao tác…" autocomplete="off" aria-label="Tìm lệnh nhanh">
+      <kbd class="fc-kbd">ESC</kbd>
+    </div>
+    <div class="fc-cmd-list" id="fcCmdList"></div>
+    <div class="fc-cmd-foot">
+      <span>↑↓ Di chuyển · Enter để mở</span>
+      <span>Future Campus · Command Palette</span>
+    </div>
+  </dialog>
+  <script type="module" src="/assets/js/features/student/dashboard.js?v=20261127gn"></script>
 </body>
 </html>

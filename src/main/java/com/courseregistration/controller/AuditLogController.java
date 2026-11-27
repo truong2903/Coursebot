@@ -22,13 +22,18 @@ public class AuditLogController {
     @GetMapping public List<AuditLogDto> list(@RequestParam(required=false) String actor,@RequestParam(required=false) String role,
             @RequestParam(required=false) String action,@RequestParam(required=false) @DateTimeFormat(iso=DateTimeFormat.ISO.DATE_TIME) LocalDateTime from,
             @RequestParam(required=false) @DateTimeFormat(iso=DateTimeFormat.ISO.DATE_TIME) LocalDateTime to){
-        Map<String,String> roleByUsername=accounts.findAll().stream().collect(Collectors.toMap(a->a.getUsername().toLowerCase(),a->a.getRole().name(),(a,b)->a));
-        return logs.findAll(Sort.by(Sort.Direction.DESC,"createdAt")).stream()
-                .filter(item->actor==null||actor.isBlank()||item.getActor().toLowerCase().contains(actor.toLowerCase()))
-                .filter(item->action==null||action.isBlank()||item.getAction().equalsIgnoreCase(action))
+        Map<String,String> roleByKey = new java.util.HashMap<>();
+        for (var a : accounts.findAll()) {
+            if (a.getUsername() != null) roleByKey.putIfAbsent(a.getUsername().toLowerCase(), a.getRole().name());
+            if (a.getEmail() != null && !a.getEmail().isBlank()) roleByKey.putIfAbsent(a.getEmail().toLowerCase(), a.getRole().name());
+        }
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdAt").and(Sort.by(Sort.Direction.DESC, "id"));
+        return logs.findAll(sort).stream()
+                .filter(item->actor==null||actor.isBlank()||item.getActor().toLowerCase().contains(actor.trim().toLowerCase()))
+                .filter(item->action==null||action.isBlank()||item.getAction().equalsIgnoreCase(action.trim()))
                 .filter(item->from==null||!item.getCreatedAt().isBefore(from))
                 .filter(item->to==null||!item.getCreatedAt().isAfter(to))
-                .filter(item->role==null||role.isBlank()||role.equalsIgnoreCase(roleByUsername.getOrDefault(item.getActor().toLowerCase(),"SYSTEM")))
-                .map(item->AuditLogDto.from(item,roleByUsername.getOrDefault(item.getActor().toLowerCase(),"SYSTEM"))).toList();
+                .filter(item->role==null||role.isBlank()||role.equalsIgnoreCase(roleByKey.getOrDefault(item.getActor().toLowerCase(),"SYSTEM")))
+                .map(item->AuditLogDto.from(item,roleByKey.getOrDefault(item.getActor().toLowerCase(),"SYSTEM"))).toList();
     }
 }

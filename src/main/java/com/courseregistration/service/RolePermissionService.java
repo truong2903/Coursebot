@@ -58,7 +58,7 @@ public class RolePermissionService {
                 UserAccount.Role.STUDENT, Set.of("STUDENT_ACADEMIC"),
                 UserAccount.Role.LECTURER, Set.of("LECTURER_WORKSPACE", "TRAINING_READ"),
                 UserAccount.Role.TRAINING_OFFICE, Set.of("TRAINING_READ", "TRAINING_MANAGE", "REPORTS_VIEW"),
-                UserAccount.Role.ADMIN, Set.copyOf(CATALOG.keySet()));
+                UserAccount.Role.ADMIN, Set.of("ACCOUNTS_MANAGE", "PERMISSIONS_MANAGE", "AUDIT_VIEW"));
         defaults.forEach((role, keys) -> permissions.saveAll(keys.stream().map(key -> new RolePermission(role, key)).toList()));
     }
 }

@@ -15,13 +15,14 @@
   }
 
   function resolveTheme() {
-    return getStoredTheme() || getSystemTheme();
+    // Future Campus defaults to Deep Space Dark Mode unless user explicitly chose Light Mode
+    return getStoredTheme() || 'dark';
   }
 
   function syncMetaThemeColor(theme) {
     var meta = document.querySelector('meta[name="theme-color"]');
     if (meta) {
-      meta.setAttribute('content', theme === 'dark' ? '#0b1120' : '#f7f8fc');
+      meta.setAttribute('content', theme === 'dark' ? '#080E1B' : '#F3F6FC');
     }
   }
 

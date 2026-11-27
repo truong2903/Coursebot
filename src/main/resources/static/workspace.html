@@ -3,31 +3,42 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Không gian làm việc · EduPortal</title>
+  <title>Không gian làm việc · EduPortal Future Campus</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/workspace.css?v=20261109d">
-  <link rel="stylesheet" href="/assets/css/workspace-extra.css?v=20261109d">
+  <link rel="stylesheet" href="/assets/css/workspace-extra.css?v=20261125l">
   <link rel="stylesheet" href="/assets/css/theme.css?v=20261125a">
-  <script src="/assets/js/core/theme.js?v=20261125a"></script>
-  <script type="module" src="/assets/js/features/workspace/workspace.js?v=20261109d"></script>
+  <link rel="stylesheet" href="/assets/css/future-campus.css?v=20261125sg3">
+  <link rel="stylesheet" href="/assets/css/future-effects.css?v=20261125fe">
+  <link rel="stylesheet" href="/assets/css/gooey-nav.css?v=20261127gn">
+  <script src="/assets/js/core/theme.js?v=20261125fc"></script>
+  <script src="/assets/js/core/shape-grid.js?v=20261125sg" defer></script>
+  <script src="/assets/js/core/future-effects.js?v=20261125fe" defer></script>
+  <script type="module" src="/assets/js/features/workspace/workspace.js?v=20261127gn"></script>
 </head>
 <body>
+  <div class="fc-sidebar-backdrop" id="fcSidebarBackdrop" aria-hidden="true"></div>
   <div class="workspace-shell">
     <aside class="workspace-sidebar">
-      <div class="workspace-brand" role="banner" aria-label="EduPortal">
-        <span class="brand-mark">
-          <svg viewBox="0 0 32 32" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M5.5 9.5 16 5l10.5 4.5L16 14 5.5 9.5Z"/>
-            <path d="M9 11.2v7.1c3.8 3.1 10.2 3.1 14 0v-7.1M26.5 10v8"/>
-            <circle cx="26.5" cy="20.5" r="1.5" fill="#ffffff"/>
-          </svg>
-        </span>
-        <span class="brand-copy">
-          <strong>Edu<span>Portal</span></strong>
-          <small id="workspaceBrandSubtitle">HỆ THỐNG HỌC VỤ</small>
-        </span>
+      <div class="fc-sidebar-head">
+        <div class="workspace-brand" role="banner" aria-label="EduPortal">
+          <span class="brand-mark">
+            <svg viewBox="0 0 32 32" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5.5 9.5 16 5l10.5 4.5L16 14 5.5 9.5Z"/>
+              <path d="M9 11.2v7.1c3.8 3.1 10.2 3.1 14 0v-7.1M26.5 10v8"/>
+              <circle cx="26.5" cy="20.5" r="1.5" fill="#ffffff"/>
+            </svg>
+          </span>
+          <span class="brand-copy">
+            <strong>Edu<span>Portal</span></strong>
+            <small id="workspaceBrandSubtitle">FUTURE CAMPUS</small>
+          </span>
+        </div>
+        <button class="fc-collapse-btn" id="fcSidebarCollapseBtn" type="button" aria-label="Thu gọn thanh điều hướng" aria-expanded="true" title="Thu gọn thanh điều hướng">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
       </div>
       <nav id="workspaceNav" class="workspace-nav" aria-label="Điều hướng workspace"></nav>
       <div class="sidebar-bottom">
@@ -42,12 +53,35 @@
     </aside>
     <main class="workspace-main">
       <header class="workspace-topbar">
-        <div>
-          <span class="crumb">EduPortal</span>
-          <span class="crumb-separator">/</span>
-          <strong id="pageBreadcrumb">Tổng quan</strong>
+        <div class="fc-topbar-left">
+          <button class="fc-mobile-menu-btn" id="fcMobileMenuBtn" type="button" aria-label="Mở menu điều hướng" aria-expanded="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+          </button>
+          <div>
+            <span class="crumb">EduPortal</span>
+            <span class="crumb-separator">/</span>
+            <strong id="pageBreadcrumb">Tổng quan</strong>
+          </div>
         </div>
         <div class="workspace-top-actions" id="workspaceTopActions">
+          <button class="fc-cmd-trigger" id="fcCmdTrigger" type="button" aria-label="Mở bảng lệnh nhanh">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <span>Chuyển nhanh…</span>
+            <kbd class="fc-kbd">Ctrl K</kbd>
+          </button>
+          <div class="fc-notif-wrap" id="fcNotifWrap">
+            <button class="fc-notif-btn" id="fcNotifBtn" type="button" aria-label="Trung tâm thông báo" aria-expanded="false" aria-controls="fcNotifPanel" title="Thông báo hệ thống">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+              <span class="fc-notif-dot hidden" id="fcNotifDot"></span>
+            </button>
+            <div class="fc-notif-panel" id="fcNotifPanel" hidden>
+              <div class="fc-notif-head">
+                <strong>Thông báo workspace</strong>
+                <span id="fcNotifCount">0 mục</span>
+              </div>
+              <div class="fc-notif-list" id="fcNotifList"></div>
+            </div>
+          </div>
           <div class="workspace-semester" id="semesterLabel">—</div>
           <button class="theme-toggle-btn" type="button" data-theme-toggle aria-label="Chuyển giao diện sáng/tối" title="Chuyển giao diện sáng/tối">
             <span class="theme-icon" aria-hidden="true">
@@ -88,6 +122,18 @@
   </div>
   <dialog id="workspaceDialog" class="workspace-dialog"><form method="dialog" id="workspaceForm"><div class="workspace-dialog-head"><div><small id="dialogEyebrow">THÔNG TIN</small><h2 id="dialogTitle">Chi tiết</h2></div><button class="dialog-close" value="cancel" formnovalidate aria-label="Đóng">×</button></div><div id="dialogFields" class="dialog-fields"></div><div id="dialogMessage" class="dialog-message" role="alert"></div><div class="dialog-actions"><button class="secondary-button" value="cancel" formnovalidate>Đóng</button><button class="primary-button" id="dialogSave" type="button">Lưu thay đổi</button></div></form></dialog>
   <dialog id="curriculumCoursesDialog" class="workspace-dialog"><div class="workspace-dialog-head"><div><small>KHUNG CHƯƠNG TRÌNH</small><h2 id="curriculumCoursesTitle">Các môn học</h2></div><button id="closeCurriculumCourses" class="dialog-close" type="button" aria-label="Đóng">×</button></div><div id="curriculumCoursesBody"></div><form id="curriculumCourseForm" class="curriculum-entry-form"><input name="courseCode" placeholder="Mã môn học" required><input name="suggestedSemester" placeholder="Học kỳ đề xuất" maxlength="40" required><label><input name="requiredCourse" type="checkbox" checked> Bắt buộc</label><input name="orderIndex" type="number" min="0" value="0" aria-label="Thứ tự"><button class="primary-button" type="submit">Thêm môn</button></form></dialog>
+  <dialog id="fcCommandPalette" aria-label="Bảng lệnh điều hướng nhanh">
+    <div class="fc-cmd-input-row">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="fcCmdInput" type="search" placeholder="Nhập tên chức năng hoặc thao tác được cấp quyền…" autocomplete="off" aria-label="Tìm lệnh nhanh">
+      <kbd class="fc-kbd">ESC</kbd>
+    </div>
+    <div class="fc-cmd-list" id="fcCmdList"></div>
+    <div class="fc-cmd-foot">
+      <span>↑↓ Di chuyển · Enter để mở</span>
+      <span>Future Campus · Workspace</span>
+    </div>
+  </dialog>
   <div id="workspaceToast" class="workspace-toast" role="status" aria-live="polite"></div>
 </body>
 </html>

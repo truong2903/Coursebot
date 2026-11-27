@@ -1,0 +1,180 @@
+/* ==========================================================================
+   GOOEY NAV — Faithful Vanilla WebGL2 CSS Port of @react-bits/GooeyNav-JS-CSS
+   Applied to Vertical Sidebars across Student, Lecturer, Training Office & Admin
+   ========================================================================== */
+
+.gooey-nav {
+  --gn-pill: #0088CC;
+  --gn-active-ink: #FFFFFF;
+  position: relative !important;
+  overflow: visible !important;
+  isolation: isolate;
+}
+
+html[data-theme="dark"] .gooey-nav {
+  --gn-pill: #00D5FF;
+  --gn-active-ink: #061325;
+}
+
+/* WebGL2 Liquid Metaball Canvas & Fallback Layer */
+.gooey-nav__canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.gooey-nav__fallback {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  display: none;
+  border-radius: 999px;
+  background: var(--gn-pill);
+  pointer-events: none;
+  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1), width 320ms cubic-bezier(0.22, 1, 0.36, 1), height 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Interactive Base Nav Items — Transparent Background so WebGL2 Pill & Hover Shine */
+.main-nav.gooey-nav .nav-item,
+.workspace-nav.gooey-nav button[data-page] {
+  position: relative;
+  z-index: 2;
+  border-radius: 999px !important;
+  border-color: transparent !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  font-weight: 600 !important;
+  transition: color 180ms ease;
+}
+
+.main-nav.gooey-nav .nav-item:hover,
+.workspace-nav.gooey-nav button[data-page]:hover {
+  background: transparent !important;
+  border-color: transparent !important;
+  color: var(--ink) !important;
+}
+
+/* Active base item glows in pill color before droplets arrive, then blends invisibly into the pill */
+.main-nav.gooey-nav .nav-item.active,
+.workspace-nav.gooey-nav button[data-page].active {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  color: var(--gn-pill) !important;
+  font-weight: 600 !important;
+}
+
+.main-nav.gooey-nav .nav-item.active .nav-icon,
+.workspace-nav.gooey-nav button[data-page].active .ws-nav-icon,
+.workspace-nav.gooey-nav button[data-page].active .ws-nav-text {
+  color: var(--gn-pill) !important;
+  transform: none !important;
+}
+
+.main-nav.gooey-nav .nav-item:hover .nav-icon,
+.workspace-nav.gooey-nav button[data-page]:hover .ws-nav-icon {
+  transform: none !important;
+}
+
+/* Hide legacy static left accent bar — replaced by WebGL2 liquid pill */
+.main-nav.gooey-nav .nav-item.active::before,
+.workspace-nav.gooey-nav button[data-page].active::before {
+  display: none !important;
+  content: none !important;
+}
+
+.workspace-nav.gooey-nav .nav-group {
+  position: relative;
+  z-index: 2;
+}
+
+/* High-Contrast Clipped Overlay Mirror (Exact SDF Liquid Boundary Clip) */
+.gooey-nav__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  visibility: hidden;
+  clip-path: inset(100%);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.gooey-nav__clone-item {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  border-radius: 999px;
+  color: var(--gn-active-ink) !important;
+  font-weight: 600 !important;
+  white-space: nowrap;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.gooey-nav__clone-item .nav-icon,
+.gooey-nav__clone-item .ws-nav-icon,
+.gooey-nav__clone-item .ws-nav-text,
+.gooey-nav__clone-item span:not(.nav-dot) {
+  color: var(--gn-active-ink) !important;
+}
+
+.gooey-nav__clone-item .nav-icon svg,
+.gooey-nav__clone-item .ws-nav-icon svg {
+  stroke: var(--gn-active-ink) !important;
+}
+
+/* Keep the AI status dot crisp & legible inside the active liquid pill */
+.gooey-nav__clone-item .nav-dot {
+  background: #061325 !important;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35) !important;
+}
+
+html:not([data-theme="dark"]) .gooey-nav__clone-item .nav-dot {
+  background: #6EE7B7 !important;
+  box-shadow: 0 0 8px rgba(110, 231, 183, 0.85) !important;
+}
+
+/* Subtle halo glow around the active liquid pill in Dark Mode */
+html[data-theme="dark"] .gooey-nav__canvas {
+  filter: drop-shadow(0 0 12px rgba(0, 213, 255, 0.28));
+}
+
+html:not([data-theme="dark"]) .gooey-nav__canvas {
+  filter: drop-shadow(0 4px 12px rgba(0, 136, 204, 0.20));
+}
+
+/* Collapsed Desktop Sidebar Alignment */
+@media (min-width: 961px) {
+  body.fc-sidebar-collapsed .gooey-nav__clone-item > span:not(.nav-icon):not(.ws-nav-icon) {
+    display: none !important;
+  }
+}
+
+/* Keep Workspace Sidebar Overflow Compatible with Gooey Droplets */
+.workspace-sidebar .workspace-nav.gooey-nav {
+  overflow: visible !important;
+}
+
+@media (max-width: 960px) {
+  .workspace-sidebar .workspace-nav.gooey-nav {
+    overflow: visible !important;
+  }
+}
+
+/* Focus ring matching stadium pill */
+.main-nav.gooey-nav .nav-item:focus-visible,
+.workspace-nav.gooey-nav button[data-page]:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gooey-nav__fallback {
+    transition: none;
+  }
+}

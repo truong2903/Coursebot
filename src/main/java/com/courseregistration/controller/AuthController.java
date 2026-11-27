@@ -59,8 +59,16 @@ public class AuthController {
 
     @PostMapping("/login")
     public AccountSessionDto login(@Valid @RequestBody LoginRequest request, HttpServletRequest servletRequest) {
-        var authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.username().trim(), request.password()));
+        String attempted = request.username() == null ? "unknown" : request.username().trim();
+        org.springframework.security.core.Authentication authentication;
+        try {
+            authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(attempted, request.password()));
+        } catch (org.springframework.security.core.AuthenticationException ex) {
+            audit.recordExplicit(attempted.isBlank() ? "system" : attempted, "LOGIN_FAILED",
+                    attempted.isBlank() ? "unknown" : attempted, "Đăng nhập thất bại: thông tin xác thực không hợp lệ");
+            throw ex;
+        }
         HttpSession previousSession = servletRequest.getSession(false);
         if (previousSession != null) servletRequest.changeSessionId();
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -74,7 +82,7 @@ public class AuthController {
             accountRepository.save(account);
         }
 
-        audit.recordAsync(account.getUsername(), "LOGIN_SUCCESS", account.getUsername(), "Đăng nhập thành công");
+        audit.recordExplicit(account.getUsername(), "LOGIN_SUCCESS", account.getUsername(), "Đăng nhập thành công");
         return accountDto(account);
     }
 
@@ -109,13 +117,16 @@ public class AuthController {
     @PostMapping("/forgot-password")
     public ActionResponse forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
         passwordResetService.requestReset(request.email());
+        String emailTarget = request.email() == null ? "unknown" : request.email().trim();
+        audit.recordExplicit(emailTarget, "PASSWORD_RESET_REQUESTED", emailTarget, "Yêu cầu gửi mã OTP khôi phục mật khẩu");
         return new ActionResponse(true,"Nếu email thuộc một tài khoản đang hoạt động, hướng dẫn khôi phục sẽ được gửi đến email đó.");
     }
 
     @PostMapping("/reset-password")
     public ActionResponse resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
         passwordResetService.reset(request.email(),request.token(),request.newPassword());
-        audit.record("PASSWORD_RESET","account","Đặt lại mật khẩu qua email");
+        String emailTarget = request.email() == null ? "unknown" : request.email().trim();
+        audit.recordExplicit(emailTarget, "PASSWORD_RESET", emailTarget, "Đặt lại mật khẩu thành công qua OTP email");
         return new ActionResponse(true,"Mật khẩu đã được đặt lại. Bạn có thể đăng nhập bằng mật khẩu mới.");
     }
 

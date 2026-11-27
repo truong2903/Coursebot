@@ -1,6 +1,7 @@
 package com.courseregistration.controller;
 
 import com.courseregistration.dto.CurriculumDto;
+import com.courseregistration.dto.LecturerPublicProfileDto;
 import com.courseregistration.dto.StudentCurriculumDto;
 import com.courseregistration.dto.StudentScheduleDto;
 import com.courseregistration.dto.StudentTranscriptDto;
@@ -32,5 +33,15 @@ public class StudentAcademicController {
     @GetMapping("/transcript")
     public StudentTranscriptDto transcript() {
         return service.transcript();
+    }
+
+    @GetMapping("/lecturers")
+    public List<LecturerPublicProfileDto> lecturers() {
+        return service.lecturers();
+    }
+
+    @GetMapping("/lecturers/{lecturerCode}")
+    public LecturerPublicProfileDto lecturerProfile(@PathVariable String lecturerCode) {
+        return service.lecturerProfile(lecturerCode);
     }
 }

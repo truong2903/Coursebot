@@ -1,9 +1,21 @@
 import { apiGet, apiPost } from '../../core/api.js';
+import { attachSpecularButton } from '../../core/specular-button.js?v=20261125sb';
 
 const form = document.querySelector('#loginForm');
 const button = form.querySelector('button[type="submit"]');
 const btnText = button.querySelector('.btn-text');
 const btnSpinner = button.querySelector('.btn-spinner');
+
+attachSpecularButton(button, {
+  radius: 14,
+  intensity: 1.15,
+  idleIntensity: 0.45,
+  thickness: 1.5,
+  glow: 1.2,
+  speed: 0.42,
+  proximity: 280,
+  autoAnimate: true
+});
 const message = document.querySelector('#authMessage');
 const passwordInput = form.elements.password;
 const togglePasswordBtn = document.querySelector('#togglePasswordBtn');

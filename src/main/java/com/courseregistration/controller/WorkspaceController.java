@@ -40,6 +40,16 @@ public class WorkspaceController {
     @PreAuthorize("@accessPolicy.has(authentication, 'LECTURER_WORKSPACE')")
     public StudentCurriculumDto lecturerCurriculum(@PathVariable String code) { return studentAcademicService.curriculum(code); }
 
+    @GetMapping("/lecturer/profile")
+    @PreAuthorize("@accessPolicy.has(authentication, 'LECTURER_WORKSPACE')")
+    public LecturerPublicProfileDto lecturerProfile() { return workspaceService.lecturerOwnProfile(); }
+
+    @PutMapping("/lecturer/profile")
+    @PreAuthorize("@accessPolicy.has(authentication, 'LECTURER_WORKSPACE')")
+    public LecturerPublicProfileDto updateLecturerProfile(@RequestBody LecturerProfileUpdateRequest request) {
+        return workspaceService.updateLecturerOwnProfile(request);
+    }
+
     @GetMapping("/training-office")
     @PreAuthorize("@accessPolicy.has(authentication, 'TRAINING_READ')")
     public TrainingDashboardDto trainingOffice() { return workspaceService.trainingDashboard(); }

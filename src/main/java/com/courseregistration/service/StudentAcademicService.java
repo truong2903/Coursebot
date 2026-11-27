@@ -24,6 +24,8 @@ public class StudentAcademicService {
     private final CourseService courses;
     private final AcademicResultRepository academicResults;
     private final CourseRepository courseCatalog;
+    private final LecturerRepository lecturerRepository;
+    private final CourseSectionRepository sectionRepository;
 
     public StudentAcademicService(AuthService auth,
                                   CurriculumRepository curricula,
@@ -32,7 +34,9 @@ public class StudentAcademicService {
                                   SemesterRepository semesters,
                                   CourseService courses,
                                   AcademicResultRepository academicResults,
-                                  CourseRepository courseCatalog) {
+                                  CourseRepository courseCatalog,
+                                  LecturerRepository lecturerRepository,
+                                  CourseSectionRepository sectionRepository) {
         this.auth = auth;
         this.curricula = curricula;
         this.entries = entries;
@@ -41,6 +45,8 @@ public class StudentAcademicService {
         this.courses = courses;
         this.academicResults = academicResults;
         this.courseCatalog = courseCatalog;
+        this.lecturerRepository = lecturerRepository;
+        this.sectionRepository = sectionRepository;
     }
 
     @Transactional(readOnly = true)
@@ -149,5 +155,50 @@ public class StudentAcademicService {
                 weightedAvg,
                 dtos
         );
+    }
+
+    @Transactional(readOnly = true)
+    public List<LecturerPublicProfileDto> lecturers() {
+        var allLecturers = lecturerRepository.findAllByOrderByFullNameAsc();
+        Map<Long, List<LecturerPublicProfileDto.TeachingSectionDto>> sectionsByLecturer = currentSemesterSectionsByLecturer();
+        return allLecturers.stream()
+                .map(lecturer -> LecturerPublicProfileDto.forStudent(
+                        lecturer,
+                        sectionsByLecturer.getOrDefault(lecturer.getId(), List.of())))
+                .sorted(Comparator.comparingInt(LecturerPublicProfileDto::activeSectionCount).reversed()
+                        .thenComparing(LecturerPublicProfileDto::fullName, String.CASE_INSENSITIVE_ORDER))
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public LecturerPublicProfileDto lecturerProfile(String lecturerCode) {
+        if (lecturerCode == null || lecturerCode.isBlank()) {
+            throw new IllegalArgumentException("Mã giảng viên không hợp lệ.");
+        }
+        var lecturer = lecturerRepository.findByLecturerCodeIgnoreCase(lecturerCode.trim())
+                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy hồ sơ giảng viên."));
+        Map<Long, List<LecturerPublicProfileDto.TeachingSectionDto>> sectionsByLecturer = currentSemesterSectionsByLecturer();
+        return LecturerPublicProfileDto.forStudent(
+                lecturer,
+                sectionsByLecturer.getOrDefault(lecturer.getId(), List.of()));
+    }
+
+    private Map<Long, List<LecturerPublicProfileDto.TeachingSectionDto>> currentSemesterSectionsByLecturer() {
+        String currentCode;
+        try {
+            currentCode = courses.currentSemester().getCode();
+        } catch (IllegalStateException ex) {
+            return Map.of();
+        }
+        var activeCounts = enrollments.activeCountsBySection().stream()
+                .collect(Collectors.toMap(r -> (String) r[0], r -> ((Number) r[1]).longValue()));
+        Map<Long, List<LecturerPublicProfileDto.TeachingSectionDto>> map = new HashMap<>();
+        for (var section : sectionRepository.findAllBySemester_CodeOrderBySectionCode(currentCode)) {
+            if (section.getLecturer() == null) continue;
+            int enrolled = section.totalEnrolled(activeCounts.getOrDefault(section.getId(), 0L));
+            map.computeIfAbsent(section.getLecturer().getId(), k -> new ArrayList<>())
+                    .add(LecturerPublicProfileDto.TeachingSectionDto.from(section, enrolled));
+        }
+        return map;
     }
 }

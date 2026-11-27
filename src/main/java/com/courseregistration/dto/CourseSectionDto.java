@@ -9,7 +9,8 @@ public record CourseSectionDto(String id, String sectionCode, String code, Strin
                                String description, String syllabusUrl, java.util.List<MeetingDto> meetings,
                                boolean scheduleReviewRequired, Integer importedEnrolled, String sourceStatus,
                                String sectionType, String linkedSectionCode,
-                               String conditionBlockReason, String unmetConditionMessage) {
+                               String conditionBlockReason, String unmetConditionMessage,
+                               String lecturerCode) {
     public static CourseSectionDto from(CourseSection section, int enrolled, String prerequisite,
                                         boolean registered, boolean prerequisiteMet, boolean waitlisted, int waitlistPosition) {
         return from(section, enrolled, prerequisite, registered, prerequisiteMet, waitlisted, waitlistPosition, null, null);
@@ -25,6 +26,6 @@ public record CourseSectionDto(String id, String sectionCode, String code, Strin
                 prerequisiteMet, waitlisted, waitlistPosition, section.getStatus().name(), course.getDescription(), course.getSyllabusUrl(),
                 section.getEffectiveMeetings().stream().map(MeetingDto::from).toList(), section.isScheduleReviewRequired(),
                 section.getImportedEnrolled(), section.getSourceStatus(), section.getSectionType(), section.getLinkedSectionCode(),
-                conditionBlockReason, unmetConditionMessage);
+                conditionBlockReason, unmetConditionMessage, section.getLecturerCode());
     }
 }
